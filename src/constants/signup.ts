@@ -17,6 +17,7 @@ export const PLACEHOLDERS = {
   EXPERIENCE: 'e.g., 5',
   PHONE: 'e.g., +1 (555) 123-4567',
   DATE_OF_BIRTH: 'Select your date of birth',
+  COUNTRY: 'Select your country',
 } as const;
 
 export const FORM_LABELS = {
@@ -30,6 +31,8 @@ export const FORM_LABELS = {
   EXPERIENCE: 'Years of Experience (optional)',
   PHONE: 'Phone Number',
   DATE_OF_BIRTH: 'Date of Birth',
+  COUNTRY: 'Country',
+  GENDER: 'Gender',
   AVATAR: 'Profile Picture (Optional)',
 } as const;
 

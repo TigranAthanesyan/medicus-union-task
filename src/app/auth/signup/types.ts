@@ -1,4 +1,4 @@
-import { UserRole } from '../../../types/global';
+import { UserRole, Gender } from '../../../types/global';
 
 export interface SignUpFormData {
   name: string;
@@ -8,6 +8,8 @@ export interface SignUpFormData {
   role: UserRole;
   dateOfBirth: string;
   phoneNumber: string;
+  country: string;
+  gender: Gender | '';
   specialization: string;
   description: string;
   experience: number;
@@ -36,6 +38,6 @@ export type LoadingState = {
   avatar: boolean;
 };
 
-export type FormInputEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+export type FormInputEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>;
 export type FormSubmitEvent = React.FormEvent<HTMLFormElement>;
 export type FileInputEvent = React.ChangeEvent<HTMLInputElement>; 

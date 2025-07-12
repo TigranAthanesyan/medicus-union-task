@@ -24,4 +24,109 @@
   font-size: 14px;
   margin-bottom: 16px;
   line-height: 1.8;
+}
+
+.inputGroup {
+  margin-bottom: 16px;
+}
+
+.inputLabel {
+  display: block;
+  margin-bottom: 8px;
+  color: #333333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+  color: #333333;
+  transition: border-color 0.3s ease;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.select:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.radioLabel:hover {
+  border-color: #2563eb;
+  background-color: #f8faff;
+}
+
+.radioInput {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  accent-color: #2563eb;
+}
+
+.radioInput:disabled {
+  cursor: not-allowed;
+}
+
+.radioLabel:has(.radioInput:disabled) {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.radioLabel:has(.radioInput:disabled):hover {
+  border-color: #ddd;
+  background-color: white;
+}
+
+.radioText {
+  font-size: 14px;
+  color: #333333;
+  font-weight: 500;
+}
+
+.radioLabel:has(.radioInput:checked) {
+  border-color: #2563eb;
+  background-color: #f0f7ff;
+}
+
+.radioLabel:has(.radioInput:checked) .radioText {
+  color: #2563eb;
+}
+
+@media (max-width: 480px) {
+  .radioGroup {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .radioLabel {
+    width: 100%;
+    justify-content: flex-start;
+  }
 } 

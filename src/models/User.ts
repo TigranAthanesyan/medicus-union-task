@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { UserRole, BaseUser } from '../types/global';
+import { UserRole, BaseUser, Gender } from '../types/global';
 
 export interface IUser extends BaseUser, mongoose.Document {
   _id: mongoose.Types.ObjectId;
@@ -48,12 +48,20 @@ const UserSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  specialization: {
+  country: {
     type: String,
+    trim: true,
+  },
+  gender: {
+    type: String,
+    enum: Object.values(Gender),
+  },
+  specialization: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Specialization',
     required: function(this: IUser) {
       return this.role === UserRole.Doctor;
     },
-    trim: true,
   },
   description: {
     type: String,

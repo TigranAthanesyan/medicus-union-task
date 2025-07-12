@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { SignUpFormData, FormInputEvent } from '../../app/auth/signup/types';
 import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES } from '../../constants/signup';
+import { SpecializationResponse } from '../../types/global';
 import InputField from '../InputField';
 import styles from './styles.module.css';
 
@@ -18,6 +19,33 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
   disabled = false,
   className = '',
 }) => {
+  const [specializations, setSpecializations] = useState<SpecializationResponse[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>('');
+
+  useEffect(() => {
+    const fetchSpecializations = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/specializations');
+        const data = await response.json();
+        
+        if (data.success) {
+          setSpecializations(data.data);
+        } else {
+          setError(data.error || 'Failed to fetch specializations');
+        }
+      } catch (err) {
+        setError('Failed to fetch specializations');
+        console.error('Error fetching specializations:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSpecializations();
+  }, []);
+
   return (
     <div className={clsx(styles.section, className)}>
       <h3 className={styles.sectionTitle}>
@@ -29,16 +57,32 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
         Please provide your professional information to help patients find and connect with you.
       </p>
 
-      <InputField
-        label={FORM_LABELS.SPECIALIZATION}
-        type="text"
-        name="specialization"
-        value={formData.specialization}
-        onChange={onChange}
-        placeholder={PLACEHOLDERS.SPECIALIZATION}
-        required
-        disabled={disabled}
-      />
+      <div className={styles.inputGroup}>
+        <label className={styles.inputLabel}>
+          {FORM_LABELS.SPECIALIZATION} <span className={styles.required}>*</span>
+        </label>
+        {loading ? (
+          <div className={styles.loadingText}>Loading specializations...</div>
+        ) : error ? (
+          <div className={styles.errorText}>{error}</div>
+        ) : (
+          <select
+            name="specialization"
+            value={formData.specialization}
+            onChange={onChange}
+            disabled={disabled}
+            className={styles.select}
+            required
+          >
+            <option value="">Select your specialization</option>
+            {specializations.map(spec => (
+              <option key={spec.id} value={spec.id}>
+                {spec.name}
+              </option>
+            ))}
+          </select>
+        )}
+      </div>
 
       <InputField
         label={FORM_LABELS.DESCRIPTION}

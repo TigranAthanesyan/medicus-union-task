@@ -3,6 +3,11 @@ export enum UserRole {
   Doctor = 'doctor',
 }
 
+export enum Gender {
+  Male = 'male',
+  Female = 'female',
+}
+
 export interface BaseUser {
   email: string;
   password: string;
@@ -11,6 +16,8 @@ export interface BaseUser {
   image?: string;
   dateOfBirth?: Date;
   phoneNumber?: string;
+  country?: string;
+  gender?: Gender;
 
   // Doctor-specific fields
   specialization?: string;
@@ -18,7 +25,14 @@ export interface BaseUser {
   experience?: number;
 }
 
+export interface BaseSpecialization {
+  name: string;
+  description: string;
+}
+
 // API types
 export type CreateUserInput = BaseUser;
+export type CreateSpecializationInput = BaseSpecialization;
 
-export type UserResponse = Omit<BaseUser, 'password'> & { id: string }; 
+export type UserResponse = Omit<BaseUser, 'password'> & { id: string };
+export type SpecializationResponse = BaseSpecialization & { id: string }; 

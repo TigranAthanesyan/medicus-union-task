@@ -13,9 +13,11 @@ const initialFormData: SignUpFormData = {
   role: UserRole.Patient,
   dateOfBirth: '',
   phoneNumber: '',
+  country: '',
+  gender: '',
   specialization: '',
   description: '',
-  experience: undefined,
+  experience: 0,
 };
 
 export const useSignUpForm = () => {
@@ -97,6 +99,12 @@ export const useSignUpForm = () => {
       }
       if (formData.phoneNumber) {
         requestData.phoneNumber = formData.phoneNumber;
+      }
+      if (formData.country) {
+        requestData.country = formData.country;
+      }
+      if (formData.gender) {
+        requestData.gender = formData.gender;
       }
 
       if (formData.role === UserRole.Doctor) {

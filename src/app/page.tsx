@@ -121,7 +121,6 @@ export default function Home() {
                 color: theme.colors.textLight,
                 fontSize: theme.typography.fontSize.md,
               }}>
-                <strong>User ID:</strong> {user.id}
               </p>
             </div>
           </div>
