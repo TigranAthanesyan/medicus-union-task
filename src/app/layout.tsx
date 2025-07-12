@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Providers from "../components/Providers";
 import Layout from "../components/Layout";
 import "./globals.css";
 
@@ -15,9 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body cz-shortcut-listen="true">
-        <Layout>
-          {children}
-        </Layout>
+        <Providers>
+          <Layout>
+            {children}
+          </Layout>
+        </Providers>
       </body>
     </html>
   );

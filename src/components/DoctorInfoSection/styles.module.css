@@ -1,0 +1,27 @@
+.section {
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  margin: 0 0 16px 0;
+  color: #333333;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionIcon {
+  font-size: 20px;
+}
+
+.sectionDescription {
+  color: #666666;
+  font-size: 14px;
+  margin-bottom: 16px;
+  line-height: 1.8;
+} 

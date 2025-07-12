@@ -1,0 +1,107 @@
+.avatarSection {
+  margin-bottom: 24px;
+  text-align: center;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.avatarPreview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  background-color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px solid #e0e0e0;
+  position: relative;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatarPlaceholder {
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.removeButton {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #dc3545;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.removeButton:hover {
+  background-color: #c53030;
+}
+
+.removeButton:focus {
+  outline: 2px solid #dc3545;
+  outline-offset: 2px;
+}
+
+.fileInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.fileInput:hover {
+  border-color: #007bff;
+}
+
+.fileInput:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+.fileInput:disabled {
+  cursor: not-allowed;
+  background-color: #f8f9fa;
+  opacity: 0.6;
+}
+
+.fileInputHint {
+  font-size: 12px;
+  color: #666666;
+  margin-top: 4px;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  color: #007bff;
+  font-size: 14px;
+}
+
+.errorMessage {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 8px;
+} 

@@ -1,0 +1,42 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  padding: 16px;
+}
+
+.formContainer {
+  background-color: #ffffff;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #333333;
+  font-size: 28px;
+}
+
+.linkSection {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link:hover {
+  text-decoration: underline;
+} 

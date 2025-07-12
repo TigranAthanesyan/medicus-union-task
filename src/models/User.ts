@@ -1,10 +1,8 @@
 import mongoose from 'mongoose';
+import { UserRole, BaseUser } from '../types/global';
 
-export interface IUser extends mongoose.Document {
-  email: string;
-  password: string;
-  name: string;
-  role: 'patient' | 'doctor';
+export interface IUser extends BaseUser, mongoose.Document {
+  _id: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -29,11 +27,51 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['patient', 'doctor'],
+    enum: Object.values(UserRole),
     required: [true, 'Role is required'],
+  },
+  image: {
+    type: String,
+    trim: true,
+    validate: {
+      validator: function(v: string) {
+        if (!v) return true;
+        return /^https?:\/\/.+/.test(v);
+      },
+      message: 'Avatar URL must be a valid URL'
+    }
+  },
+  dateOfBirth: {
+    type: Date,
+  },
+  phoneNumber: {
+    type: String,
+    trim: true,
+  },
+  specialization: {
+    type: String,
+    required: function(this: IUser) {
+      return this.role === UserRole.Doctor;
+    },
+    trim: true,
+  },
+  description: {
+    type: String,
+    required: function(this: IUser) {
+      return this.role === UserRole.Doctor;
+    },
+    trim: true,
+    maxlength: [500, 'Description must be less than 500 characters'],
+  },
+  experience: {
+    type: Number,
+    min: [0, 'Experience cannot be negative'],
   },
 }, {
   timestamps: true,
 });
+
+UserSchema.index({ role: 1 });
+UserSchema.index({ role: 1, specialization: 1 });
 
 export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema); 

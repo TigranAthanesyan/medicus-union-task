@@ -1,0 +1,66 @@
+.roleSection {
+  margin-bottom: 24px;
+}
+
+.roleLabel {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333333;
+  font-weight: 500;
+}
+
+.roleOptions {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.roleOption {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  border: 2px solid #e0e0e0;
+  background-color: #ffffff;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.roleOption:hover {
+  border-color: #007bff;
+  background-color: #f8f9fa;
+}
+
+.roleOption.selected {
+  border-color: #007bff;
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.roleOption.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.roleOption.disabled:hover {
+  border-color: #e0e0e0;
+  background-color: #ffffff;
+}
+
+.roleRadio {
+  margin-right: 8px;
+  accent-color: #007bff;
+}
+
+.roleIcon {
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.roleText {
+  font-weight: 500;
+} 
