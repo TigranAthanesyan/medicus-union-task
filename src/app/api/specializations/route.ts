@@ -1,13 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '../../../lib/mongodb';
 import Specialization, { ISpecialization } from '../../../models/Specialization';
-import { SpecializationResponse } from '../../../types/global';
-
-interface SpecializationsApiResponse {
-  success: boolean;
-  data?: SpecializationResponse[];
-  error?: string;
-}
+import { SpecializationDTO, SpecializationsApiResponse } from '../../../types/api';
 
 export async function GET(): Promise<NextResponse<SpecializationsApiResponse>> {
   try {
@@ -17,7 +11,7 @@ export async function GET(): Promise<NextResponse<SpecializationsApiResponse>> {
       .select('_id name description')
       .sort({ name: 1 });
     
-    const responseData: SpecializationResponse[] = specializations.map((spec) => ({
+    const responseData: SpecializationDTO[] = specializations.map((spec) => ({
       id: spec._id.toString(),
       name: spec.name,
       description: spec.description,

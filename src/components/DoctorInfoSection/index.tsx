@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { SignUpFormData, FormInputEvent } from '../../app/auth/signup/types';
 import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES } from '../../constants/signup';
-import { SpecializationResponse } from '../../types/global';
+import { SpecializationDTO } from '../../types/api';
 import InputField from '../InputField';
 import styles from './styles.module.css';
 
@@ -19,7 +19,7 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
   disabled = false,
   className = '',
 }) => {
-  const [specializations, setSpecializations] = useState<SpecializationResponse[]>([]);
+  const [specializations, setSpecializations] = useState<SpecializationDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
 

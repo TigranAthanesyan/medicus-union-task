@@ -57,11 +57,12 @@ const UserSchema = new mongoose.Schema({
     enum: Object.values(Gender),
   },
   specialization: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Specialization',
+    type: String,
     required: function(this: IUser) {
       return this.role === UserRole.Doctor;
     },
+    trim: true,
+    maxlength: [100, 'Specialization name must be less than 100 characters'],
   },
   description: {
     type: String,

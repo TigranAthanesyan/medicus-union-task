@@ -1,0 +1,153 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem;
+  text-align: center;
+}
+
+.errorContainer {
+  text-align: center;
+  padding: 3rem;
+  background: #fef2f2;
+  border-radius: 12px;
+  border: 1px solid #fecaca;
+}
+
+.errorContainer h2 {
+  color: #dc2626;
+  margin: 0 0 1rem 0;
+}
+
+.errorContainer p {
+  color: #7f1d1d;
+  margin: 0 0 1.5rem 0;
+}
+
+.retryButton {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.retryButton:hover {
+  background: #b91c1c;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.emptyState h2 {
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+}
+
+.emptyState p {
+  color: #6b7280;
+  margin: 0;
+}
+
+.authPrompt {
+  text-align: center;
+  padding: 3rem;
+  background: #f0f9ff;
+  border-radius: 12px;
+  border: 1px solid #bae6fd;
+}
+
+.authPrompt h1 {
+  color: #1e40af;
+  margin: 0 0 1rem 0;
+}
+
+.authPrompt p {
+  color: #1e3a8a;
+  margin: 0 0 1.5rem 0;
+}
+
+.signInLink {
+  display: inline-block;
+  background: #3b82f6;
+  color: white;
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.signInLink:hover {
+  background: #2563eb;
+}
+
+.doctorsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .container {
+    padding: 2rem;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .subtitle {
+    font-size: 1.25rem;
+  }
+  
+  .doctorsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .doctorsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  }
+} 

@@ -29,10 +29,3 @@ export interface BaseSpecialization {
   name: string;
   description: string;
 }
-
-// API types
-export type CreateUserInput = BaseUser;
-export type CreateSpecializationInput = BaseSpecialization;
-
-export type UserResponse = Omit<BaseUser, 'password'> & { id: string };
-export type SpecializationResponse = BaseSpecialization & { id: string }; 

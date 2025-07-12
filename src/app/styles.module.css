@@ -1,0 +1,220 @@
+.loadingContainer {
+  padding: 2rem;
+  text-align: center;
+  color: #1f2937;
+}
+
+.userContainer {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.userCard {
+  background-color: #f9fafb;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.welcomeTitle {
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.userProfile {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.avatarContainer {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px solid #e5e7eb;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatarPlaceholder {
+  font-size: 2rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.userName {
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.userDetail {
+  margin: 0 0 0.25rem 0;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.userDetailLast {
+  margin: 0;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.infoSection {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.sectionDetail {
+  margin: 0 0 0.25rem 0;
+  color: #374151;
+}
+
+.sectionDetailLast {
+  margin: 0;
+  color: #374151;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.primaryButton:hover {
+  background-color: #2563eb;
+}
+
+.dangerButton {
+  padding: 0.5rem 1rem;
+  background-color: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dangerButton:hover {
+  background-color: #b91c1c;
+}
+
+.testInfo {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.testInfo p {
+  margin: 0.25rem 0;
+}
+
+.welcomeContainer {
+  padding: 2rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.welcomeMainTitle {
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.welcomeSubtitle {
+  color: #6b7280;
+  margin-bottom: 3rem;
+  font-size: 1.25rem;
+  line-height: 1.6;
+}
+
+.authButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.authButton {
+  padding: 1rem 1.5rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.authButtonPrimary {
+  background-color: #3b82f6;
+}
+
+.authButtonPrimary:hover {
+  background-color: #2563eb;
+}
+
+.authButtonSecondary {
+  background-color: #6b7280;
+}
+
+.authButtonSecondary:hover {
+  background-color: #4b5563;
+}
+
+.welcomeFooter {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background-color: #f9fafb;
+  border-radius: 12px;
+}
+
+.welcomeFooterText {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin: 0;
+}
