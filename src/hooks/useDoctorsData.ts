@@ -25,6 +25,8 @@ const useDoctorsData = () => {
           console.error('Error fetching doctors:', error);
           setStatus(DataFetchStatus.Error);
         }
+      } else {
+        setStatus(DataFetchStatus.Success);
       }
     };
 

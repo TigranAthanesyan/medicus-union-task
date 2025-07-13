@@ -25,6 +25,8 @@ const useSpecializationsData = () => {
           console.error('Error fetching specializations:', error);
           setStatus(DataFetchStatus.Error);
         }
+      } else {
+        setStatus(DataFetchStatus.Success);
       }
     };
 
