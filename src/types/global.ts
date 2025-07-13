@@ -29,3 +29,10 @@ export interface BaseSpecialization {
   name: string;
   description: string;
 }
+
+export enum DataFetchStatus {
+  Initial,
+  InProgress,
+  Success,
+  Error,
+}

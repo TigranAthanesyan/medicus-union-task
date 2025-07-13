@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import styles from './styles.module.css';
 import { UserDTO } from '../../types/api';
+import { getCountryName, getCountryFlagUrl } from '../../utils/countries';
 
 interface DoctorCardProps {
   doctor: UserDTO;
@@ -13,22 +14,19 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const handleBookAppointment = () => {
+  const handleGoToProfile = () => {
+   
+    // TODO: Go to profile
+    console.log('Go To profile of Dr.', doctor.name);
+  };
+
+  const handleBookNow = () => {
     if (!session) {
       router.push('/auth/signin?callbackUrl=/doctors');
       return;
     }
     // TODO: Implement booking functionality
-    console.log('Book appointment with Dr.', doctor.name);
-  };
-
-  const handleChatNow = () => {
-    if (!session) {
-      router.push('/auth/signin?callbackUrl=/doctors');
-      return;
-    }
-    // TODO: Implement chat functionality
-    console.log('Start chat with Dr.', doctor.name);
+    console.log('Book Dr.', doctor.name);
   };
 
   return (
@@ -56,20 +54,25 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
           <p className={styles.specialization}>{doctor.specialization}</p>
         )}
         
-        {doctor.experience && (
-          <p className={styles.experience}>{doctor.experience} years of experience</p>
-        )}
-        
-        {doctor.description && (
-          <p className={styles.description}>{doctor.description}</p>
+        {doctor.country && (
+          <p className={styles.country}>
+            <Image
+              width={20}
+              height={15}
+              src={getCountryFlagUrl(doctor.country)}
+              alt={`${getCountryName(doctor.country)} flag`}
+              className={styles.countryFlag}
+            />
+            {getCountryName(doctor.country)}
+          </p>
         )}
         
         <div className={styles.cardActions}>
-          <button className={styles.bookButton} onClick={handleBookAppointment}>
-            Book Appointment
+          <button className={styles.secondaryButton} onClick={handleGoToProfile}>
+            Go to profile
           </button>
-          <button className={styles.chatButton} onClick={handleChatNow}>
-            Chat Now
+          <button className={styles.primaryButton} onClick={handleBookNow}>
+            Book now
           </button>
         </div>
       </div>

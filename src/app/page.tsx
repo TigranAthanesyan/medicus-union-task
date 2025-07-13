@@ -2,6 +2,7 @@
 
 import { useSession, signOut } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { UserRole } from '../types/global';
 import { UserDTO } from '../types/api';
 import styles from './styles.module.css';
@@ -106,12 +107,12 @@ export default function Home() {
           )}
 
           <div className={styles.actionButtons}>
-            <a
+            <Link
               href="/doctors"
               className={styles.primaryButton}
             >
               View Doctors
-            </a>
+            </Link>
             <button
               onClick={() => signOut({ callbackUrl: '/' })}
               className={styles.dangerButton}
@@ -139,24 +140,24 @@ export default function Home() {
       </p>
 
       <div className={styles.authButtons}>
-        <a
+        <Link
           href="/doctors"
           className={`${styles.authButton} ${styles.authButtonPrimary}`}
         >
           View Doctors
-        </a>
-        <a
+        </Link>
+        <Link
           href="/auth/signin"
           className={`${styles.authButton} ${styles.authButtonSecondary}`}
         >
           Sign In
-        </a>
-        <a
+        </Link>
+        <Link
           href="/auth/signup"
           className={`${styles.authButton} ${styles.authButtonSecondary}`}
         >
           Sign Up
-        </a>
+        </Link>
       </div>
 
       <div className={styles.welcomeFooter}>
