@@ -36,3 +36,8 @@ export enum DataFetchStatus {
   Success,
   Error,
 }
+
+export type Country = {
+  value: string;
+  label: string;
+}

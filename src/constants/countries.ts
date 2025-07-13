@@ -1,4 +1,6 @@
-export const COUNTRIES = [
+import { Country } from "../types/global";
+
+export const COUNTRIES: Country[] = [
   { value: 'AF', label: 'Afghanistan' },
   { value: 'AL', label: 'Albania' },
   { value: 'DZ', label: 'Algeria' },

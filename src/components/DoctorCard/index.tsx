@@ -2,9 +2,10 @@ import React from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import styles from './styles.module.css';
-import { UserDTO } from '../../types/api';
 import { getCountryName, getCountryFlagUrl } from '../../utils/countries';
+import { createSlug } from '../../utils/validation';
+import { UserDTO } from '../../types/api';
+import styles from './styles.module.css';
 
 interface DoctorCardProps {
   doctor: UserDTO;
@@ -15,7 +16,6 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
   const router = useRouter();
 
   const handleGoToProfile = () => {
-   
     // TODO: Go to profile
     console.log('Go To profile of Dr.', doctor.name);
   };
@@ -29,13 +29,20 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
     console.log('Book Dr.', doctor.name);
   };
 
+  const handleSpecializationClick = () => {
+    if (doctor.specialization) {
+      const slug = createSlug(doctor.specialization);
+      router.push(`/specializations/${slug}`);
+    }
+  };
+
   return (
     <div className={styles.doctorCard}>
       <div className={styles.doctorAvatar}>
         {doctor.image ? (
           <Image
             src={doctor.image}
-            alt={`Dr. ${doctor.name}'s avatar`}
+            alt={doctor.name}
             width={80}
             height={80}
             className={styles.avatarImage}
@@ -48,10 +55,15 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
       </div>
       
       <div className={styles.doctorInfo}>
-        <h3 className={styles.doctorName}>Dr. {doctor.name}</h3>
+        <h3 className={styles.doctorName}>{doctor.name}</h3>
         
         {doctor.specialization && (
-          <p className={styles.specialization}>{doctor.specialization}</p>
+          <button 
+            className={styles.specialization}
+            onClick={handleSpecializationClick}
+          >
+            {doctor.specialization}
+          </button>
         )}
         
         {doctor.country && (
@@ -60,7 +72,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
               width={20}
               height={15}
               src={getCountryFlagUrl(doctor.country)}
-              alt={`${getCountryName(doctor.country)} flag`}
+              alt={`${doctor.country} flag`}
               className={styles.countryFlag}
             />
             {getCountryName(doctor.country)}
