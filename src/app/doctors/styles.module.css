@@ -10,12 +10,6 @@
   margin-bottom: 2rem;
 }
 
-.headerTop {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 1rem;
-}
-
 .homeButton {
   background: #f3f4f6;
   border: 1px solid #d1d5db;

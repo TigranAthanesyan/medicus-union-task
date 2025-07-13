@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
 import { DoctorCard } from '../../components/DoctorCard';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import styles from './styles.module.css';
@@ -10,11 +9,6 @@ import { DataFetchStatus } from '../../types/global';
 
 export default function DoctorsPage() {
   const { doctors, status } = useDoctorsData();
-  const router = useRouter();
-
-  const handleGoHome = () => {
-    router.push('/');
-  };
 
   const renderContent = () => {
     switch (status) {
@@ -59,15 +53,6 @@ export default function DoctorsPage() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <div className={styles.headerTop}>
-          <button 
-            onClick={handleGoHome}
-            className={styles.homeButton}
-            aria-label="Go to home"
-          >
-            ← Home
-          </button>
-        </div>
         <h1 className={styles.title}>Find Your Doctor</h1>
         <p className={styles.subtitle}>
           Connect with qualified healthcare professionals
