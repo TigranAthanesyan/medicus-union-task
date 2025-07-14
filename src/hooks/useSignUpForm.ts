@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { UserRole, CreateUserInput } from '../types/global';
+import { UserRole, BaseUser } from '../types/global';
 import { SignUpFormData, LoadingState, FormInputEvent, FormSubmitEvent } from '../app/auth/signup/types';
 import { validateSignUpForm } from '../utils/validation';
 import { registerUser, uploadAvatar } from '../services/auth';
@@ -15,7 +15,7 @@ const initialFormData: SignUpFormData = {
   phoneNumber: '',
   country: '',
   gender: '',
-  specialization: '',
+  specializations: [],
   description: '',
   experience: 0,
 };
@@ -31,7 +31,7 @@ export const useSignUpForm = () => {
   
   const router = useRouter();
 
-  const handleChange = (e: FormInputEvent): void => {
+  const handleChange = (e: FormInputEvent | { target: { name: string; value: string[] } }): void => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -84,7 +84,7 @@ export const useSignUpForm = () => {
     }
 
     try {
-      const requestData: CreateUserInput = {
+      const requestData: BaseUser = {
         name: formData.name,
         email: formData.email,
         password: formData.password,
@@ -108,7 +108,7 @@ export const useSignUpForm = () => {
       }
 
       if (formData.role === UserRole.Doctor) {
-        requestData.specialization = formData.specialization;
+        requestData.specializations = formData.specializations;
         requestData.description = formData.description;
         if (formData.experience) {
           requestData.experience = formData.experience;

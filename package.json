@@ -30,6 +30,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.5",
     "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }

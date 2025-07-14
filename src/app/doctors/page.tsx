@@ -23,7 +23,7 @@ export default function DoctorsPage() {
 
   const filteredDoctors = useMemo(() => {
     return doctors.filter(doctor => {
-      if (selectedSpecialization && doctor.specialization !== selectedSpecialization) {
+      if (selectedSpecialization && (!doctor.specializations || !doctor.specializations.includes(selectedSpecialization))) {
         return false;
       }
 
@@ -71,7 +71,7 @@ export default function DoctorsPage() {
           >
             <option value="">---</option>
             {specializations.map(spec => (
-              <option key={spec.id} value={spec.name}>
+              <option key={spec.key} value={spec.key}>
                 {spec.name}
               </option>
             ))}

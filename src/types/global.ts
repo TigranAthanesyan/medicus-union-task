@@ -20,12 +20,13 @@ export interface BaseUser {
   gender?: Gender;
 
   // Doctor-specific fields
-  specialization?: string;
+  specializations?: string[];
   description?: string;
   experience?: number;
 }
 
 export interface BaseSpecialization {
+  key: string;
   name: string;
   description: string;
 }

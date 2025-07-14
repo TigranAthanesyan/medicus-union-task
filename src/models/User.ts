@@ -56,13 +56,17 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: Object.values(Gender),
   },
-  specialization: {
-    type: String,
+  specializations: {
+    type: [String],
     required: function(this: IUser) {
       return this.role === UserRole.Doctor;
     },
-    trim: true,
-    maxlength: [100, 'Specialization name must be less than 100 characters'],
+    validate: {
+      validator: function(v: string[]) {
+        return v && v.length > 0;
+      },
+      message: 'At least one specialization is required for doctors'
+    },
   },
   description: {
     type: String,
@@ -81,6 +85,6 @@ const UserSchema = new mongoose.Schema({
 });
 
 UserSchema.index({ role: 1 });
-UserSchema.index({ role: 1, specialization: 1 });
+UserSchema.index({ role: 1, specializations: 1 });
 
 export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema); 

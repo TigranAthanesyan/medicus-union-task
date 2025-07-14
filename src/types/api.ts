@@ -6,7 +6,7 @@ export type UserDTO = Omit<BaseUser, 'password'> & { id: string };
 
 export type CreateSpecializationInput = BaseSpecialization;
 
-export type SpecializationDTO = BaseSpecialization & { id: string }; 
+export type SpecializationDTO = BaseSpecialization; 
 
 export interface DoctorsApiResponse {
   success: boolean;

@@ -64,6 +64,47 @@
   cursor: not-allowed;
 }
 
+.multiSelect {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+  color: #333333;
+  transition: border-color 0.3s ease;
+  min-height: 120px;
+  resize: vertical;
+}
+
+.multiSelect:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.multiSelect:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.multiSelect option {
+  padding: 8px 12px;
+  background-color: white;
+}
+
+.multiSelect option:checked {
+  background-color: #2563eb;
+  color: white;
+}
+
+.helperText {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #6c757d;
+  font-style: italic;
+}
+
 .loadingText {
   padding: 12px 16px;
   background-color: #f8f9fa;

@@ -8,11 +8,11 @@ export async function GET(): Promise<NextResponse<SpecializationsApiResponse>> {
     await connectDB();
     
     const specializations: ISpecialization[] = await Specialization.find({})
-      .select('_id name description')
+      .select('key name description')
       .sort({ name: 1 });
     
     const responseData: SpecializationDTO[] = specializations.map((spec) => ({
-      id: spec._id.toString(),
+      key: spec.key,
       name: spec.name,
       description: spec.description,
     }));

@@ -22,7 +22,7 @@ export async function GET(): Promise<NextResponse<DoctorsApiResponse>> {
         phoneNumber: doctor.phoneNumber,
         country: doctor.country,
         gender: doctor.gender,
-        specialization: doctor.specialization,
+        specializations: doctor.specializations,
         description: doctor.description,
         experience: doctor.experience,
       }));

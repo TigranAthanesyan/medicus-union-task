@@ -28,8 +28,8 @@ export const validateSignUpForm = (formData: SignUpFormData): string | null => {
   }
 
   if (formData.role === UserRole.Doctor) {
-    if (!formData.specialization.trim()) {
-      return 'Specialization is required for doctors';
+    if (!formData.specializations || formData.specializations.length === 0) {
+      return 'At least one specialization is required for doctors';
     }
     
     if (!formData.description.trim()) {
@@ -77,13 +77,4 @@ export const getPasswordStrength = (password: string): 'weak' | 'medium' | 'stro
     return 'strong';
   }
   return 'medium';
-}; 
-
-export const createSlug = (text: string): string => {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
 }; 

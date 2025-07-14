@@ -10,7 +10,7 @@ export interface SignUpFormData {
   phoneNumber: string;
   country: string;
   gender: Gender | '';
-  specialization: string;
+  specializations: string[];
   description: string;
   experience: number;
 }
@@ -38,6 +38,6 @@ export type LoadingState = {
   avatar: boolean;
 };
 
-export type FormInputEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>;
+export type FormInputEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | { target: { name: string; value: string[] } };
 export type FormSubmitEvent = React.FormEvent<HTMLFormElement>;
 export type FileInputEvent = React.ChangeEvent<HTMLInputElement>; 

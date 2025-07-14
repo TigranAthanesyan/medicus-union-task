@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { getCountryName, getCountryFlagUrl } from '../../utils/countries';
-import { createSlug } from '../../utils/validation';
+import useSpecializationsData from '../../hooks/useSpecializationsData';
 import { UserDTO } from '../../types/api';
 import styles from './styles.module.css';
 
@@ -14,6 +14,7 @@ interface DoctorCardProps {
 export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
   const { data: session } = useSession();
   const router = useRouter();
+  const { specializations } = useSpecializationsData();
 
   const handleGoToProfile = () => {
     // TODO: Go to profile
@@ -29,11 +30,8 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
     console.log('Book Dr.', doctor.name);
   };
 
-  const handleSpecializationClick = () => {
-    if (doctor.specialization) {
-      const slug = createSlug(doctor.specialization);
-      router.push(`/specializations/${slug}`);
-    }
+  const handleSpecializationClick = (specializationKey: string) => {
+    router.push(`/specializations/${specializationKey}`);
   };
 
   return (
@@ -57,13 +55,23 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
       <div className={styles.doctorInfo}>
         <h3 className={styles.doctorName}>{doctor.name}</h3>
         
-        {doctor.specialization && (
-          <button 
-            className={styles.specialization}
-            onClick={handleSpecializationClick}
-          >
-            {doctor.specialization}
-          </button>
+        {doctor.specializations && doctor.specializations.length > 0 && (
+          <div className={styles.specializationsContainer}>
+            {doctor.specializations.map((specializationKey) => {
+              const specialization = specializations.find(spec => spec.key === specializationKey);
+              const displayName = specialization ? specialization.name : specializationKey;
+              
+              return (
+                <button 
+                  key={specializationKey}
+                  className={styles.specialization}
+                  onClick={() => handleSpecializationClick(specializationKey)}
+                >
+                  {displayName}
+                </button>
+              );
+            })}
+          </div>
         )}
         
         {doctor.country && (

@@ -23,6 +23,16 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
 
+  const handleSpecializationsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValues = Array.from(e.target.selectedOptions, option => option.value);
+    onChange({
+      target: {
+        name: 'specializations',
+        value: selectedValues
+      }
+    });
+  };
+
   useEffect(() => {
     const fetchSpecializations = async () => {
       try {
@@ -66,21 +76,26 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
         ) : error ? (
           <div className={styles.errorText}>{error}</div>
         ) : (
-          <select
-            name="specialization"
-            value={formData.specialization}
-            onChange={onChange}
-            disabled={disabled}
-            className={styles.select}
-            required
-          >
-            <option value="">Select your specialization</option>
-            {specializations.map(spec => (
-              <option key={spec.id} value={spec.id}>
-                {spec.name}
-              </option>
-            ))}
-          </select>
+          <>
+            <select
+              name="specializations"
+              value={formData.specializations}
+              onChange={handleSpecializationsChange}
+              disabled={disabled}
+              className={styles.multiSelect}
+              multiple
+              required
+            >
+              {specializations.map(spec => (
+                <option key={spec.key} value={spec.key}>
+                  {spec.name}
+                </option>
+              ))}
+            </select>
+            <p className={styles.helperText}>
+              Hold Ctrl/Cmd to select multiple specializations
+            </p>
+          </>
         )}
       </div>
 
