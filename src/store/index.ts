@@ -9,8 +9,12 @@ export const useStore = create<State>((set, get) => ({
   setDoctors: (doctors) => set({ doctors }),
   setDoctor: (doctor) => {
     const { doctorMapById } = get();
-    doctorMapById[doctor.id] = doctor;
-    set({ doctorMapById });
+    set({ 
+      doctorMapById: {
+        ...doctorMapById,
+        [doctor.id]: doctor
+      }
+    });
   },
   setSpecializations: (specializations) => set({ specializations }),
 })); 

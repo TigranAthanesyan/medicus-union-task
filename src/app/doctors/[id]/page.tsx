@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -19,6 +19,10 @@ export default function DoctorProfilePage() {
   const doctorId = params.id as string;
   const { doctor, status } = useDoctorDataById(doctorId);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleBookNow = () => {
     if (!session) {
       router.push(`/auth/signin?callbackUrl=/doctors/${doctorId}`);
@@ -27,6 +31,15 @@ export default function DoctorProfilePage() {
     // TODO: Implement booking functionality
     console.log('Book Dr.', doctor?.name);
   };
+
+  // const handleStartChat = () => {
+  //   if (!session) {
+  //     router.push(`/auth/signin?callbackUrl=/doctors/${doctorId}`);
+  //     return;
+  //   }
+  //   // TODO: Implement chat functionality
+  //   console.log('Start chat with Dr.', doctor?.name);
+  // };
 
   const handleSpecializationClick = (specializationKey: string) => {
     router.push(`/specializations/${specializationKey}`);
@@ -109,6 +122,9 @@ export default function DoctorProfilePage() {
                   <button className={styles.bookButton} onClick={handleBookNow}>
                     Book Consultation
                   </button>
+                  {/* <button className={styles.chatButton} onClick={handleStartChat}>
+                    Start Chat
+                  </button> */}
                 </div>
               </div>
             </div>
