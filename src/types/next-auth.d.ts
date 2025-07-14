@@ -1,6 +1,6 @@
 import { DefaultSession, DefaultUser } from 'next-auth';
 import { DefaultJWT } from 'next-auth/jwt';
-import { UserRole } from './global';
+import { UserRole } from './user';
 
 declare module 'next-auth' {
   interface Session {
@@ -35,4 +35,4 @@ declare module 'next-auth/jwt' {
     description?: string;
     experience?: number;
   }
-} 
+}
