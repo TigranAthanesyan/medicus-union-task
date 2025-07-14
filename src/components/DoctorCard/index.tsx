@@ -3,23 +3,20 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { getCountryName, getCountryFlagUrl } from '../../utils/countries';
-import useSpecializationsData from '../../hooks/useSpecializationsData';
-import { UserDTO } from '../../types/api';
+import { DoctorCardDTO } from '../../types/api';
 import styles from './styles.module.css';
 
 interface DoctorCardProps {
-  doctor: UserDTO;
+  doctor: DoctorCardDTO;
   showSpecializations?: boolean;
 }
 
 export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, showSpecializations }) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const { specializations } = useSpecializationsData();
 
   const handleGoToProfile = () => {
-    // TODO: Go to profile
-    console.log('Go To profile of Dr.', doctor.name);
+    router.push(`/doctors/${doctor.id}`);
   };
 
   const handleBookNow = () => {
@@ -56,22 +53,17 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, showSpecializati
       <div className={styles.doctorInfo}>
         <h3 className={styles.doctorName}>{doctor.name}</h3>
         
-        {showSpecializations && doctor.specializations && doctor.specializations.length > 0 && (
+        {showSpecializations && doctor.specializationsDisplayData && doctor.specializationsDisplayData.length > 0 && (
           <div className={styles.specializationsContainer}>
-            {doctor.specializations.map((specializationKey) => {
-              const specialization = specializations.find(spec => spec.key === specializationKey);
-              const displayName = specialization ? specialization.name : specializationKey;
-              
-              return (
-                <button 
-                  key={specializationKey}
-                  className={styles.specialization}
-                  onClick={() => handleSpecializationClick(specializationKey)}
-                >
-                  {displayName}
-                </button>
-              );
-            })}
+            {doctor.specializationsDisplayData.map(({ key, name }) => (
+              <button 
+                key={key}
+                className={styles.specialization}
+                onClick={() => handleSpecializationClick(key)}
+              >
+                {name}
+              </button>
+            ))}
           </div>
         )}
         

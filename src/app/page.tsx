@@ -70,9 +70,9 @@ export default function Home() {
               <h3 className={styles.sectionTitle}>
                 Doctor Information
               </h3>
-              {user.specialization && (
+              {user.specializations && user.specializations.length > 0 && (
                 <p className={styles.sectionDetail}>
-                  <strong>Specialization:</strong> {user.specialization}
+                  <strong>Specialization:</strong> {user.specializations.join(', ')}
                 </p>
               )}
               {user.description && (

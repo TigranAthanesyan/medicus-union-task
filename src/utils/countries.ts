@@ -1,5 +1,5 @@
 import { Country } from '../types/global';
-import { UserDTO } from '../types/api';
+import { DoctorCardDTO } from '../types/api';
 import { COUNTRIES } from '../constants/countries';
 
 export const getCountryName = (countryCode: string): string => {
@@ -15,7 +15,7 @@ export const getCountryFlagUrl = (countryCode: string): string => {
   return `https://flagcdn.com/w20/${countryCode.toLowerCase()}.png`;
 };
 
-export const getAvailableCountries = (doctors: UserDTO[]): Country[] => {
+export const getAvailableCountries = (doctors: DoctorCardDTO[]): Country[] => {
   const uniqueCountryCodes = [...new Set(
     doctors
       .map(doctor => doctor.country)

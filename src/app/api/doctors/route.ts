@@ -2,29 +2,22 @@ import { NextResponse } from 'next/server';
 import connectDB from '../../../lib/mongodb';
 import User, { IUser } from '../../../models/User';
 import { UserRole } from '../../../types/global';
-import { DoctorsApiResponse, UserDTO } from '../../../types/api';
+import { DoctorsApiResponse, DoctorCardDTO } from '../../../types/api';
 
 export async function GET(): Promise<NextResponse<DoctorsApiResponse>> {
   try {
     await connectDB();
     
     const doctors: IUser[] = await User.find({ role: UserRole.Doctor })
-      .select('-password')
+      .select('_id name image country specializations')
       .sort({ name: 1 });
     
-    const responseData: UserDTO[] = doctors.map((doctor) => ({
+    const responseData: DoctorCardDTO[] = doctors.map((doctor) => ({
         id: doctor._id.toString(),
-        email: doctor.email,
         name: doctor.name,
-        role: doctor.role,
         image: doctor.image,
-        dateOfBirth: doctor.dateOfBirth,
-        phoneNumber: doctor.phoneNumber,
         country: doctor.country,
-        gender: doctor.gender,
-        specializations: doctor.specializations,
-        description: doctor.description,
-        experience: doctor.experience,
+        specializations: doctor.specializations || [],
       }));
     
     return NextResponse.json<DoctorsApiResponse>({

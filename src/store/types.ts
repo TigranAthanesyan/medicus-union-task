@@ -1,9 +1,11 @@
-import { UserDTO, SpecializationDTO } from '../types/api';
+import { DoctorCardDTO, SpecializationDTO, UserDTO } from '../types/api';
 
 export interface State {
-  doctors: UserDTO[];
+  doctors: DoctorCardDTO[];
+  doctorMapById: Record<string, UserDTO>;
   specializations: SpecializationDTO[];
   
-  setDoctors: (doctors: UserDTO[]) => void;
+  setDoctors: (doctors: DoctorCardDTO[]) => void;
+  setDoctor: (doctor: UserDTO) => void;
   setSpecializations: (specializations: SpecializationDTO[]) => void;
 } 
