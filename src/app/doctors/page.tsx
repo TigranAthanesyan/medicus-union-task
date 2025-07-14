@@ -157,7 +157,7 @@ export default function DoctorsPage() {
             ) : (
               <div className={styles.doctorsGrid}>
                 {filteredDoctors.map((doctor) => (
-                  <DoctorCard key={doctor.id} doctor={doctor} />
+                  <DoctorCard key={doctor.id} doctor={doctor} showSpecializations />
                 ))}
               </div>
             )}

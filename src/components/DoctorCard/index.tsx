@@ -9,9 +9,10 @@ import styles from './styles.module.css';
 
 interface DoctorCardProps {
   doctor: UserDTO;
+  showSpecializations?: boolean;
 }
 
-export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
+export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, showSpecializations }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const { specializations } = useSpecializationsData();
@@ -55,7 +56,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
       <div className={styles.doctorInfo}>
         <h3 className={styles.doctorName}>{doctor.name}</h3>
         
-        {doctor.specializations && doctor.specializations.length > 0 && (
+        {showSpecializations && doctor.specializations && doctor.specializations.length > 0 && (
           <div className={styles.specializationsContainer}>
             {doctor.specializations.map((specializationKey) => {
               const specialization = specializations.find(spec => spec.key === specializationKey);
