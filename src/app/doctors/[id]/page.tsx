@@ -45,7 +45,7 @@ export default function DoctorProfilePage() {
     router.push(`/specializations/${specializationKey}`);
   };
 
-  const renderContent = () => {
+  const renderContent = (): React.ReactNode => {
     switch (status) {
       case DataFetchStatus.InProgress:
         return (
