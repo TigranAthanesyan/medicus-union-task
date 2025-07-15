@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { ConversationStatus } from '../types';
+import { IUser } from './User';
 
 export interface IConversation extends mongoose.Document {
   _id: mongoose.Types.ObjectId;
@@ -22,6 +23,13 @@ export interface IConversation extends mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type PopulatedConversation = Omit<IConversation, 'participants.patient' | 'participants.doctor'> & {
+  participants: {
+    patient: IUser;
+    doctor: IUser;
+  };
+};
 
 const ConversationSchema = new mongoose.Schema({
   participants: {

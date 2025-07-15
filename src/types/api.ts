@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { 
   BaseApiResponse, 
   PaginatedResponse, 
@@ -31,7 +32,7 @@ export type SpecializationsApiResponse = BaseApiResponse<SpecializationDTO[]>;
 
 export type CreateSpecializationApiResponse = BaseApiResponse<SpecializationDTO>;
 
-export type ConversationsApiResponse = BaseApiResponse<PaginatedResponse<ConversationSummary>>;
+export type ConversationsApiResponse = BaseApiResponse<ConversationSummary[]>;
 
 export type ConversationByIdApiResponse = BaseApiResponse<{
   conversation: ConversationDTO;
@@ -83,4 +84,24 @@ export interface FileUploadResponse {
     publicId?: string;
   };
   error?: string;
+}
+
+export interface ConversationQuery {
+  $or: Array<{
+    'participants.patient'?: string;
+    'participants.doctor'?: string;
+  }>;
+  status?: ConversationStatus;
+}
+
+export interface ConversationUpdateData {
+  lastMessage: {
+    id: mongoose.Types.ObjectId;
+    content: string;
+    timestamp: Date;
+    sender: mongoose.Types.ObjectId;
+  };
+  updatedAt: Date;
+  'unreadCount.doctor'?: number;
+  'unreadCount.patient'?: number;
 }
