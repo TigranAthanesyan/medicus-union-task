@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '../../../lib/mongodb';
 import User, { IUser } from '../../../models/User';
-import { UserRole } from '../../../types/global';
-import { DoctorsApiResponse, DoctorCardDTO } from '../../../types/api';
+import { UserRole, DoctorsApiResponse, DoctorCardDTO } from '../../../types';
 
 export async function GET(): Promise<NextResponse<DoctorsApiResponse>> {
   try {

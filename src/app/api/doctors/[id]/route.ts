@@ -2,8 +2,7 @@ import { NextResponse } from 'next/server';
 import { Types } from 'mongoose';
 import connectDB from '../../../../lib/mongodb';
 import User, { IUser } from '../../../../models/User';
-import { UserRole } from '../../../../types/global';
-import { DoctorByIdApiResponse, UserDTO } from '../../../../types/api';
+import { UserRole, DoctorByIdApiResponse, UserDTO } from '../../../../types';
 
 export async function GET(
   request: Request,

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '../../../lib/mongodb';
 import Specialization, { ISpecialization } from '../../../models/Specialization';
-import { SpecializationDTO, SpecializationsApiResponse } from '../../../types/api';
+import { SpecializationDTO, SpecializationsApiResponse } from '../../../types';
 
 export async function GET(): Promise<NextResponse<SpecializationsApiResponse>> {
   try {

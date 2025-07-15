@@ -2,11 +2,11 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import connectToDatabase from '../../../../lib/mongodb';
 import User from '../../../../models/User';
-import { UserRole, CreateUserInput, UserResponse, BaseUser } from '../../../../types/global';
+import { UserRole, CreateUserInput, UserResponse } from '../../../../types';
 
 export async function POST(request: Request) {
   try {
-    const body: BaseUser = await request.json();
+    const body = await request.json();
     const { 
       email, 
       password, 
@@ -15,7 +15,9 @@ export async function POST(request: Request) {
       image,
       dateOfBirth,
       phoneNumber,
-      specialization,
+      country,
+      gender,
+      specializations,
       description,
       experience
     } = body;
@@ -28,9 +30,9 @@ export async function POST(request: Request) {
     }
 
     const userRole = role === UserRole.Doctor ? UserRole.Doctor : UserRole.Patient;
-    if (userRole === UserRole.Doctor && (!specialization || !description)) {
+    if (userRole === UserRole.Doctor && (!specializations || !description)) {
       return NextResponse.json(
-        { error: 'Specialization and description are required for doctors' },
+        { error: 'Specializations and description are required for doctors' },
         { status: 400 }
       );
     }
@@ -63,8 +65,14 @@ export async function POST(request: Request) {
     if (phoneNumber) {
       userData.phoneNumber = phoneNumber;
     }
+    if (country) {
+      userData.country = country;
+    }
+    if (gender) {
+      userData.gender = gender;
+    }
     if (userRole === UserRole.Doctor) {
-      userData.specialization = specialization;
+      userData.specializations = specializations;
       userData.description = description;
       if (experience !== undefined && experience > 0) {
         userData.experience = experience;
@@ -79,6 +87,8 @@ export async function POST(request: Request) {
       email: user.email,
       name: user.name,
       role: user.role,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     };
 
     if (user.image) {
@@ -90,8 +100,14 @@ export async function POST(request: Request) {
     if (user.phoneNumber) {
       responseUser.phoneNumber = user.phoneNumber;
     }
+    if (user.country) {
+      responseUser.country = user.country;
+    }
+    if (user.gender) {
+      responseUser.gender = user.gender;
+    }
     if (userRole === UserRole.Doctor) {
-      responseUser.specialization = user.specialization;
+      responseUser.specializations = user.specializations;
       responseUser.description = user.description;
       if (user.experience) {
         responseUser.experience = user.experience;
