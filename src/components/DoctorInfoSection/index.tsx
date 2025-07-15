@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import { SignUpFormData, FormInputEvent } from '../../app/auth/signup/types';
-import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES } from '../../constants/signup';
-import { SpecializationDTO } from '../../types/api';
 import InputField from '../InputField';
+import { SignUpFormData, FormInputEvent } from '../../app/auth/signup/types';
+import { SpecializationDTO } from '../../types';
+import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES } from '../../constants/signup';
 import styles from './styles.module.css';
 
 interface DoctorInfoSectionProps {

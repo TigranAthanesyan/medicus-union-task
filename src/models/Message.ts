@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { MessageType, MessageStatus } from '../types/chat';
+import { MessageType, MessageStatus } from '../types';
 
 export interface IMessage extends mongoose.Document {
   _id: mongoose.Types.ObjectId;

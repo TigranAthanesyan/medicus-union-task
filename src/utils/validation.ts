@@ -1,4 +1,4 @@
-import { UserRole } from '../types/global';
+import { UserRole } from '../types';
 import { SignUpFormData } from '../app/auth/signup/types';
 import { FORM_VALIDATION } from '../constants/signup';
 

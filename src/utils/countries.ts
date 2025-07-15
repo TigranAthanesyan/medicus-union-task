@@ -1,5 +1,4 @@
-import { Country } from '../types/global';
-import { DoctorCardDTO } from '../types/api';
+import { Country, DoctorCardDTO } from '../types';
 import { COUNTRIES } from '../constants/countries';
 
 export const getCountryName = (countryCode: string): string => {

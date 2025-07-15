@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { UserRole, BaseUser } from '../types/global';
-import { SignUpFormData, LoadingState, FormInputEvent, FormSubmitEvent } from '../app/auth/signup/types';
 import { validateSignUpForm } from '../utils/validation';
 import { registerUser, uploadAvatar } from '../services/auth';
+import { SignUpFormData, LoadingState, FormInputEvent, FormSubmitEvent } from '../app/auth/signup/types';
+import { UserRole, BaseUser } from '../types';
 
 const initialFormData: SignUpFormData = {
   name: '',

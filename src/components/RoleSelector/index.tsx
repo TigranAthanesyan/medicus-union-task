@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { UserRole } from '../../types/global';
+import { UserRole } from '../../types';
 import { ROLES } from '../../constants/signup';
 import styles from './styles.module.css';
 

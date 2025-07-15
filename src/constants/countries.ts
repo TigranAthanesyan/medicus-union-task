@@ -1,4 +1,4 @@
-import { Country } from "../types/global";
+import { Country } from "../types";
 
 export const COUNTRIES: Country[] = [
   { value: 'AF', label: 'Afghanistan' },

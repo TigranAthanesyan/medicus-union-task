@@ -1,4 +1,4 @@
-import { DoctorCardDTO, SpecializationDTO, UserDTO } from '../types/api';
+import { DoctorCardDTO, SpecializationDTO, UserDTO } from '../types';
 
 export interface State {
   doctors: DoctorCardDTO[];

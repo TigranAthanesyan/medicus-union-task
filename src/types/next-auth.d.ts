@@ -9,7 +9,7 @@ declare module 'next-auth' {
       role: UserRole;
       dateOfBirth?: Date;
       phoneNumber?: string;
-      specialization?: string;
+      specializations?: string[];
       description?: string;
       experience?: number;
     } & DefaultSession['user'];
@@ -19,7 +19,7 @@ declare module 'next-auth' {
     role: UserRole;
     dateOfBirth?: Date;
     phoneNumber?: string;
-    specialization?: string;
+    specializations?: string[];
     description?: string;
     experience?: number;
   }
@@ -31,7 +31,7 @@ declare module 'next-auth/jwt' {
     image?: string;
     dateOfBirth?: Date;
     phoneNumber?: string;
-    specialization?: string;
+    specializations?: string[];
     description?: string;
     experience?: number;
   }

@@ -1,4 +1,4 @@
-import { UserRole, Gender } from '../../../types/global';
+import { UserRole, Gender } from '../../../types';
 
 export interface SignUpFormData {
   name: string;

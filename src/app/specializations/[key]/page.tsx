@@ -7,7 +7,7 @@ import { DoctorCard } from '../../../components/DoctorCard';
 import { LoadingSpinner } from '../../../components/LoadingSpinner';
 import useDoctorsData from '../../../hooks/useDoctorsData';
 import useSpecializationsData from '../../../hooks/useSpecializationsData';
-import { DataFetchStatus } from '../../../types/global';
+import { DataFetchStatus } from '../../../types';
 import styles from './styles.module.css';
 
 export default function SpecializationPage() {

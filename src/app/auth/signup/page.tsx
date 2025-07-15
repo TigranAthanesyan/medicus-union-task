@@ -1,10 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { UserRole } from '../../../types/global';
 import { useSignUpForm } from '../../../hooks/useSignUpForm';
-import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES, BUTTON_LABELS } from '../../../constants/signup';
-import styles from './styles.module.css';
 import ErrorMessage from '../../../components/ErrorMessage';
 import InputField from '../../../components/InputField';
 import RoleSelector from '../../../components/RoleSelector';
@@ -12,6 +9,9 @@ import AvatarUpload from '../../../components/AvatarUpload';
 import SubmitButton from '../../../components/SubmitButton';
 import DoctorInfoSection from '../../../components/DoctorInfoSection';
 import PersonalInfoSection from '../../../components/PersonalInfoSection';
+import { UserRole } from '../../../types';
+import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES, BUTTON_LABELS } from '../../../constants/signup';
+import styles from './styles.module.css';
 
 export default function SignUp(): React.ReactElement {
   const [avatar, setAvatar] = useState<File | null>(null);

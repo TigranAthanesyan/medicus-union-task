@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '../store';
-import { SpecializationsApiResponse } from '../types/api';
-import { DataFetchStatus } from '../types/global';
+import { DataFetchStatus, SpecializationsApiResponse } from '../types';
 
 const useSpecializationsData = () => {
   const { specializations, setSpecializations } = useStore();

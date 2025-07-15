@@ -3,8 +3,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { UserRole } from '../types/global';
-import { UserDTO } from '../types/api';
+import { UserRole, UserDTO } from '../types';
 import styles from './styles.module.css';
 
 export default function Home() {

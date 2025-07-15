@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import connectToDatabase from './mongodb';
 import User, { IUser } from '../models/User';
-import { UserRole } from '../types/global';
+import { UserRole } from '../types';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
             image: user.image,
             dateOfBirth: user.dateOfBirth,
             phoneNumber: user.phoneNumber,
-            specialization: user.specialization,
+            specializations: user.specializations,
             description: user.description,
             experience: user.experience,
           };
@@ -61,7 +61,7 @@ export const authOptions: NextAuthOptions = {
         token.image = user.image || undefined;
         token.dateOfBirth = user.dateOfBirth;
         token.phoneNumber = user.phoneNumber;
-        token.specialization = user.specialization;
+        token.specializations = user.specializations;
         token.description = user.description;
         token.experience = user.experience;
       }
@@ -74,7 +74,7 @@ export const authOptions: NextAuthOptions = {
         session.user.image = token.image;
         session.user.dateOfBirth = token.dateOfBirth;
         session.user.phoneNumber = token.phoneNumber;
-        session.user.specialization = token.specialization;
+        session.user.specializations = token.specializations;
         session.user.description = token.description;
         session.user.experience = token.experience;
       }

@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '../store';
 import useSpecializationsData from './useSpecializationsData';
-import { DoctorByIdApiResponse, UserDTO } from '../types/api';
-import { DataFetchStatus } from '../types/global';
+import { DataFetchStatus, UserDTO, DoctorByIdApiResponse } from '../types';
 
 const useDoctorDataById = (id: string) => {
   const { doctorMapById, setDoctor } = useStore();

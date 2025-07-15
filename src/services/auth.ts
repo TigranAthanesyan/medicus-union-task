@@ -1,4 +1,4 @@
-import { CreateUserInput } from '../types/global';
+import { CreateUserInput } from '../types';
 import { AvatarUploadResponse, RegisterResponse } from '../app/auth/signup/types';
 
 export const registerUser = async (userData: CreateUserInput): Promise<RegisterResponse> => {

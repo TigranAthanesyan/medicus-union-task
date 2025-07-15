@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { UserRole, BaseUser, Gender } from '../types/global';
+import { BaseUser, Gender, UserRole } from '../types';
 
 export interface IUser extends BaseUser, mongoose.Document {
   _id: mongoose.Types.ObjectId;
@@ -87,4 +87,4 @@ const UserSchema = new mongoose.Schema({
 UserSchema.index({ role: 1 });
 UserSchema.index({ role: 1, specializations: 1 });
 
-export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema); 
+export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema);

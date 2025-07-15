@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { LoadingSpinner } from '../../../components/LoadingSpinner';
 import useDoctorDataById from '../../../hooks/useDoctorDataById';
 import { getCountryName, getCountryFlagUrl } from '../../../utils/countries';
-import { DataFetchStatus } from '../../../types/global';
+import { DataFetchStatus } from '../../../types';
 import styles from './styles.module.css';
 
 export default function DoctorProfilePage() {

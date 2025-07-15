@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { BaseSpecialization } from '../types/global';
+import { BaseSpecialization } from '../types';
 
 export interface ISpecialization extends BaseSpecialization, mongoose.Document {
   _id: mongoose.Types.ObjectId;

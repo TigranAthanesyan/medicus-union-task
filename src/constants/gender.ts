@@ -1,4 +1,4 @@
-import { Gender } from '../types/global';
+import { Gender } from '../types';
 
 export const GENDER_OPTIONS = [
   { value: Gender.Male, label: 'Male' },

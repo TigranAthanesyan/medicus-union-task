@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { getCountryName, getCountryFlagUrl } from '../../utils/countries';
-import { DoctorCardDTO } from '../../types/api';
+import { DoctorCardDTO } from '../../types';
 import styles from './styles.module.css';
 
 interface DoctorCardProps {
