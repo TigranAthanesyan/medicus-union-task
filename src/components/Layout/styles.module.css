@@ -1,5 +1,5 @@
 .container {
-  min-height: 100vh;
+  height: '100%';
   background-color: #ffffff;
   color: #333333;
   font-family: Arial, sans-serif;
@@ -8,83 +8,30 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
   background-color: #ffffff;
   border-bottom: 1px solid #e0e0e0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 100;
+  padding: 16px 20px;
+  min-height: 72px;
 }
 
-.homeButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: background-color 0.15s ease-in-out;
-}
-
-.homeButton:hover {
-  background-color: #f8f9fa;
-}
-
-.homeButton:active {
-  background-color: #e9ecef;
-}
-
-.homeIcon {
-  width: 24px;
-  height: 24px;
-  color: #007bff;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #333333;
-  margin: 0;
-  letter-spacing: -0.5px;
-}
-
-.content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-@media (min-width: 768px) {
+@media (min-width: 769px) and (max-width: 1023px) {
   .header {
     padding: 20px 32px;
-  }
-  
-  .homeButton {
-    width: 44px;
-    height: 44px;
-  }
-  
-  .homeIcon {
-    width: 26px;
-    height: 26px;
-  }
-  
-  .title {
-    font-size: 22px;
+    min-height: 80px;
   }
 }
 
 @media (min-width: 1024px) {
   .header {
     padding: 24px 40px;
-  }
-  
-  .title {
-    font-size: 24px;
+    min-height: 88px;
   }
 } 
+
+.content {
+  height: 100%;
+  overflow-y: auto;
+}
