@@ -1,0 +1,88 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  color: #007bff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.backButton:hover {
+  background-color: #f8f9fa;
+}
+
+.backButton:active {
+  background-color: #e9ecef;
+}
+
+.backIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background-color: transparent;
+  color: #6c757d;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.actionButton:hover {
+  background-color: #f8f9fa;
+  color: #333333;
+}
+
+.actionButton:active {
+  background-color: #e9ecef;
+}
+
+@media (max-width: 768px) {
+  .backButton {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .backIcon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .actionButton {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .backButton {
+    width: 44px;
+    height: 44px;
+  }
+}

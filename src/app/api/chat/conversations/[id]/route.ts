@@ -5,6 +5,7 @@ import { conversationToConversationDTO, messageToMessageDTO } from '../../../../
 import Conversation, { PopulatedConversation } from '../../../../../models/Conversation';
 import Message, { IMessage } from '../../../../../models/Message';
 import { IUser } from '../../../../../models/User';
+import Specialization, { ISpecialization } from '../../../../../models/Specialization';
 import { MessageDTO, ConversationByIdApiResponse } from '../../../../../types';
 
 export async function GET(
@@ -49,7 +50,15 @@ export async function GET(
 
     const totalMessages = await Message.countDocuments({ conversationId: id });
 
-    const conversationData = conversationToConversationDTO(conversation);
+    const doctor = conversation.participants.doctor as IUser;
+    let doctorSpecializationsData: ISpecialization[] = [];
+    if (doctor.specializations && doctor.specializations.length > 0) {
+      doctorSpecializationsData = await Specialization.find({
+        key: { $in: doctor.specializations }
+      }).select('key name');
+    }
+
+    const conversationData = conversationToConversationDTO(conversation, doctorSpecializationsData);
     
     const messagesData: MessageDTO[] = messages.reverse().map(msg => {
       return messageToMessageDTO(msg, msg.senderId as unknown as IUser);

@@ -34,6 +34,7 @@ export interface UserResponse extends Omit<BaseUser, 'password'> {
 export interface UserDTO extends Omit<BaseUser, 'password'> {
   id: string;
   specializationsDisplayData?: BriefSpecialization[];
+  specializationDisplay?: string;
 }
 
 export interface UserSummary {

@@ -1,14 +1,14 @@
 'use client';
 
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { useStore } from '../store';
-import { MessageDTO, ConversationDTO, MessageType } from '../types/chat';
-import { ConversationByIdApiResponse, SendMessageApiResponse } from '@/types';
+import { ConversationByIdApiResponse, SendMessageApiResponse, UserDTO, MessageDTO, ConversationDTO, MessageType } from '../types';
 
-interface UseMessagesReturn {
+interface UseConversationReturn {
   conversation: ConversationDTO | null;
   messages: MessageDTO[];
+  participant: UserDTO | null;
   loading: boolean;
   error: string | null; // TODO: unused
   sendMessage: (content: string, type?: MessageType) => Promise<boolean>;
@@ -16,7 +16,7 @@ interface UseMessagesReturn {
   refetch: () => Promise<void>; // TODO: unused
 }
 
-export const useMessages = (conversationId: string | null): UseMessagesReturn => {
+export const useConversationById = (conversationId: string | null): UseConversationReturn => {
   const { data: session } = useSession();
 
   // const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -33,6 +33,12 @@ export const useMessages = (conversationId: string | null): UseMessagesReturn =>
     setNewMessageContent,
     updateConversationUnread,
   } = useStore();
+
+  const participant = useMemo(() => {
+    if (!activeConversation) return null;
+
+    return session?.user?.id === activeConversation.participants.patient.id ? activeConversation.participants.doctor : activeConversation.participants.patient;
+  }, [activeConversation, session?.user?.id]);
 
   const fetchConversationWithMessages = useCallback(async () => {
     if (!conversationId || !session?.user?.id) return;
@@ -165,6 +171,7 @@ export const useMessages = (conversationId: string | null): UseMessagesReturn =>
   return {
     conversation: activeConversation,
     messages,
+    participant,
     loading: messagesLoading,
     error: null, // TODO: Add proper error state management
     sendMessage,

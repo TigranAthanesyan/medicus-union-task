@@ -1,9 +1,10 @@
-import { ConversationDTO, UserDTO, UserSummary, MessageDTO, ConversationSummary } from '../types';
+import { ConversationDTO, UserDTO, UserSummary, MessageDTO, ConversationSummary, BriefSpecialization } from '../types';
 import { PopulatedConversation } from '../models/Conversation';
 import { IUser } from '../models/User';
 import { IMessage } from '../models/Message';
+import { ISpecialization } from '../models/Specialization';
 
-export const userToUserDTO = (user: IUser): UserDTO => ({
+export const userToUserDTO = (user: IUser, specializationsData?: ISpecialization[]): UserDTO => ({
   id: user._id?.toString() || '',
   email: user.email,
   name: user.name,
@@ -14,6 +15,11 @@ export const userToUserDTO = (user: IUser): UserDTO => ({
   country: user.country,
   gender: user.gender,
   specializations: user.specializations,
+  specializationsDisplayData: specializationsData?.map((spec): BriefSpecialization => ({
+    key: spec.key,
+    name: spec.name
+  })),
+  specializationDisplay: specializationsData?.map(({ name }) => name).join(', '),
   description: user.description,
   experience: user.experience
 });
@@ -38,11 +44,11 @@ export const messageToMessageDTO = (msg: IMessage, sender: IUser): MessageDTO =>
   updatedAt: msg.updatedAt
 });
 
-export const conversationToConversationDTO = (conversation: PopulatedConversation): ConversationDTO => ({
+export const conversationToConversationDTO = (conversation: PopulatedConversation, doctorSpecializations?: ISpecialization[]): ConversationDTO => ({
   id: conversation._id.toString(),
   participants: {
     patient: userToUserDTO(conversation.participants.patient as unknown as IUser),
-    doctor: userToUserDTO(conversation.participants.doctor as unknown as IUser)
+    doctor: userToUserDTO(conversation.participants.doctor as unknown as IUser, doctorSpecializations)
   },
   lastMessage: conversation.lastMessage?.id ? {
     id: conversation.lastMessage.id.toString(),
