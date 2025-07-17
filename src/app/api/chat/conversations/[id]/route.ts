@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '../../../../../lib/mongodb';
-import { errorResponse, getSessionUserId, noAccessResponse, notFoundResponse, unauthorizedResponse } from '../../../../../helpers/api';
+import { errorResponse, getSessionUserId, noAccessResponse, notFoundResponse, unauthorizedResponse, USER_BRIEF_FIELDS_SELECTOR, USER_FULL_FIELDS_SELECTOR } from '../../../../../helpers/api';
 import { conversationToConversationDTO, messageToMessageDTO } from '../../../../../utils/converters';
 import Conversation, { PopulatedConversation } from '../../../../../models/Conversation';
 import Message, { IMessage } from '../../../../../models/Message';
@@ -25,8 +25,8 @@ export async function GET(
     await connectDB();
 
     const conversation: PopulatedConversation | null = await Conversation.findById(id)
-      .populate('participants.patient', 'name image role email dateOfBirth phoneNumber country gender specializations description experience')
-      .populate('participants.doctor', 'name image role email dateOfBirth phoneNumber country gender specializations description experience');
+      .populate('participants.patient', USER_FULL_FIELDS_SELECTOR)
+      .populate('participants.doctor', USER_FULL_FIELDS_SELECTOR);
 
     if (!conversation) {
       return notFoundResponse('Conversation');
@@ -42,7 +42,7 @@ export async function GET(
 
     const skip = (page - 1) * limit;
     const messages: IMessage[] = await Message.find({ conversationId: id })
-      .populate('senderId', 'name image role')
+      .populate('senderId', USER_BRIEF_FIELDS_SELECTOR)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);

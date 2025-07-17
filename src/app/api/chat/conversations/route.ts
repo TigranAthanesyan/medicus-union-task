@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import connectDB from '../../../../lib/mongodb';
-import { errorResponse, getSessionUserId, unauthorizedResponse } from '../../../../helpers/api';
-import { conversationToConversationDTO } from '../../../../utils/converters';
+import { errorResponse, getSessionUserId, unauthorizedResponse, USER_BRIEF_FIELDS_SELECTOR, USER_FULL_FIELDS_SELECTOR } from '../../../../helpers/api';
+import { conversationToConversationDTO, conversationToConversationSummary } from '../../../../utils/converters';
 import Conversation, { IConversation, PopulatedConversation } from '../../../../models/Conversation';
-import User, { IUser } from '../../../../models/User';
+import User from '../../../../models/User';
 import { 
   ConversationsApiResponse, 
   CreateConversationApiResponse,
@@ -37,55 +37,18 @@ export async function GET(request: Request): Promise<NextResponse<ConversationsA
       query.status = status as ConversationStatus;
     }
 
-    const conversations: IConversation[] = await Conversation.find(query)
-      .populate('participants.patient', 'name image role')
-      .populate('participants.doctor', 'name image role')
-      .populate('lastMessage.sender', 'name image role')
+    const conversations: PopulatedConversation[] = await Conversation.find(query)
+      .populate('participants.patient', USER_BRIEF_FIELDS_SELECTOR)
+      .populate('participants.doctor', USER_BRIEF_FIELDS_SELECTOR)
+      .populate('lastMessage.sender', USER_BRIEF_FIELDS_SELECTOR)
       .sort({ updatedAt: -1 });
 
-    const conversationSummaries: ConversationSummary[] = conversations.map(conv => {
-      const patient = conv.participants.patient as unknown as IUser;
-      const doctor = conv.participants.doctor as unknown as IUser;
-      const sender = conv.lastMessage?.sender as unknown as IUser;
-
-      return {
-        id: conv._id.toString(),
-        participants: {
-          patient: {
-            id: patient._id.toString(),
-            name: patient.name,
-            image: patient.image,
-            role: patient.role
-          },
-          doctor: {
-            id: doctor._id.toString(),
-            name: doctor.name,
-            image: doctor.image,
-            role: doctor.role
-          }
-        },
-        lastMessage: conv.lastMessage ? {
-          content: conv.lastMessage.content,
-          timestamp: conv.lastMessage.timestamp,
-          sender: {
-            id: sender._id.toString(),
-            name: sender.name,
-            image: sender.image,
-            role: sender.role
-          }
-        } : undefined,
-        unreadCount: userId === patient._id.toString() 
-          ? conv.unreadCount.patient 
-          : conv.unreadCount.doctor,
-        updatedAt: conv.updatedAt
-      };
-    });
+    const conversationSummaries: ConversationSummary[] = conversations.map(conv => conversationToConversationSummary(conv, userId));
 
     return NextResponse.json({
       success: true,
       data: conversationSummaries
     });
-
   } catch (error) {
     console.error('Error fetching conversations:', error);
     return errorResponse(500, 'Failed to fetch conversations');
@@ -103,7 +66,7 @@ export async function POST(request: Request): Promise<NextResponse<CreateConvers
     const { participants, consultationId } = body;
 
     await connectDB();
-
+    
     const patient = await User.findById(participants.patient);
     const doctor = await User.findById(participants.doctor);
 
@@ -117,7 +80,24 @@ export async function POST(request: Request): Promise<NextResponse<CreateConvers
     });
 
     if (existingConversation) {
-      return errorResponse(409, 'Conversation already exists');
+      const populatedExistingConversation: PopulatedConversation | null = await Conversation.findById(existingConversation._id)
+        .populate('participants.patient', USER_FULL_FIELDS_SELECTOR)
+        .populate('participants.doctor', USER_FULL_FIELDS_SELECTOR)
+        .populate('lastMessage.sender', USER_FULL_FIELDS_SELECTOR);
+
+      if (!populatedExistingConversation) {
+        return errorResponse(500, 'Failed to retrieve existing conversation');
+      }
+
+      const existingConversationDTO: ConversationDTO = conversationToConversationDTO(populatedExistingConversation);
+      
+      const response = {
+        success: true,
+        data: existingConversationDTO,
+        existing: true,
+      };
+
+      return NextResponse.json(response);
     }
 
     const conversation: IConversation = new Conversation({
@@ -132,8 +112,8 @@ export async function POST(request: Request): Promise<NextResponse<CreateConvers
     await conversation.save();
 
     const populatedConversation: PopulatedConversation | null = await Conversation.findById(conversation._id)
-      .populate('participants.patient', 'name image role email dateOfBirth phoneNumber country gender specializations description experience')
-      .populate('participants.doctor', 'name image role email dateOfBirth phoneNumber country gender specializations description experience');
+      .populate('participants.patient', USER_FULL_FIELDS_SELECTOR)
+      .populate('participants.doctor', USER_FULL_FIELDS_SELECTOR);
 
     if (!populatedConversation) {
       return errorResponse(500, 'Failed to create conversation');
@@ -145,7 +125,6 @@ export async function POST(request: Request): Promise<NextResponse<CreateConvers
       success: true,
       data: conversationDTO
     });
-
   } catch (error) {
     console.error('Error creating conversation:', error);
     return errorResponse(500, 'Failed to create conversation');

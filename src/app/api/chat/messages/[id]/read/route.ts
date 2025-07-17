@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '../../../../../../lib/mongodb';
-import { errorResponse, getSessionUserId, notFoundResponse, unauthorizedResponse } from '../../../../../../helpers/api';
+import { errorResponse, getSessionUserId, notFoundResponse, unauthorizedResponse, noAccessResponse } from '../../../../../../helpers/api';
 import Message, { IMessage } from '../../../../../../models/Message';
 import Conversation, { IConversation } from '../../../../../../models/Conversation';
 import { MessageStatus } from '../../../../../../types';

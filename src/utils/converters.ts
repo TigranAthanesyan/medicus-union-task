@@ -1,4 +1,4 @@
-import { ConversationDTO, UserDTO, UserSummary, MessageDTO } from '../types';
+import { ConversationDTO, UserDTO, UserSummary, MessageDTO, ConversationSummary } from '../types';
 import { PopulatedConversation } from '../models/Conversation';
 import { IUser } from '../models/User';
 import { IMessage } from '../models/Message';
@@ -44,7 +44,7 @@ export const conversationToConversationDTO = (conversation: PopulatedConversatio
     patient: userToUserDTO(conversation.participants.patient as unknown as IUser),
     doctor: userToUserDTO(conversation.participants.doctor as unknown as IUser)
   },
-  lastMessage: conversation.lastMessage ? {
+  lastMessage: conversation.lastMessage?.id ? {
     id: conversation.lastMessage.id.toString(),
     content: conversation.lastMessage.content,
     timestamp: conversation.lastMessage.timestamp,
@@ -57,4 +57,24 @@ export const conversationToConversationDTO = (conversation: PopulatedConversatio
   updatedAt: conversation.updatedAt
 });
 
+export const conversationDTOToConversationSummary = (conversationDTO: ConversationDTO, currentUserId: string): ConversationSummary => ({
+  id: conversationDTO.id,
+  participants: {
+    patient: userToUserSummary(conversationDTO.participants.patient as unknown as IUser),
+    doctor: userToUserSummary(conversationDTO.participants.doctor as unknown as IUser)
+  },
+  lastMessage: conversationDTO.lastMessage ? {
+    content: conversationDTO.lastMessage.content,
+    timestamp: conversationDTO.lastMessage.timestamp,
+    sender: conversationDTO.lastMessage.sender
+  } : undefined,
+  unreadCount: currentUserId === conversationDTO.participants.patient.id 
+    ? conversationDTO.unreadCount.patient 
+    : conversationDTO.unreadCount.doctor,
+  updatedAt: conversationDTO.updatedAt
+});
 
+export const conversationToConversationSummary = (conversation: PopulatedConversation, currentUserId: string): ConversationSummary => {
+  const dto = conversationToConversationDTO(conversation);
+  return conversationDTOToConversationSummary(dto, currentUserId);
+}

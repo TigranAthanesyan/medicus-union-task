@@ -26,6 +26,8 @@ export type DoctorsApiResponse = BaseApiResponse<DoctorCardDTO[]>;
 
 export type DoctorByIdApiResponse = BaseApiResponse<UserDTO>;
 
+export type UserByIdApiResponse = BaseApiResponse<UserDTO>;
+
 export type CreateUserApiResponse = BaseApiResponse<UserDTO>;
 
 export type SpecializationsApiResponse = BaseApiResponse<SpecializationDTO[]>;

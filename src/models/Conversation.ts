@@ -24,10 +24,16 @@ export interface IConversation extends mongoose.Document {
   updatedAt: Date;
 }
 
-export type PopulatedConversation = Omit<IConversation, 'participants.patient' | 'participants.doctor'> & {
+export type PopulatedConversation = Omit<IConversation, 'participants.patient' | 'participants.doctor' | 'lastMessage'> & {
   participants: {
     patient: IUser;
     doctor: IUser;
+  };
+  lastMessage?: {
+    id: string;
+    content: string;
+    timestamp: Date;
+    sender: IUser;
   };
 };
 
