@@ -1,3 +1,5 @@
+import { JSX } from "react";
+
 export enum DataFetchStatus {
   Initial = 'initial',
   InProgress = 'in_progress',
@@ -32,4 +34,10 @@ export interface PaginatedResponse<T> {
   page: number;
   limit: number;
   totalPages: number;
+}
+
+export type ActionIconData = {
+  icon: () => JSX.Element;
+  onClick: () => void;
+  isDisabled?: boolean;
 }

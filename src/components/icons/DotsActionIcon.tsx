@@ -1,4 +1,4 @@
-export default function ActionIcon() {
+export default function DotsActionIcon() {
   return (
     <svg 
       style={{
