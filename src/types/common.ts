@@ -1,15 +1,15 @@
 import { JSX } from "react";
 
 export enum DataFetchStatus {
-  Initial = 'initial',
-  InProgress = 'in_progress',
-  Success = 'success',
-  Error = 'error',
+  Initial = "initial",
+  InProgress = "in_progress",
+  Success = "success",
+  Error = "error",
 }
 
 export enum Gender {
-  Male = 'male',
-  Female = 'female',
+  Male = "male",
+  Female = "female",
 }
 
 export type Country = {
@@ -40,4 +40,4 @@ export type ActionIconData = {
   icon: () => JSX.Element;
   onClick: () => void;
   isDisabled?: boolean;
-}
+};

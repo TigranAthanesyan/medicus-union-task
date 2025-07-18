@@ -1,18 +1,24 @@
-import { NextResponse } from 'next/server';
-import connectDB from '../../../../lib/mongodb';
-import { errorResponse, getSessionUserId, unauthorizedResponse, USER_BRIEF_FIELDS_SELECTOR, USER_FULL_FIELDS_SELECTOR } from '../../../../helpers/api';
-import { conversationToConversationDTO, conversationToConversationSummary } from '../../../../utils/converters';
-import Conversation, { IConversation, PopulatedConversation } from '../../../../models/Conversation';
-import User from '../../../../models/User';
-import { 
-  ConversationsApiResponse, 
+import { NextResponse } from "next/server";
+import connectDB from "../../../../lib/mongodb";
+import {
+  errorResponse,
+  getSessionUserId,
+  unauthorizedResponse,
+  USER_BRIEF_FIELDS_SELECTOR,
+  USER_FULL_FIELDS_SELECTOR,
+} from "../../../../helpers/api";
+import { conversationToConversationDTO, conversationToConversationSummary } from "../../../../utils/converters";
+import Conversation, { IConversation, PopulatedConversation } from "../../../../models/Conversation";
+import User from "../../../../models/User";
+import {
+  ConversationsApiResponse,
   CreateConversationApiResponse,
   CreateConversationRequest,
   ConversationSummary,
   ConversationStatus,
   ConversationQuery,
   ConversationDTO,
-} from '../../../../types';
+} from "../../../../types";
 
 export async function GET(request: Request): Promise<NextResponse<ConversationsApiResponse>> {
   try {
@@ -22,7 +28,7 @@ export async function GET(request: Request): Promise<NextResponse<ConversationsA
     }
 
     const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status');
+    const status = searchParams.get("status");
 
     await connectDB();
 
@@ -38,20 +44,22 @@ export async function GET(request: Request): Promise<NextResponse<ConversationsA
     }
 
     const conversations: PopulatedConversation[] = await Conversation.find(query)
-      .populate('participants.patient', USER_BRIEF_FIELDS_SELECTOR)
-      .populate('participants.doctor', USER_BRIEF_FIELDS_SELECTOR)
-      .populate('lastMessage.sender', USER_BRIEF_FIELDS_SELECTOR)
+      .populate("participants.patient", USER_BRIEF_FIELDS_SELECTOR)
+      .populate("participants.doctor", USER_BRIEF_FIELDS_SELECTOR)
+      .populate("lastMessage.sender", USER_BRIEF_FIELDS_SELECTOR)
       .sort({ updatedAt: -1 });
 
-    const conversationSummaries: ConversationSummary[] = conversations.map(conv => conversationToConversationSummary(conv, userId));
+    const conversationSummaries: ConversationSummary[] = conversations.map((conv) =>
+      conversationToConversationSummary(conv, userId)
+    );
 
     return NextResponse.json({
       success: true,
-      data: conversationSummaries
+      data: conversationSummaries,
     });
   } catch (error) {
-    console.error('Error fetching conversations:', error);
-    return errorResponse(500, 'Failed to fetch conversations');
+    console.error("Error fetching conversations:", error);
+    return errorResponse(500, "Failed to fetch conversations");
   }
 }
 
@@ -66,31 +74,33 @@ export async function POST(request: Request): Promise<NextResponse<CreateConvers
     const { participants, consultationId } = body;
 
     await connectDB();
-    
+
     const patient = await User.findById(participants.patient);
     const doctor = await User.findById(participants.doctor);
 
     if (!patient || !doctor) {
-      return errorResponse(400, 'Invalid participants');
+      return errorResponse(400, "Invalid participants");
     }
 
     const existingConversation = await Conversation.findOne({
-      'participants.patient': participants.patient,
-      'participants.doctor': participants.doctor
+      "participants.patient": participants.patient,
+      "participants.doctor": participants.doctor,
     });
 
     if (existingConversation) {
-      const populatedExistingConversation: PopulatedConversation | null = await Conversation.findById(existingConversation._id)
-        .populate('participants.patient', USER_FULL_FIELDS_SELECTOR)
-        .populate('participants.doctor', USER_FULL_FIELDS_SELECTOR)
-        .populate('lastMessage.sender', USER_FULL_FIELDS_SELECTOR);
+      const populatedExistingConversation: PopulatedConversation | null = await Conversation.findById(
+        existingConversation._id
+      )
+        .populate("participants.patient", USER_FULL_FIELDS_SELECTOR)
+        .populate("participants.doctor", USER_FULL_FIELDS_SELECTOR)
+        .populate("lastMessage.sender", USER_FULL_FIELDS_SELECTOR);
 
       if (!populatedExistingConversation) {
-        return errorResponse(500, 'Failed to retrieve existing conversation');
+        return errorResponse(500, "Failed to retrieve existing conversation");
       }
 
       const existingConversationDTO: ConversationDTO = conversationToConversationDTO(populatedExistingConversation);
-      
+
       const response = {
         success: true,
         data: existingConversationDTO,
@@ -103,30 +113,30 @@ export async function POST(request: Request): Promise<NextResponse<CreateConvers
     const conversation: IConversation = new Conversation({
       participants: {
         patient: participants.patient,
-        doctor: participants.doctor
+        doctor: participants.doctor,
       },
       consultationId,
-      status: ConversationStatus.Active
+      status: ConversationStatus.Active,
     });
 
     await conversation.save();
 
     const populatedConversation: PopulatedConversation | null = await Conversation.findById(conversation._id)
-      .populate('participants.patient', USER_FULL_FIELDS_SELECTOR)
-      .populate('participants.doctor', USER_FULL_FIELDS_SELECTOR);
+      .populate("participants.patient", USER_FULL_FIELDS_SELECTOR)
+      .populate("participants.doctor", USER_FULL_FIELDS_SELECTOR);
 
     if (!populatedConversation) {
-      return errorResponse(500, 'Failed to create conversation');
+      return errorResponse(500, "Failed to create conversation");
     }
 
     const conversationDTO: ConversationDTO = conversationToConversationDTO(populatedConversation);
 
     return NextResponse.json({
       success: true,
-      data: conversationDTO
+      data: conversationDTO,
     });
   } catch (error) {
-    console.error('Error creating conversation:', error);
-    return errorResponse(500, 'Failed to create conversation');
+    console.error("Error creating conversation:", error);
+    return errorResponse(500, "Failed to create conversation");
   }
 }

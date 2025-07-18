@@ -1,12 +1,12 @@
-import { CreateUserInput } from '../types';
-import { AvatarUploadResponse, RegisterResponse } from '../app/auth/signup/types';
+import { CreateUserInput } from "../types";
+import { AvatarUploadResponse, RegisterResponse } from "../app/auth/signup/types";
 
 export const registerUser = async (userData: CreateUserInput): Promise<RegisterResponse> => {
   try {
-    const response = await fetch('/api/auth/register', {
-      method: 'POST',
+    const response = await fetch("/api/auth/register", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(userData),
     });
@@ -16,7 +16,7 @@ export const registerUser = async (userData: CreateUserInput): Promise<RegisterR
     if (!response.ok) {
       return {
         success: false,
-        error: data.error || 'Registration failed',
+        error: data.error || "Registration failed",
       };
     }
 
@@ -25,7 +25,7 @@ export const registerUser = async (userData: CreateUserInput): Promise<RegisterR
       user: data.user,
     };
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Network error occurred';
+    const errorMessage = error instanceof Error ? error.message : "Network error occurred";
     return {
       success: false,
       error: errorMessage,
@@ -36,10 +36,10 @@ export const registerUser = async (userData: CreateUserInput): Promise<RegisterR
 export const uploadAvatar = async (file: File): Promise<AvatarUploadResponse> => {
   try {
     const formData = new FormData();
-    formData.append('avatar', file);
+    formData.append("avatar", file);
 
-    const response = await fetch('/api/upload/avatar', {
-      method: 'POST',
+    const response = await fetch("/api/upload/avatar", {
+      method: "POST",
       body: formData,
     });
 
@@ -47,8 +47,8 @@ export const uploadAvatar = async (file: File): Promise<AvatarUploadResponse> =>
 
     if (!response.ok) {
       return {
-        image: '',
-        error: data.error || 'Failed to upload avatar',
+        image: "",
+        error: data.error || "Failed to upload avatar",
       };
     }
 
@@ -56,9 +56,9 @@ export const uploadAvatar = async (file: File): Promise<AvatarUploadResponse> =>
       image: data.image,
     };
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Network error occurred';
+    const errorMessage = error instanceof Error ? error.message : "Network error occurred";
     return {
-      image: '',
+      image: "",
       error: errorMessage,
     };
   }
@@ -66,10 +66,10 @@ export const uploadAvatar = async (file: File): Promise<AvatarUploadResponse> =>
 
 export const signInUser = async (credentials: { email: string; password: string }) => {
   try {
-    const response = await fetch('/api/auth/signin', {
-      method: 'POST',
+    const response = await fetch("/api/auth/signin", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(credentials),
     });
@@ -79,7 +79,7 @@ export const signInUser = async (credentials: { email: string; password: string 
     if (!response.ok) {
       return {
         success: false,
-        error: data.error || 'Sign in failed',
+        error: data.error || "Sign in failed",
       };
     }
 
@@ -88,7 +88,7 @@ export const signInUser = async (credentials: { email: string; password: string 
       user: data.user,
     };
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Network error occurred';
+    const errorMessage = error instanceof Error ? error.message : "Network error occurred";
     return {
       success: false,
       error: errorMessage,
@@ -98,9 +98,9 @@ export const signInUser = async (credentials: { email: string; password: string 
 
 export const refreshToken = async () => {
   try {
-    const response = await fetch('/api/auth/refresh', {
-      method: 'POST',
-      credentials: 'include',
+    const response = await fetch("/api/auth/refresh", {
+      method: "POST",
+      credentials: "include",
     });
 
     const data = await response.json();
@@ -108,7 +108,7 @@ export const refreshToken = async () => {
     if (!response.ok) {
       return {
         success: false,
-        error: data.error || 'Token refresh failed',
+        error: data.error || "Token refresh failed",
       };
     }
 
@@ -117,7 +117,7 @@ export const refreshToken = async () => {
       token: data.token,
     };
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Network error occurred';
+    const errorMessage = error instanceof Error ? error.message : "Network error occurred";
     return {
       success: false,
       error: errorMessage,
@@ -127,9 +127,9 @@ export const refreshToken = async () => {
 
 export const signOutUser = async () => {
   try {
-    const response = await fetch('/api/auth/signout', {
-      method: 'POST',
-      credentials: 'include',
+    const response = await fetch("/api/auth/signout", {
+      method: "POST",
+      credentials: "include",
     });
 
     const data = await response.json();
@@ -137,7 +137,7 @@ export const signOutUser = async () => {
     if (!response.ok) {
       return {
         success: false,
-        error: data.error || 'Sign out failed',
+        error: data.error || "Sign out failed",
       };
     }
 
@@ -145,10 +145,10 @@ export const signOutUser = async () => {
       success: true,
     };
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Network error occurred';
+    const errorMessage = error instanceof Error ? error.message : "Network error occurred";
     return {
       success: false,
       error: errorMessage,
     };
   }
-}; 
+};

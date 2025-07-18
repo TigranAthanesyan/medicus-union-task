@@ -1,10 +1,10 @@
-import React from 'react';
-import Image from 'next/image';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { getCountryName, getCountryFlagUrl } from '../../utils/countries';
-import { DoctorCardDTO } from '../../types';
-import styles from './styles.module.css';
+import React from "react";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { getCountryName, getCountryFlagUrl } from "../../utils/countries";
+import { DoctorCardDTO } from "../../types";
+import styles from "./styles.module.css";
 
 interface DoctorCardProps {
   doctor: DoctorCardDTO;
@@ -21,11 +21,11 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, showSpecializati
 
   const handleBookNow = () => {
     if (!session) {
-      router.push('/auth/signin?callbackUrl=/doctors');
+      router.push("/auth/signin?callbackUrl=/doctors");
       return;
     }
     // TODO: Implement booking functionality
-    console.log('Book Dr.', doctor.name);
+    console.log("Book Dr.", doctor.name);
   };
 
   const handleSpecializationClick = (specializationKey: string) => {
@@ -36,37 +36,25 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, showSpecializati
     <div className={styles.doctorCard}>
       <div className={styles.doctorAvatar}>
         {doctor.image ? (
-          <Image
-            src={doctor.image}
-            alt={doctor.name}
-            width={80}
-            height={80}
-            className={styles.avatarImage}
-          />
+          <Image src={doctor.image} alt={doctor.name} width={80} height={80} className={styles.avatarImage} />
         ) : (
-          <div className={styles.avatarPlaceholder}>
-            👨‍⚕️
-          </div>
+          <div className={styles.avatarPlaceholder}>👨‍⚕️</div>
         )}
       </div>
-      
+
       <div className={styles.doctorInfo}>
         <h3 className={styles.doctorName}>{doctor.name}</h3>
-        
+
         {showSpecializations && doctor.specializationsDisplayData && doctor.specializationsDisplayData.length > 0 && (
           <div className={styles.specializationsContainer}>
             {doctor.specializationsDisplayData.map(({ key, name }) => (
-              <button 
-                key={key}
-                className={styles.specialization}
-                onClick={() => handleSpecializationClick(key)}
-              >
+              <button key={key} className={styles.specialization} onClick={() => handleSpecializationClick(key)}>
                 {name}
               </button>
             ))}
           </div>
         )}
-        
+
         {doctor.country && (
           <p className={styles.country}>
             <Image
@@ -79,7 +67,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, showSpecializati
             {getCountryName(doctor.country)}
           </p>
         )}
-        
+
         <div className={styles.cardActions}>
           <button className={styles.secondaryButton} onClick={handleGoToProfile}>
             Go to profile
@@ -91,4 +79,4 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, showSpecializati
       </div>
     </div>
   );
-}; 
+};

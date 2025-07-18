@@ -1,16 +1,16 @@
-import { NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
-import connectToDatabase from '../../../../lib/mongodb';
-import User from '../../../../models/User';
-import { UserRole, CreateUserInput, UserResponse } from '../../../../types';
+import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import connectToDatabase from "../../../../lib/mongodb";
+import User from "../../../../models/User";
+import { UserRole, CreateUserInput, UserResponse } from "../../../../types";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { 
-      email, 
-      password, 
-      name, 
+    const {
+      email,
+      password,
+      name,
       role,
       image,
       dateOfBirth,
@@ -19,12 +19,12 @@ export async function POST(request: Request) {
       gender,
       specializations,
       description,
-      experience
+      experience,
     } = body;
 
     if (!email || !password || !name) {
       return NextResponse.json(
-        { error: 'Email, password, and name are required' },
+        { error: "Email, password, and name are required" },
         { status: 400 }
       );
     }
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     const userRole = role === UserRole.Doctor ? UserRole.Doctor : UserRole.Patient;
     if (userRole === UserRole.Doctor && (!specializations || !description)) {
       return NextResponse.json(
-        { error: 'Specializations and description are required for doctors' },
+        { error: "Specializations and description are required for doctors" },
         { status: 400 }
       );
     }
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return NextResponse.json(
-        { error: 'User already exists with this email' },
+        { error: "User already exists with this email" },
         { status: 400 }
       );
     }
@@ -116,24 +116,21 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       {
-        message: 'User created successfully',
+        message: "User created successfully",
         user: responseUser,
       },
       { status: 201 }
     );
   } catch (error) {
-    console.error('Registration error:', error);
-    
-    if (error instanceof Error && error.name === 'ValidationError') {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 400 }
-      );
+    console.error("Registration error:", error);
+
+    if (error instanceof Error && error.name === "ValidationError") {
+      return NextResponse.json({ error: error.message }, { status: 400 });
     }
-    
+
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
-} 
+}

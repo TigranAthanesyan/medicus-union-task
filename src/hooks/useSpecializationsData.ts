@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useStore } from '../store';
-import { DataFetchStatus, SpecializationsApiResponse } from '../types';
+import { useEffect, useState } from "react";
+import { useStore } from "../store";
+import { DataFetchStatus, SpecializationsApiResponse } from "../types";
 
 const useSpecializationsData = () => {
   const { specializations, setSpecializations } = useStore();
@@ -11,9 +11,9 @@ const useSpecializationsData = () => {
       if (specializations.length === 0) {
         setStatus(DataFetchStatus.InProgress);
         try {
-          const response = await fetch('/api/specializations');
+          const response = await fetch("/api/specializations");
           const data: SpecializationsApiResponse = await response.json();
-          
+
           if (data.success && data.data) {
             setSpecializations(data.data);
             setStatus(DataFetchStatus.Success);
@@ -21,7 +21,7 @@ const useSpecializationsData = () => {
             setStatus(DataFetchStatus.Error);
           }
         } catch (error) {
-          console.error('Error fetching specializations:', error);
+          console.error("Error fetching specializations:", error);
           setStatus(DataFetchStatus.Error);
         }
       } else {
@@ -35,4 +35,4 @@ const useSpecializationsData = () => {
   return { specializations, status };
 };
 
-export default useSpecializationsData; 
+export default useSpecializationsData;

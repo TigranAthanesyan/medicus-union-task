@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import React, { useMemo, useEffect } from 'react';
-import { useParams } from 'next/navigation';
-import Link from 'next/link';
-import { DoctorCard } from '../../../components/DoctorCard';
-import { LoadingSpinner } from '../../../components/LoadingSpinner';
-import useDoctorsData from '../../../hooks/useDoctorsData';
-import useSpecializationsData from '../../../hooks/useSpecializationsData';
-import { DataFetchStatus } from '../../../types';
-import styles from './styles.module.css';
+import React, { useMemo, useEffect } from "react";
+import { useParams } from "next/navigation";
+import Link from "next/link";
+import { DoctorCard } from "../../../components/DoctorCard";
+import { LoadingSpinner } from "../../../components/LoadingSpinner";
+import useDoctorsData from "../../../hooks/useDoctorsData";
+import useSpecializationsData from "../../../hooks/useSpecializationsData";
+import { DataFetchStatus } from "../../../types";
+import styles from "./styles.module.css";
 
 export default function SpecializationPage() {
   const params = useParams();
   const key = params.key as string;
-  
+
   const { doctors, status: doctorsStatus } = useDoctorsData();
   const { specializations, status: specializationsStatus } = useSpecializationsData();
 
@@ -23,14 +23,14 @@ export default function SpecializationPage() {
 
   const specialization = useMemo(() => {
     if (specializationsStatus !== DataFetchStatus.Success) return null;
-    
-    return specializations.find(spec => spec.key === key);
+
+    return specializations.find((spec) => spec.key === key);
   }, [key, specializations, specializationsStatus]);
 
   const filteredDoctors = useMemo(() => {
     if (!specialization) return [];
-    
-    return doctors.filter(doctor => doctor.specializations && doctor.specializations.includes(specialization.key));
+
+    return doctors.filter((doctor) => doctor.specializations && doctor.specializations.includes(specialization.key));
   }, [doctors, specialization]);
 
   const renderContent = () => {
@@ -43,7 +43,10 @@ export default function SpecializationPage() {
       );
     }
 
-    if (doctorsStatus === DataFetchStatus.Error || specializationsStatus === DataFetchStatus.Error) {
+    if (
+      doctorsStatus === DataFetchStatus.Error ||
+      specializationsStatus === DataFetchStatus.Error
+    ) {
       return (
         <div className={styles.errorContainer}>
           <h2>Error Loading Data</h2>
@@ -55,7 +58,7 @@ export default function SpecializationPage() {
             Try Again
           </button>
         </div>
-      );
+      )
     }
 
     if (!specialization) {
@@ -100,8 +103,8 @@ export default function SpecializationPage() {
           ← Back to All Doctors
         </Link>
       </div>
-      
+
       {renderContent()}
     </div>
   );
-} 
+}

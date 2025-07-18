@@ -1,8 +1,8 @@
-import React from 'react';
-import clsx from 'clsx';
-import { UserRole } from '../../types';
-import { ROLES } from '../../constants/signup';
-import styles from './styles.module.css';
+import React from "react";
+import clsx from "clsx";
+import { UserRole } from "../../types";
+import { ROLES } from "../../constants/signup";
+import styles from "./styles.module.css";
 
 interface RoleSelectorProps {
   value: UserRole;
@@ -11,33 +11,26 @@ interface RoleSelectorProps {
   className?: string;
 }
 
-export const RoleSelector: React.FC<RoleSelectorProps> = ({
-  value,
-  onChange,
-  disabled = false,
-  className = '',
-}) => {
+export const RoleSelector: React.FC<RoleSelectorProps> = ({ value, onChange, disabled = false, className = "" }) => {
   const roles = [
     {
       value: UserRole.Patient,
       label: ROLES.PATIENT,
-      icon: '👤',
-      description: 'Book appointments and consult with doctors',
+      icon: "👤",
+      description: "Book appointments and consult with doctors",
     },
     {
       value: UserRole.Doctor,
       label: ROLES.DOCTOR,
-      icon: '👨‍⚕️',
-      description: 'Provide medical consultations',
+      icon: "👨‍⚕️",
+      description: "Provide medical consultations",
     },
   ];
 
   return (
     <div className={clsx(styles.roleSection, className)}>
-      <label className={styles.roleLabel}>
-        I am a:
-      </label>
-      
+      <label className={styles.roleLabel}>I am a:</label>
+
       <div className={styles.roleOptions}>
         {roles.map((role) => (
           <label
@@ -66,4 +59,4 @@ export const RoleSelector: React.FC<RoleSelectorProps> = ({
   );
 };
 
-export default RoleSelector; 
+export default RoleSelector;

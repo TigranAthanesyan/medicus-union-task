@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
-import { Types } from 'mongoose';
-import connectDB from '../../../../lib/mongodb';
-import User, { IUser } from '../../../../models/User';
-import { UserRole, DoctorByIdApiResponse, UserDTO } from '../../../../types';
+import { NextResponse } from "next/server";
+import { Types } from "mongoose";
+import connectDB from "../../../../lib/mongodb";
+import User, { IUser } from "../../../../models/User";
+import { UserRole, DoctorByIdApiResponse, UserDTO } from "../../../../types";
 
 export async function GET(
   request: Request,
@@ -10,34 +10,34 @@ export async function GET(
 ): Promise<NextResponse<DoctorByIdApiResponse>> {
   try {
     await connectDB();
-    
+
     const { id } = await params;
-    
+
     if (!Types.ObjectId.isValid(id)) {
       return NextResponse.json<DoctorByIdApiResponse>(
-        { 
-          success: false, 
-          error: 'Invalid doctor ID format' 
+        {
+          success: false,
+          error: "Invalid doctor ID format",
         },
         { status: 400 }
       );
     }
-    
-    const doctor: IUser | null = await User.findOne({ 
+
+    const doctor: IUser | null = await User.findOne({
       _id: new Types.ObjectId(id),
-      role: UserRole.Doctor 
-    }).select('-password');
-    
+      role: UserRole.Doctor,
+    }).select("-password");
+
     if (!doctor) {
       return NextResponse.json<DoctorByIdApiResponse>(
-        { 
-          success: false, 
-          error: 'Doctor not found' 
+        {
+          success: false,
+          error: "Doctor not found",
         },
         { status: 404 }
       );
     }
-    
+
     const responseData: UserDTO = {
       id: doctor._id.toString(),
       email: doctor.email,
@@ -52,19 +52,19 @@ export async function GET(
       description: doctor.description,
       experience: doctor.experience,
     };
-    
+
     return NextResponse.json<DoctorByIdApiResponse>({
       success: true,
       data: responseData,
     });
   } catch (error) {
-    console.error('Error fetching doctor:', error);
+    console.error("Error fetching doctor:", error);
     return NextResponse.json<DoctorByIdApiResponse>(
-      { 
-        success: false, 
-        error: 'Failed to fetch doctor' 
+      {
+        success: false,
+        error: "Failed to fetch doctor",
       },
       { status: 500 }
     );
   }
-} 
+}

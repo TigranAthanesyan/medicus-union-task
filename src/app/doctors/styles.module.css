@@ -179,7 +179,9 @@
   border: 1px solid #d1d5db;
   border-radius: 8px;
   font-size: 0.875rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
   background: white;
 }
 
@@ -238,15 +240,15 @@
   .container {
     padding: 2rem;
   }
-  
+
   .title {
     font-size: 2.5rem;
   }
-  
+
   .subtitle {
     font-size: 1.25rem;
   }
-  
+
   .doctorsGrid {
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
@@ -268,4 +270,4 @@
     grid-template-columns: 2fr 1fr 1fr;
     gap: 2rem;
   }
-} 
+}

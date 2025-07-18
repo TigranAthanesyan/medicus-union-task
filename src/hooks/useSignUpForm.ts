@@ -1,22 +1,22 @@
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { validateSignUpForm } from '../utils/validation';
-import { registerUser, uploadAvatar } from '../services/auth';
-import { SignUpFormData, LoadingState, FormInputEvent, FormSubmitEvent } from '../app/auth/signup/types';
-import { UserRole, BaseUser } from '../types';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { validateSignUpForm } from "../utils/validation";
+import { registerUser, uploadAvatar } from "../services/auth";
+import { SignUpFormData, LoadingState, FormInputEvent, FormSubmitEvent } from "../app/auth/signup/types";
+import { UserRole, BaseUser } from "../types";
 
 const initialFormData: SignUpFormData = {
-  name: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
   role: UserRole.Patient,
-  dateOfBirth: '',
-  phoneNumber: '',
-  country: '',
-  gender: '',
+  dateOfBirth: "",
+  phoneNumber: "",
+  country: "",
+  gender: "",
   specializations: [],
-  description: '',
+  description: "",
   experience: 0,
 };
 
@@ -26,60 +26,60 @@ export const useSignUpForm = () => {
     form: false,
     avatar: false,
   });
-  const [error, setError] = useState<string>('');
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string>('');
-  
+  const [error, setError] = useState<string>("");
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string>("");
+
   const router = useRouter();
 
   const handleChange = (e: FormInputEvent | { target: { name: string; value: string[] } }): void => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
   const clearError = (): void => {
-    setError('');
+    setError("");
   };
 
   const resetForm = (): void => {
     setFormData(initialFormData);
-    setUploadedImageUrl('');
-    setError('');
+    setUploadedImageUrl("");
+    setError("");
   };
 
   const handleAvatarUpload = async (file: File): Promise<string | null> => {
-    setLoading(prev => ({ ...prev, avatar: true }));
-    
+    setLoading((prev) => ({ ...prev, avatar: true }));
+
     try {
       const data = await uploadAvatar(file);
-      
+
       if (data.image) {
         setUploadedImageUrl(data.image);
         return data.image;
       } else {
-        setError(data.error || 'Failed to upload avatar');
+        setError(data.error || "Failed to upload avatar");
         return null;
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to upload avatar';
+      const errorMessage = error instanceof Error ? error.message : "Failed to upload avatar";
       setError(errorMessage);
       return null;
     } finally {
-      setLoading(prev => ({ ...prev, avatar: false }));
+      setLoading((prev) => ({ ...prev, avatar: false }));
     }
   };
 
   const handleSubmit = async (e: FormSubmitEvent, avatarUrl?: string): Promise<void> => {
     e.preventDefault();
-    setError('');
-    setLoading(prev => ({ ...prev, form: true }));
+    setError("");
+    setLoading((prev) => ({ ...prev, form: true }));
 
     const validationError = validateSignUpForm(formData);
     if (validationError) {
       setError(validationError);
-      setLoading(prev => ({ ...prev, form: false }));
+      setLoading((prev) => ({ ...prev, form: false }));
       return;
     }
 
@@ -120,13 +120,13 @@ export const useSignUpForm = () => {
       if (data.error) {
         setError(data.error);
       } else {
-        router.push('/auth/signin?message=Registration successful. Please sign in.');
+        router.push("/auth/signin?message=Registration successful. Please sign in.");
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'An error occurred. Please try again.';
+      const errorMessage = error instanceof Error ? error.message : "An error occurred. Please try again.";
       setError(errorMessage);
     } finally {
-      setLoading(prev => ({ ...prev, form: false }));
+      setLoading((prev) => ({ ...prev, form: false }));
     }
   };
 
@@ -141,4 +141,4 @@ export const useSignUpForm = () => {
     clearError,
     resetForm,
   };
-}; 
+};

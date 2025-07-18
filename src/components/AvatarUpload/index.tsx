@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import Image from 'next/image';
-import clsx from 'clsx';
-import { AVATAR_MAX_SIZE, AVATAR_MAX_SIZE_DISPLAY } from '../../constants/global';
-import { SUPPORTED_IMAGE_FORMATS, SUPPORTED_IMAGE_FORMATS_DISPLAY } from '../../constants/signup';
-import { validateFileSize, validateFileType } from '../../utils/validation';
-import InputLabel from '../InputLabel';
-import LoadingSpinner from '../LoadingSpinner';
-import styles from './styles.module.css';
+import React, { useState } from "react";
+import Image from "next/image";
+import clsx from "clsx";
+import { AVATAR_MAX_SIZE, AVATAR_MAX_SIZE_DISPLAY } from "../../constants/global";
+import { SUPPORTED_IMAGE_FORMATS, SUPPORTED_IMAGE_FORMATS_DISPLAY } from "../../constants/signup";
+import { validateFileSize, validateFileType } from "../../utils/validation";
+import InputLabel from "../InputLabel";
+import LoadingSpinner from "../LoadingSpinner";
+import styles from "./styles.module.css";
 
 interface AvatarUploadProps {
   onFileChange: (file: File | null) => void;
@@ -25,22 +25,22 @@ export const AvatarUpload: React.FC<AvatarUploadProps> = ({
   loading = false,
   disabled = false,
   error,
-  className = '',
+  className = "",
 }) => {
-  const [localError, setLocalError] = useState<string>('');
+  const [localError, setLocalError] = useState<string>("");
   const [uploading, setUploading] = useState(false);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    setLocalError('');
-    
+    setLocalError("");
+
     if (!file) {
       onFileChange(null);
       return;
     }
 
     if (!validateFileType(file, SUPPORTED_IMAGE_FORMATS)) {
-      setLocalError('Please select a valid image file');
+      setLocalError("Please select a valid image file");
       onFileChange(null);
       return;
     }
@@ -58,7 +58,7 @@ export const AvatarUpload: React.FC<AvatarUploadProps> = ({
       try {
         await onUpload(file);
       } catch {
-        setLocalError('Failed to upload avatar');
+        setLocalError("Failed to upload avatar");
       } finally {
         setUploading(false);
       }
@@ -67,7 +67,7 @@ export const AvatarUpload: React.FC<AvatarUploadProps> = ({
 
   const handleRemoveAvatar = () => {
     onFileChange(null);
-    setLocalError('');
+    setLocalError("");
   };
 
   const displayError = error || localError;
@@ -76,7 +76,7 @@ export const AvatarUpload: React.FC<AvatarUploadProps> = ({
   return (
     <div className={clsx(styles.avatarSection, className)}>
       <InputLabel>Profile Picture (Optional)</InputLabel>
-      
+
       <div className={styles.avatarPreview}>
         {preview ? (
           <>
@@ -98,38 +98,32 @@ export const AvatarUpload: React.FC<AvatarUploadProps> = ({
             </button>
           </>
         ) : (
-          <span className={styles.avatarPlaceholder}>
-            👤
-          </span>
+          <span className={styles.avatarPlaceholder}>👤</span>
         )}
       </div>
 
       <input
         type="file"
-        accept={SUPPORTED_IMAGE_FORMATS.join(',')}
+        accept={SUPPORTED_IMAGE_FORMATS.join(",")}
         onChange={handleFileChange}
         disabled={disabled || isLoading}
         className={styles.fileInput}
       />
-      
+
       <div className={styles.fileInputHint}>
         Max file size: {AVATAR_MAX_SIZE_DISPLAY}. Supported formats: {SUPPORTED_IMAGE_FORMATS_DISPLAY}
       </div>
-      
+
       {isLoading && (
         <div className={styles.loadingContainer}>
           <LoadingSpinner size="small" />
           <span>Uploading avatar...</span>
         </div>
       )}
-      
-      {displayError && (
-        <div className={styles.errorMessage}>
-          {displayError}
-        </div>
-      )}
+
+      {displayError && <div className={styles.errorMessage}>{displayError}</div>}
     </div>
   );
 };
 
-export default AvatarUpload; 
+export default AvatarUpload;

@@ -1,10 +1,10 @@
-import React from 'react';
-import { useSession } from 'next-auth/react';
-import { useParams } from 'next/navigation';
-import Image from 'next/image';
-import { useConversationById } from '../../hooks/useConversationById';
-import { UserRole } from '../../types';
-import styles from './styles.module.css';
+import React from "react";
+import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
+import Image from "next/image";
+import { useConversationById } from "../../hooks/useConversationById";
+import { UserRole } from "../../types";
+import styles from "./styles.module.css";
 
 export const ChatParticipant: React.FC = () => {
   const params = useParams();
@@ -29,15 +29,15 @@ export const ChatParticipant: React.FC = () => {
                 className={styles.avatarImage}
               />
             ) : (
-              <div className={styles.avatarPlaceholder}>
-                {participant.name.charAt(0).toUpperCase()}
-              </div>
+              <div className={styles.avatarPlaceholder}>{participant.name.charAt(0).toUpperCase()}</div>
             )}
           </div>
-          
+
           <div className={styles.participantDetails}>
             <h1 className={styles.participantName}>{participant.name}</h1>
-            {participantIsDoctor && <p className={styles.participantSpecialization}>{participant.specializationDisplay}</p>}
+            {participantIsDoctor && (
+              <p className={styles.participantSpecialization}>{participant.specializationDisplay}</p>
+            )}
           </div>
         </>
       ) : (

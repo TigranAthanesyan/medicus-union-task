@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import { MessageType, MessageStatus } from '../types';
+import mongoose from "mongoose";
+import { MessageType, MessageStatus } from "../types";
 
 export interface IMessage extends mongoose.Document {
   _id: mongoose.Types.ObjectId;
@@ -18,60 +18,65 @@ export interface IMessage extends mongoose.Document {
   updatedAt: Date;
 }
 
-const MessageSchema = new mongoose.Schema({
-  conversationId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Conversation',
-    required: [true, 'Conversation ID is required'],
-  },
-  senderId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: [true, 'Sender ID is required'],
-  },
-  content: {
-    type: String,
-    required: [true, 'Message content is required'],
-    maxlength: [1000, 'Message content must be less than 1000 characters'],
-    trim: true,
-  },
-  type: {
-    type: String,
-    enum: Object.values(MessageType),
-    default: MessageType.Text,
-  },
-  status: {
-    type: String,
-    enum: Object.values(MessageStatus),
-    default: MessageStatus.Sent,
-  },
-  attachments: [{
-    url: {
+const MessageSchema = new mongoose.Schema(
+  {
+    conversationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Conversation",
+      required: [true, "Conversation ID is required"],
+    },
+    senderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "Sender ID is required"],
+    },
+    content: {
       type: String,
-      required: true,
+      required: [true, "Message content is required"],
+      maxlength: [1000, "Message content must be less than 1000 characters"],
       trim: true,
     },
-    filename: {
+    type: {
       type: String,
-      required: true,
-      trim: true,
+      enum: Object.values(MessageType),
+      default: MessageType.Text,
     },
-    size: {
-      type: Number,
-      required: true,
-      min: [0, 'File size cannot be negative'],
-    },
-    mimeType: {
+    status: {
       type: String,
-      required: true,
-      trim: true,
+      enum: Object.values(MessageStatus),
+      default: MessageStatus.Sent,
     },
-  }],
-}, {
-  timestamps: true,
-});
+    attachments: [
+      {
+        url: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        filename: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        size: {
+          type: Number,
+          required: true,
+          min: [0, "File size cannot be negative"],
+        },
+        mimeType: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
 
 MessageSchema.index({ conversationId: 1, createdAt: -1 });
 MessageSchema.index({ senderId: 1, conversationId: 1, createdAt: -1 });
 
-export default mongoose.models.Message || mongoose.model<IMessage>('Message', MessageSchema);
+export default mongoose.models.Message || mongoose.model<IMessage>("Message", MessageSchema);

@@ -1,9 +1,16 @@
-'use client';
+"use client";
 
-import { useEffect, useCallback, useMemo } from 'react';
-import { useSession } from 'next-auth/react';
-import { useStore } from '../store';
-import { ConversationByIdApiResponse, SendMessageApiResponse, UserDTO, MessageDTO, ConversationDTO, MessageType } from '../types';
+import { useEffect, useCallback, useMemo } from "react";
+import { useSession } from "next-auth/react";
+import { useStore } from "../store";
+import {
+  ConversationByIdApiResponse,
+  SendMessageApiResponse,
+  UserDTO,
+  MessageDTO,
+  ConversationDTO,
+  MessageType,
+} from "../types";
 
 interface UseConversationReturn {
   conversation: ConversationDTO | null;
@@ -20,7 +27,7 @@ export const useConversationById = (conversationId: string | null): UseConversat
   const { data: session } = useSession();
 
   // const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   const {
     activeConversation,
     messages,
@@ -37,7 +44,9 @@ export const useConversationById = (conversationId: string | null): UseConversat
   const participant = useMemo(() => {
     if (!activeConversation) return null;
 
-    return session?.user?.id === activeConversation.participants.patient.id ? activeConversation.participants.doctor : activeConversation.participants.patient;
+    return session?.user?.id === activeConversation.participants.patient.id
+      ? activeConversation.participants.doctor
+      : activeConversation.participants.patient;
   }, [activeConversation, session?.user?.id]);
 
   const fetchConversationWithMessages = useCallback(async () => {
@@ -45,87 +54,97 @@ export const useConversationById = (conversationId: string | null): UseConversat
 
     try {
       setMessagesLoading(true);
-      
+
       const response = await fetch(`/api/chat/conversations/${conversationId}`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch conversation');
+        throw new Error("Failed to fetch conversation");
       }
 
       const { data }: ConversationByIdApiResponse = await response.json();
       if (!data) {
-        throw new Error('Failed to fetch conversation');
+        throw new Error("Failed to fetch conversation");
       }
 
       setActiveConversation(conversationId, data.conversation);
       setMessages(data.messages.items || []);
       updateConversationUnread(conversationId, 0);
     } catch (error) {
-      console.error('Error fetching conversation:', error);
+      console.error("Error fetching conversation:", error);
       setMessages([]);
     } finally {
       setMessagesLoading(false);
     }
-  }, [conversationId, session?.user?.id, setActiveConversation, setMessages, setMessagesLoading, updateConversationUnread]);
+  }, [
+    conversationId,
+    session?.user?.id,
+    setActiveConversation,
+    setMessages,
+    setMessagesLoading,
+    updateConversationUnread,
+  ]);
 
-  const sendMessage = useCallback(async (
-    content: string, 
-    type: MessageType = MessageType.Text
-  ): Promise<boolean> => {
-    if (!conversationId || !session?.user?.id || !content.trim()) return false;
+  const sendMessage = useCallback(
+    async (content: string, type: MessageType = MessageType.Text): Promise<boolean> => {
+      if (!conversationId || !session?.user?.id || !content.trim()) return false;
 
-    try {
-      const response = await fetch('/api/chat/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          conversationId,
-          content: content.trim(),
-          type,
-        }),
-      });
+      try {
+        const response = await fetch("/api/chat/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            conversationId,
+            content: content.trim(),
+            type,
+          }),
+        });
 
-      if (!response.ok) {
-        throw new Error('Failed to send message');
+        if (!response.ok) {
+          throw new Error("Failed to send message");
+        }
+
+        const { data }: SendMessageApiResponse = await response.json();
+
+        if (data) {
+          addMessage(data);
+          setNewMessageContent("");
+        }
+
+        return true;
+      } catch (error) {
+        console.error("Error sending message:", error);
+        return false;
       }
+    },
+    [conversationId, session?.user?.id, addMessage, setNewMessageContent]
+  );
 
-      const { data }: SendMessageApiResponse = await response.json();
-      
-      if (data) {
-        addMessage(data);
-        setNewMessageContent('');
+  const markAsRead = useCallback(
+    async (messageId: string) => {
+      try {
+        const response = await fetch(`/api/chat/messages/${messageId}/read`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          updateMessageStatus(messageId, "read");
+        }
+      } catch (error) {
+        console.error("Error marking message as read:", error);
       }
-      
-      return true;
-    } catch (error) {
-      console.error('Error sending message:', error);
-      return false;
-    }
-  }, [conversationId, session?.user?.id, addMessage, setNewMessageContent]);
-
-  const markAsRead = useCallback(async (messageId: string) => {
-    try {
-      const response = await fetch(`/api/chat/messages/${messageId}/read`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        updateMessageStatus(messageId, 'read');
-      }
-    } catch (error) {
-      console.error('Error marking message as read:', error);
-    }
-  }, [updateMessageStatus]);
+    },
+    [updateMessageStatus]
+  );
 
   // const startPolling = useCallback(() => {
   //   if (pollingIntervalRef.current) {

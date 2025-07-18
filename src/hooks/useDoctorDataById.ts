@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useStore } from '../store';
-import useSpecializationsData from './useSpecializationsData';
-import { DataFetchStatus, UserDTO, DoctorByIdApiResponse } from '../types';
+import { useEffect, useMemo, useState } from "react";
+import { useStore } from "../store";
+import useSpecializationsData from "./useSpecializationsData";
+import { DataFetchStatus, UserDTO, DoctorByIdApiResponse } from "../types";
 
 const useDoctorDataById = (id: string) => {
   const { doctorMapById, setDoctor } = useStore();
@@ -24,14 +24,14 @@ const useDoctorDataById = (id: string) => {
       try {
         const response = await fetch(`/api/doctors/${id}`);
         const data: DoctorByIdApiResponse = await response.json();
-        
+
         if (data.success && data.data) {
           setRawDoctorData(data.data);
         } else {
           setStatus(DataFetchStatus.Error);
         }
       } catch (error) {
-        console.error('Error fetching doctor:', error);
+        console.error("Error fetching doctor:", error);
         setStatus(DataFetchStatus.Error);
       }
     };
@@ -52,9 +52,9 @@ const useDoctorDataById = (id: string) => {
 
     const doctorWithSpecData = {
       ...rawDoctorData,
-      specializationsDisplayData: rawDoctorData.specializations?.map(spec => ({
+      specializationsDisplayData: rawDoctorData.specializations?.map((spec) => ({
         key: spec,
-        name: specializations.find(s => s.key === spec)?.name || spec,
+        name: specializations.find((s) => s.key === spec)?.name || spec,
       })),
     };
 

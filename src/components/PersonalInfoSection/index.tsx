@@ -1,11 +1,11 @@
-import React from 'react';
-import clsx from 'clsx';
-import InputField from '../InputField';
-import { SignUpFormData, FormInputEvent } from '../../app/auth/signup/types';
-import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES } from '../../constants/signup';
-import { COUNTRIES } from '../../constants/countries';
-import { GENDER_OPTIONS } from '../../constants/gender';
-import styles from './styles.module.css';
+import React from "react";
+import clsx from "clsx";
+import InputField from "../InputField";
+import { SignUpFormData, FormInputEvent } from "../../app/auth/signup/types";
+import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES } from "../../constants/signup";
+import { COUNTRIES } from "../../constants/countries";
+import { GENDER_OPTIONS } from "../../constants/gender";
+import styles from "./styles.module.css";
 
 interface PersonalInfoSectionProps {
   formData: SignUpFormData;
@@ -18,7 +18,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
   formData,
   onChange,
   disabled = false,
-  className = '',
+  className = "",
 }) => {
   return (
     <div className={clsx(styles.section, className)}>
@@ -26,7 +26,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
         <span className={styles.sectionIcon}>ℹ️</span>
         {SECTION_TITLES.PERSONAL_INFORMATION}
       </h3>
-      
+
       <p className={styles.sectionDescription}>
         This information helps us provide better service and is completely optional.
       </p>
@@ -51,9 +51,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       />
 
       <div className={styles.inputGroup}>
-        <label className={styles.inputLabel}>
-          {FORM_LABELS.COUNTRY}
-        </label>
+        <label className={styles.inputLabel}>{FORM_LABELS.COUNTRY}</label>
         <select
           name="country"
           value={formData.country}
@@ -62,7 +60,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
           className={styles.select}
         >
           <option value="">{PLACEHOLDERS.COUNTRY}</option>
-          {COUNTRIES.map(country => (
+          {COUNTRIES.map((country) => (
             <option key={country.value} value={country.value}>
               {country.label}
             </option>
@@ -71,11 +69,9 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       </div>
 
       <div className={styles.inputGroup}>
-        <label className={styles.inputLabel}>
-          {FORM_LABELS.GENDER}
-        </label>
+        <label className={styles.inputLabel}>{FORM_LABELS.GENDER}</label>
         <div className={styles.radioGroup}>
-          {GENDER_OPTIONS.map(option => (
+          {GENDER_OPTIONS.map((option) => (
             <label key={option.value} className={styles.radioLabel}>
               <input
                 type="radio"
@@ -95,4 +91,4 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
   );
 };
 
-export default PersonalInfoSection; 
+export default PersonalInfoSection;

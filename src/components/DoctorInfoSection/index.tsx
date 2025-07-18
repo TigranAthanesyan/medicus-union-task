@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
-import InputField from '../InputField';
-import { SignUpFormData, FormInputEvent } from '../../app/auth/signup/types';
-import { SpecializationDTO } from '../../types';
-import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES } from '../../constants/signup';
-import styles from './styles.module.css';
+import React, { useState, useEffect } from "react";
+import clsx from "clsx";
+import InputField from "../InputField";
+import { SignUpFormData, FormInputEvent } from "../../app/auth/signup/types";
+import { SpecializationDTO } from "../../types";
+import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES } from "../../constants/signup";
+import styles from "./styles.module.css";
 
 interface DoctorInfoSectionProps {
   formData: SignUpFormData;
@@ -17,19 +17,19 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
   formData,
   onChange,
   disabled = false,
-  className = '',
+  className = "",
 }) => {
   const [specializations, setSpecializations] = useState<SpecializationDTO[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
 
   const handleSpecializationsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValues = Array.from(e.target.selectedOptions, option => option.value);
+    const selectedValues = Array.from(e.target.selectedOptions, (option) => option.value);
     onChange({
       target: {
-        name: 'specializations',
-        value: selectedValues
-      }
+        name: "specializations",
+        value: selectedValues,
+      },
     });
   };
 
@@ -37,17 +37,17 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
     const fetchSpecializations = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/specializations');
+        const response = await fetch("/api/specializations");
         const data = await response.json();
-        
+
         if (data.success) {
           setSpecializations(data.data);
         } else {
-          setError(data.error || 'Failed to fetch specializations');
+          setError(data.error || "Failed to fetch specializations");
         }
       } catch (err) {
-        setError('Failed to fetch specializations');
-        console.error('Error fetching specializations:', err);
+        setError("Failed to fetch specializations");
+        console.error("Error fetching specializations:", err);
       } finally {
         setLoading(false);
       }
@@ -62,7 +62,7 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
         <span className={styles.sectionIcon}>👨‍⚕️</span>
         {SECTION_TITLES.DOCTOR_INFORMATION}
       </h3>
-      
+
       <p className={styles.sectionDescription}>
         Please provide your professional information to help patients find and connect with you.
       </p>
@@ -86,15 +86,13 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
               multiple
               required
             >
-              {specializations.map(spec => (
+              {specializations.map((spec) => (
                 <option key={spec.key} value={spec.key}>
                   {spec.name}
                 </option>
               ))}
             </select>
-            <p className={styles.helperText}>
-              Hold Ctrl/Cmd to select multiple specializations
-            </p>
+            <p className={styles.helperText}>Hold Ctrl/Cmd to select multiple specializations</p>
           </>
         )}
       </div>
@@ -126,4 +124,4 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
   );
 };
 
-export default DoctorInfoSection; 
+export default DoctorInfoSection;

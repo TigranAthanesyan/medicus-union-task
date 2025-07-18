@@ -1,9 +1,9 @@
-import { Gender } from './common';
-import { BriefSpecialization } from './specialization';
+import { Gender } from "./common";
+import { BriefSpecialization } from "./specialization";
 
 export enum UserRole {
-  Patient = 'patient',
-  Doctor = 'doctor',
+  Patient = "patient",
+  Doctor = "doctor",
 }
 
 export interface BaseUser {
@@ -16,7 +16,7 @@ export interface BaseUser {
   phoneNumber?: string;
   country?: string;
   gender?: Gender;
-  
+
   // Doctor-specific fields
   specializations?: string[];
   description?: string;
@@ -25,13 +25,13 @@ export interface BaseUser {
 
 export type CreateUserInput = BaseUser;
 
-export interface UserResponse extends Omit<BaseUser, 'password'> {
+export interface UserResponse extends Omit<BaseUser, "password"> {
   id: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface UserDTO extends Omit<BaseUser, 'password'> {
+export interface UserDTO extends Omit<BaseUser, "password"> {
   id: string;
   specializationsDisplayData?: BriefSpecialization[];
   specializationDisplay?: string;

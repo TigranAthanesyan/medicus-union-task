@@ -1,22 +1,27 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useSignUpForm } from '../../../hooks/useSignUpForm';
-import ErrorMessage from '../../../components/ErrorMessage';
-import InputField from '../../../components/InputField';
-import RoleSelector from '../../../components/RoleSelector';
-import AvatarUpload from '../../../components/AvatarUpload';
-import SubmitButton from '../../../components/SubmitButton';
-import DoctorInfoSection from '../../../components/DoctorInfoSection';
-import PersonalInfoSection from '../../../components/PersonalInfoSection';
-import { UserRole } from '../../../types';
-import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES, BUTTON_LABELS } from '../../../constants/signup';
-import styles from './styles.module.css';
+import React, { useState } from "react";
+import { useSignUpForm } from "../../../hooks/useSignUpForm";
+import ErrorMessage from "../../../components/ErrorMessage";
+import InputField from "../../../components/InputField";
+import RoleSelector from "../../../components/RoleSelector";
+import AvatarUpload from "../../../components/AvatarUpload";
+import SubmitButton from "../../../components/SubmitButton";
+import DoctorInfoSection from "../../../components/DoctorInfoSection";
+import PersonalInfoSection from "../../../components/PersonalInfoSection";
+import { UserRole } from "../../../types";
+import {
+  FORM_LABELS,
+  PLACEHOLDERS,
+  SECTION_TITLES,
+  BUTTON_LABELS,
+} from "../../../constants/signup";
+import styles from "./styles.module.css";
 
 export default function SignUp(): React.ReactElement {
   const [avatar, setAvatar] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string>('');
-  
+
   const {
     formData,
     loading,
@@ -30,7 +35,7 @@ export default function SignUp(): React.ReactElement {
 
   const handleAvatarChange = (file: File | null) => {
     setAvatar(file);
-    
+
     if (file) {
       // Create preview
       const reader = new FileReader();
@@ -39,38 +44,33 @@ export default function SignUp(): React.ReactElement {
       };
       reader.readAsDataURL(file);
     } else {
-      setAvatarPreview('');
+      setAvatarPreview("");
     }
   };
 
-     const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-     let finalAvatarUrl: string | undefined = uploadedImageUrl || undefined;
-     
-     if (avatar && !uploadedImageUrl) {
-       const uploadResult = await handleAvatarUpload(avatar);
-       if (uploadResult) {
-         finalAvatarUrl = uploadResult;
-       } else if (avatar) {
-         console.warn('Avatar upload failed, continuing without avatar');
-       }
-     }
-     
-     await handleSubmit(e, finalAvatarUrl);
-   };
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    let finalAvatarUrl: string | undefined = uploadedImageUrl || undefined;
+
+    if (avatar && !uploadedImageUrl) {
+      const uploadResult = await handleAvatarUpload(avatar);
+      if (uploadResult) {
+        finalAvatarUrl = uploadResult;
+      } else if (avatar) {
+        console.warn("Avatar upload failed, continuing without avatar");
+      }
+    }
+
+    await handleSubmit(e, finalAvatarUrl);
+  };
 
   const isFormDisabled = loading.form || loading.avatar;
 
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
-        <h1 className={styles.title}>
-          {SECTION_TITLES.SIGN_UP}
-        </h1>
+        <h1 className={styles.title}>{SECTION_TITLES.SIGN_UP}</h1>
 
-        <ErrorMessage 
-          message={error} 
-          onDismiss={clearError}
-        />
+        <ErrorMessage message={error} onDismiss={clearError} />
 
         <form onSubmit={handleFormSubmit}>
           <AvatarUpload
@@ -150,7 +150,9 @@ export default function SignUp(): React.ReactElement {
             type="submit"
             loading={loading.form}
             disabled={isFormDisabled}
-            loadingText={loading.avatar ? 'Uploading Avatar...' : 'Creating Account...'}
+            loadingText={
+              loading.avatar ? "Uploading Avatar..." : "Creating Account..."
+            }
             fullWidth
           >
             {BUTTON_LABELS.CREATE_ACCOUNT}
@@ -158,15 +160,12 @@ export default function SignUp(): React.ReactElement {
         </form>
 
         <div className={styles.linkSection}>
-          {BUTTON_LABELS.ALREADY_HAVE_ACCOUNT}{' '}
-          <a
-            href="/auth/signin"
-            className={styles.link}
-          >
+          {BUTTON_LABELS.ALREADY_HAVE_ACCOUNT}{" "}
+          <a href="/auth/signin" className={styles.link}>
             {BUTTON_LABELS.SIGN_IN}
           </a>
         </div>
       </div>
     </div>
   );
-} 
+}

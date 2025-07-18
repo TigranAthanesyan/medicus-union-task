@@ -1,26 +1,15 @@
-import mongoose from 'mongoose';
-import { 
-  BaseApiResponse, 
-  PaginatedResponse, 
-  PaginationParams 
-} from './common';
-import { 
-  UserDTO, 
-  DoctorCardDTO, 
-  CreateUserInput 
-} from './user';
-import { 
-  SpecializationDTO, 
-  CreateSpecializationInput 
-} from './specialization';
-import { 
-  ConversationDTO, 
-  MessageDTO, 
-  CreateConversationInput, 
+import mongoose from "mongoose";
+import { BaseApiResponse, PaginatedResponse, PaginationParams } from "./common";
+import { UserDTO, DoctorCardDTO, CreateUserInput } from "./user";
+import { SpecializationDTO, CreateSpecializationInput } from "./specialization";
+import {
+  ConversationDTO,
+  MessageDTO,
+  CreateConversationInput,
   CreateMessageInput,
   ConversationSummary,
-  ConversationStatus
-} from './chat';
+  ConversationStatus,
+} from "./chat";
 
 export type DoctorsApiResponse = BaseApiResponse<DoctorCardDTO[]>;
 
@@ -47,7 +36,7 @@ export type SendMessageApiResponse = BaseApiResponse<MessageDTO>;
 
 export type CreateUserRequest = CreateUserInput;
 
-export type UpdateUserRequest = Partial<Omit<CreateUserInput, 'email' | 'password'>>;
+export type UpdateUserRequest = Partial<Omit<CreateUserInput, "email" | "password">>;
 
 export type CreateSpecializationRequest = CreateSpecializationInput;
 
@@ -66,9 +55,9 @@ export interface GetMessagesRequest extends PaginationParams {
 }
 
 export enum FileUploadContext {
-  Avatar = 'avatar',
-  Chat = 'chat',
-  Document = 'document',
+  Avatar = "avatar",
+  Chat = "chat",
+  Document = "document",
 }
 
 export interface FileUploadRequest {
@@ -90,8 +79,8 @@ export interface FileUploadResponse {
 
 export interface ConversationQuery {
   $or: Array<{
-    'participants.patient'?: string;
-    'participants.doctor'?: string;
+    "participants.patient"?: string;
+    "participants.doctor"?: string;
   }>;
   status?: ConversationStatus;
 }
@@ -104,6 +93,6 @@ export interface ConversationUpdateData {
     sender: mongoose.Types.ObjectId;
   };
   updatedAt: Date;
-  'unreadCount.doctor'?: number;
-  'unreadCount.patient'?: number;
+  "unreadCount.doctor"?: number;
+  "unreadCount.patient"?: number;
 }

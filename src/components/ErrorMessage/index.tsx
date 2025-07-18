@@ -1,6 +1,6 @@
-import React from 'react';
-import clsx from 'clsx';
-import styles from './styles.module.css';
+import React from "react";
+import clsx from "clsx";
+import styles from "./styles.module.css";
 
 interface ErrorMessageProps {
   message: string;
@@ -8,11 +8,7 @@ interface ErrorMessageProps {
   className?: string;
 }
 
-export const ErrorMessage: React.FC<ErrorMessageProps> = ({ 
-  message, 
-  onDismiss, 
-  className = '' 
-}) => {
+export const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, onDismiss, className = "" }) => {
   if (!message) return null;
 
   return (
@@ -32,4 +28,4 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
   );
 };
 
-export default ErrorMessage; 
+export default ErrorMessage;

@@ -1,15 +1,16 @@
-'use client';
+"use client";
 
-import React, { useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { LoadingSpinner } from '../../../components/LoadingSpinner';
-import useDoctorDataById from '../../../hooks/useDoctorDataById';
-import { getCountryName, getCountryFlagUrl } from '../../../utils/countries';
-import { DataFetchStatus } from '../../../types';
-import styles from './styles.module.css';
+import React, { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { LoadingSpinner } from "../../../components/LoadingSpinner";
+import useDoctorDataById from "../../../hooks/useDoctorDataById";
+import { useConversations } from "../../../hooks/useConversations";
+import { getCountryName, getCountryFlagUrl } from "../../../utils/countries";
+import { DataFetchStatus, UserRole } from "../../../types";
+import styles from "./styles.module.css";
 
 export default function DoctorProfilePage() {
   const router = useRouter();
@@ -18,6 +19,8 @@ export default function DoctorProfilePage() {
 
   const doctorId = params.id as string;
   const { doctor, status } = useDoctorDataById(doctorId);
+  const { createConversation } = useConversations();
+  const [isStartingChat, setIsStartingChat] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -29,17 +32,36 @@ export default function DoctorProfilePage() {
       return;
     }
     // TODO: Implement booking functionality
-    console.log('Book Dr.', doctor?.name);
+    console.log("Book Dr.", doctor?.name);
   };
 
-  // const handleStartChat = () => {
-  //   if (!session) {
-  //     router.push(`/auth/signin?callbackUrl=/doctors/${doctorId}`);
-  //     return;
-  //   }
-  //   // TODO: Implement chat functionality
-  //   console.log('Start chat with Dr.', doctor?.name);
-  // };
+  const handleStartChat = async () => {
+    if (!session) {
+      router.push(`/auth/signin?callbackUrl=/doctors/${doctorId}`);
+      return;
+    }
+
+    // Only patients can start chats with doctors via the doctor profile page
+    if (session.user.role !== UserRole.Patient) {
+      console.warn("Only patients can start chats with doctors via this interface");
+      return;
+    }
+
+    if (isStartingChat) return; // Prevent double-clicks
+
+    setIsStartingChat(true);
+    try {
+      const conversationId = await createConversation(doctorId);
+      if (conversationId) {
+        router.push(`/chat/${conversationId}`);
+      }
+    } catch (error) {
+      console.error("Failed to start chat:", error);
+      // TODO: Show user-friendly error message
+    } finally {
+      setIsStartingChat(false);
+    }
+  };
 
   const handleSpecializationClick = (specializationKey: string) => {
     router.push(`/specializations/${specializationKey}`);
@@ -82,19 +104,17 @@ export default function DoctorProfilePage() {
                     className={styles.avatarImage}
                   />
                 ) : (
-                  <div className={styles.avatarPlaceholder}>
-                    👨‍⚕️
-                  </div>
+                  <div className={styles.avatarPlaceholder}>👨‍⚕️</div>
                 )}
               </div>
-              
+
               <div className={styles.doctorBasicInfo}>
                 <h1 className={styles.doctorName}>Dr. {doctor.name}</h1>
-                
+
                 {doctor.specializationsDisplayData && doctor.specializationsDisplayData.length > 0 && (
                   <div className={styles.specializationsContainer}>
                     {doctor.specializationsDisplayData.map(({ key, name }) => (
-                      <button 
+                      <button
                         key={key}
                         className={styles.specialization}
                         onClick={() => handleSpecializationClick(key)}
@@ -104,7 +124,7 @@ export default function DoctorProfilePage() {
                     ))}
                   </div>
                 )}
-                
+
                 {doctor.country && (
                   <p className={styles.country}>
                     <Image
@@ -117,14 +137,16 @@ export default function DoctorProfilePage() {
                     {getCountryName(doctor.country)}
                   </p>
                 )}
-                
+
                 <div className={styles.headerActions}>
                   <button className={styles.bookButton} onClick={handleBookNow}>
                     Book Consultation
                   </button>
-                  {/* <button className={styles.chatButton} onClick={handleStartChat}>
-                    Start Chat
-                  </button> */}
+                  {session?.user?.role === UserRole.Patient && (
+                    <button className={styles.chatButton} onClick={handleStartChat} disabled={isStartingChat}>
+                      {isStartingChat ? "Starting Chat..." : "Start Chat"}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -150,7 +172,7 @@ export default function DoctorProfilePage() {
                     <div className={styles.infoItem}>
                       <span className={styles.infoLabel}>Specializations:</span>
                       <span className={styles.infoValue}>
-                        {doctor.specializationsDisplayData?.map(({ name }) => name).join(', ')}
+                        {doctor.specializationsDisplayData?.map(({ name }) => name).join(", ")}
                       </span>
                     </div>
                   )}
@@ -197,4 +219,4 @@ export default function DoctorProfilePage() {
       {renderContent()}
     </div>
   );
-} 
+}

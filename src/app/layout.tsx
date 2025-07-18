@@ -17,9 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body cz-shortcut-listen="true">
         <Providers>
-          <Layout>
-            {children}
-          </Layout>
+          <Layout>{children}</Layout>
         </Providers>
       </body>
     </html>

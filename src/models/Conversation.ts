@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
-import { ConversationStatus } from '../types';
-import { IUser } from './User';
+import mongoose from "mongoose";
+import { ConversationStatus } from "../types";
+import { IUser } from "./User";
 
 export interface IConversation extends mongoose.Document {
   _id: mongoose.Types.ObjectId;
@@ -37,64 +37,67 @@ export type PopulatedConversation = Omit<IConversation, 'participants.patient' |
   };
 };
 
-const ConversationSchema = new mongoose.Schema({
-  participants: {
-    patient: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: [true, 'Patient ID is required'],
+const ConversationSchema = new mongoose.Schema(
+  {
+    participants: {
+      patient: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, "Patient ID is required"],
+      },
+      doctor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, "Doctor ID is required"],
+      },
     },
-    doctor: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: [true, 'Doctor ID is required'],
+    lastMessage: {
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Message",
+      },
+      content: {
+        type: String,
+        maxlength: [1000, "Message content must be less than 1000 characters"],
+      },
+      timestamp: {
+        type: Date,
+      },
+      sender: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
     },
-  },
-  lastMessage: {
-    id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Message',
-    },
-    content: {
+    status: {
       type: String,
-      maxlength: [1000, 'Message content must be less than 1000 characters'],
+      enum: Object.values(ConversationStatus),
+      default: ConversationStatus.Active,
     },
-    timestamp: {
-      type: Date,
-    },
-    sender: {
+    consultationId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "Consultation",
+    },
+    unreadCount: {
+      patient: {
+        type: Number,
+        default: 0,
+        min: [0, "Unread count cannot be negative"],
+      },
+      doctor: {
+        type: Number,
+        default: 0,
+        min: [0, "Unread count cannot be negative"],
+      },
     },
   },
-  status: {
-    type: String,
-    enum: Object.values(ConversationStatus),
-    default: ConversationStatus.Active,
-  },
-  consultationId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Consultation',
-  },
-  unreadCount: {
-    patient: {
-      type: Number,
-      default: 0,
-      min: [0, 'Unread count cannot be negative'],
-    },
-    doctor: {
-      type: Number,
-      default: 0,
-      min: [0, 'Unread count cannot be negative'],
-    },
-  },
-}, {
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  }
+);
 
-ConversationSchema.index({ 'participants.patient': 1, 'participants.doctor': 1 }, { unique: true });
-ConversationSchema.index({ 'participants.patient': 1, updatedAt: -1 });
-ConversationSchema.index({ 'participants.doctor': 1, updatedAt: -1 });
+ConversationSchema.index({ "participants.patient": 1, "participants.doctor": 1 }, { unique: true });
+ConversationSchema.index({ "participants.patient": 1, updatedAt: -1 });
+ConversationSchema.index({ "participants.doctor": 1, updatedAt: -1 });
 ConversationSchema.index({ status: 1, updatedAt: -1 });
 
-export default mongoose.models.Conversation || mongoose.model<IConversation>('Conversation', ConversationSchema);
+export default mongoose.models.Conversation || mongoose.model<IConversation>("Conversation", ConversationSchema);

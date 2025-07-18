@@ -9,14 +9,14 @@ import { APP_NAME } from "@/constants/global";
 
 type MainContent = {
   title?: string;
-  contentType?: 'participant' | null;
-}
+  contentType?: "participant" | null;
+};
 
 type HeaderData = {
   leftAction: ActionIconData | null;
   mainContent: MainContent;
   rightAction: ActionIconData | null;
-}
+};
 
 export const useHeaderData = (): HeaderData => {
   const router = useRouter();
@@ -29,23 +29,23 @@ export const useHeaderData = (): HeaderData => {
 
   const goHomeAction: ActionIconData = {
     icon: HomeIcon,
-    onClick: () => router.push('/'),
+    onClick: () => router.push("/"),
   };
 
   const goBackToChatsAction: ActionIconData = {
     icon: BackIcon,
-    onClick: () => router.push('/chat'),
+    onClick: () => router.push("/chat"),
   };
 
   const goBackToDoctorsAction: ActionIconData = {
     icon: BackIcon,
-    onClick: () => router.push('/doctors'),
+    onClick: () => router.push("/doctors"),
   };
 
   const openRightSidebarAction: ActionIconData = {
     icon: DotsActionIcon,
     onClick: () => {},
-  }
+  };
 
   const leftActionIconsMap: Record<Path, ActionIconData | null> = {
     [Path.Conversation]: goBackToChatsAction,
@@ -74,21 +74,21 @@ export const useHeaderData = (): HeaderData => {
   const mainContent: MainContent = useMemo(() => {
     switch (path) {
       case Path.Conversation:
-        return { contentType: 'participant' }
+        return { contentType: "participant" };
       case Path.Conversations:
-        return { title: 'Messages' }
+        return { title: "Messages" };
       case Path.Home:
-        return { title: APP_NAME }
+        return { title: APP_NAME };
       case Path.Doctors:
-        return { title: 'Doctors' }
+        return { title: "Doctors" };
       case Path.Doctor:
-        return { title: 'Doctor Details' }
+        return { title: "Doctor Details" };
       case Path.Login:
-        return { title: 'Login' }
+        return { title: "Login" };
       case Path.SignUp:
-        return { title: 'Sign Up' }
+        return { title: "Sign Up" };
       default:
-        return { title: APP_NAME }
+        return { title: APP_NAME };
     }
   }, [path]);
 

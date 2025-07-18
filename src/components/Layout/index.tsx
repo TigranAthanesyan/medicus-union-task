@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { PropsWithChildren } from 'react';
-import { Header } from '../Header';
-import styles from './styles.module.css';
+import React, { PropsWithChildren } from "react";
+import { Header } from "../Header";
+import styles from "./styles.module.css";
 
 const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -10,11 +10,9 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
       <header className={styles.header}>
         <Header />
       </header>
-      <main className={styles.content}>
-        {children}
-      </main>
+      <main className={styles.content}>{children}</main>
     </div>
   );
 };
 
-export default Layout; 
+export default Layout;

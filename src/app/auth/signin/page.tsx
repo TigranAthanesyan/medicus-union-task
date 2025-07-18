@@ -1,37 +1,37 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import styles from './styles.module.css';
-import InputField from '../../../components/InputField';
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import styles from "./styles.module.css";
+import InputField from "../../../components/InputField";
 
 export default function SignIn() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
-      const result = await signIn('credentials', {
+      const result = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
 
       if (result?.error) {
-        setError('Invalid email or password');
+        setError("Invalid email or password");
       } else {
-        router.push('/');
+        router.push("/");
       }
     } catch {
-      setError('An error occurred. Please try again.');
+      setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -42,11 +42,7 @@ export default function SignIn() {
       <div className={styles.card}>
         <h1 className={styles.title}>Sign In</h1>
 
-        {error && (
-          <div className={styles.errorMessage}>
-            {error}
-          </div>
-        )}
+        {error && <div className={styles.errorMessage}>{error}</div>}
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <InputField
@@ -76,12 +72,12 @@ export default function SignIn() {
             disabled={loading}
             className={styles.submitButton}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
         <div className={styles.footer}>
-          Don&apos;t have an account?{' '}
+          Don&apos;t have an account?{" "}
           <a href="/auth/signup" className={styles.signupLink}>
             Sign up
           </a>
@@ -89,4 +85,4 @@ export default function SignIn() {
       </div>
     </div>
   );
-} 
+}

@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useSession, signOut } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { UserRole, UserDTO } from '../types';
-import styles from './styles.module.css';
+import { useSession, signOut } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { UserRole, UserDTO } from "../types";
+import styles from "./styles.module.css";
 
 export default function Home() {
   const { data: session, status } = useSession();
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return (
       <div className={styles.loadingContainer}>
         <h2>Loading...</h2>
@@ -19,14 +19,12 @@ export default function Home() {
 
   if (session?.user) {
     const user = session.user as UserDTO;
-  
+
     return (
       <div className={styles.userContainer}>
         <div className={styles.userCard}>
-          <h1 className={styles.welcomeTitle}>
-            Welcome back, {user.name}! 👋
-          </h1>
-          
+          <h1 className={styles.welcomeTitle}>Welcome back, {user.name}! 👋</h1>
+
           <div className={styles.userProfile}>
             <div className={styles.avatarContainer}>
               {user.image ? (
@@ -37,41 +35,36 @@ export default function Home() {
                   height={80}
                   className={styles.avatarImage}
                   onError={() => {
-                    console.error('Failed to load avatar image:', user.image);
+                    console.error("Failed to load avatar image:", user.image);
                   }}
                   onLoad={() => {
-                    console.log('Avatar loaded successfully:', user.image);
+                    console.log("Avatar loaded successfully:", user.image);
                   }}
                 />
               ) : null}
-              <span className={styles.avatarPlaceholder} style={{ display: user.image ? 'none' : 'flex' }}>
-                {user.role === UserRole.Doctor ? '👨‍⚕️' : '👤'}
+              <span className={styles.avatarPlaceholder} style={{ display: user.image ? "none" : "flex" }}>
+                {user.role === UserRole.Doctor ? "👨‍⚕️" : "👤"}
               </span>
             </div>
 
             <div className={styles.userInfo}>
-              <h2 className={styles.userName}>
-                {user.name}
-              </h2>
+              <h2 className={styles.userName}>{user.name}</h2>
               <p className={styles.userDetail}>
                 <strong>Email:</strong> {user.email}
               </p>
               <p className={styles.userDetail}>
-                <strong>Role:</strong> {user.role === UserRole.Doctor ? '👨‍⚕️ Doctor' : '👤 Patient'}
+                <strong>Role:</strong> {user.role === UserRole.Doctor ? "👨‍⚕️ Doctor" : "👤 Patient"}
               </p>
-              <p className={styles.userDetailLast}>
-              </p>
+              <p className={styles.userDetailLast}></p>
             </div>
           </div>
 
           {user.role === UserRole.Doctor && (
             <div className={styles.infoSection}>
-              <h3 className={styles.sectionTitle}>
-                Doctor Information
-              </h3>
+              <h3 className={styles.sectionTitle}>Doctor Information</h3>
               {user.specializations && user.specializations.length > 0 && (
                 <p className={styles.sectionDetail}>
-                  <strong>Specialization:</strong> {user.specializations.join(', ')}
+                  <strong>Specialization:</strong> {user.specializations.join(", ")}
                 </p>
               )}
               {user.description && (
@@ -89,9 +82,7 @@ export default function Home() {
 
           {(user.dateOfBirth || user.phoneNumber) && (
             <div className={styles.infoSection}>
-              <h3 className={styles.sectionTitle}>
-                Personal Information
-              </h3>
+              <h3 className={styles.sectionTitle}>Personal Information</h3>
               {user.dateOfBirth && (
                 <p className={styles.sectionDetail}>
                   <strong>Date of Birth:</strong> {new Date(user.dateOfBirth).toLocaleDateString()}
@@ -106,16 +97,10 @@ export default function Home() {
           )}
 
           <div className={styles.actionButtons}>
-            <Link
-              href="/doctors"
-              className={styles.primaryButton}
-            >
+            <Link href="/doctors" className={styles.primaryButton}>
               View Doctors
             </Link>
-            <button
-              onClick={() => signOut({ callbackUrl: '/' })}
-              className={styles.dangerButton}
-            >
+            <button onClick={() => signOut({ callbackUrl: "/" })} className={styles.dangerButton}>
               Sign Out
             </button>
           </div>
@@ -131,30 +116,19 @@ export default function Home() {
 
   return (
     <div className={styles.welcomeContainer}>
-      <h1 className={styles.welcomeMainTitle}>
-        Welcome to Medicus Union
-      </h1>
+      <h1 className={styles.welcomeMainTitle}>Welcome to Medicus Union</h1>
       <p className={styles.welcomeSubtitle}>
         Telemedicine platform for booking consultations and chatting with doctors
       </p>
 
       <div className={styles.authButtons}>
-        <Link
-          href="/doctors"
-          className={`${styles.authButton} ${styles.authButtonPrimary}`}
-        >
+        <Link href="/doctors" className={`${styles.authButton} ${styles.authButtonPrimary}`}>
           View Doctors
         </Link>
-        <Link
-          href="/auth/signin"
-          className={`${styles.authButton} ${styles.authButtonSecondary}`}
-        >
+        <Link href="/auth/signin" className={`${styles.authButton} ${styles.authButtonSecondary}`}>
           Sign In
         </Link>
-        <Link
-          href="/auth/signup"
-          className={`${styles.authButton} ${styles.authButtonSecondary}`}
-        >
+        <Link href="/auth/signup" className={`${styles.authButton} ${styles.authButtonSecondary}`}>
           Sign Up
         </Link>
       </div>

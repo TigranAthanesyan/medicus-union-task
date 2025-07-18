@@ -1,22 +1,22 @@
-import { UserDTO, UserSummary } from './user';
+import { UserDTO, UserSummary } from "./user";
 
 export enum MessageType {
-  Text = 'text',
-  Image = 'image',
-  File = 'file',
-  System = 'system',
+  Text = "text",
+  Image = "image",
+  File = "file",
+  System = "system",
 }
 
 export enum MessageStatus {
-  Sent = 'sent',
-  Delivered = 'delivered',
-  Read = 'read',
+  Sent = "sent",
+  Delivered = "delivered",
+  Read = "read",
 }
 
 export enum ConversationStatus {
-  Active = 'active',
-  Archived = 'archived',
-  Blocked = 'blocked',
+  Active = "active",
+  Archived = "archived",
+  Blocked = "blocked",
 }
 
 export interface FileAttachment {

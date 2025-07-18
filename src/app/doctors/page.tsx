@@ -1,29 +1,33 @@
-'use client';
+"use client";
 
-import React, { useState, useMemo } from 'react';
-import { DoctorCard } from '../../components/DoctorCard';
-import { LoadingSpinner } from '../../components/LoadingSpinner';
-import useDoctorsData from '../../hooks/useDoctorsData';
-import useSpecializationsData from '../../hooks/useSpecializationsData';
-import { getAvailableCountries } from '../../utils/countries';
-import { DataFetchStatus } from '../../types';
-import styles from './styles.module.css';
+import React, { useState, useMemo } from "react";
+import { DoctorCard } from "../../components/DoctorCard";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
+import useDoctorsData from "../../hooks/useDoctorsData";
+import useSpecializationsData from "../../hooks/useSpecializationsData";
+import { getAvailableCountries } from "../../utils/countries";
+import { DataFetchStatus } from "../../types";
+import styles from "./styles.module.css";
 
 export default function DoctorsPage() {
   const { doctors, status } = useDoctorsData();
   const { specializations, status: specializationsStatus } = useSpecializationsData();
-  
-  const [selectedSpecialization, setSelectedSpecialization] = useState<string>('');
-  const [selectedCountry, setSelectedCountry] = useState<string>('');
-  const [searchTerm, setSearchTerm] = useState<string>('');
+
+  const [selectedSpecialization, setSelectedSpecialization] = useState<string>("");
+  const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const availableCountries = useMemo(() => {
     return getAvailableCountries(doctors);
   }, [doctors]);
 
   const filteredDoctors = useMemo(() => {
-    return doctors.filter(doctor => {
-      if (selectedSpecialization && (!doctor.specializations || !doctor.specializations.includes(selectedSpecialization))) {
+    return doctors.filter((doctor) => {
+      if (
+        selectedSpecialization &&
+        (!doctor.specializations ||
+          !doctor.specializations.includes(selectedSpecialization))
+      ) {
         return false;
       }
 
@@ -31,7 +35,10 @@ export default function DoctorsPage() {
         return false;
       }
 
-      if (searchTerm && !doctor.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+      if (
+        searchTerm &&
+        !doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
+      ) {
         return false;
       }
 
@@ -40,16 +47,18 @@ export default function DoctorsPage() {
   }, [doctors, selectedSpecialization, selectedCountry, searchTerm]);
 
   const clearFilters = () => {
-    setSelectedSpecialization('');
-    setSelectedCountry('');
-    setSearchTerm('');
+    setSelectedSpecialization("");
+    setSelectedCountry("");
+    setSearchTerm("");
   };
 
   const renderFilters = () => (
     <div className={styles.filtersContainer}>
       <div className={styles.filtersRow}>
         <div className={styles.filterGroup}>
-          <label htmlFor="search" className={styles.filterLabel}>Search by name</label>
+          <label htmlFor="search" className={styles.filterLabel}>
+            Search by name
+          </label>
           <input
             id="search"
             type="text"
@@ -61,7 +70,9 @@ export default function DoctorsPage() {
         </div>
 
         <div className={styles.filterGroup}>
-          <label htmlFor="specialization" className={styles.filterLabel}>Specialization</label>
+          <label htmlFor="specialization" className={styles.filterLabel}>
+            Specialization
+          </label>
           <select
             id="specialization"
             value={selectedSpecialization}
@@ -70,7 +81,7 @@ export default function DoctorsPage() {
             disabled={specializationsStatus !== DataFetchStatus.Success}
           >
             <option value="">---</option>
-            {specializations.map(spec => (
+            {specializations.map((spec) => (
               <option key={spec.key} value={spec.key}>
                 {spec.name}
               </option>
@@ -79,7 +90,9 @@ export default function DoctorsPage() {
         </div>
 
         <div className={styles.filterGroup}>
-          <label htmlFor="country" className={styles.filterLabel}>Country</label>
+          <label htmlFor="country" className={styles.filterLabel}>
+            Country
+          </label>
           <select
             id="country"
             value={selectedCountry}
@@ -87,7 +100,7 @@ export default function DoctorsPage() {
             className={styles.filterSelect}
           >
             <option value="">---</option>
-            {availableCountries.map(country => (
+            {availableCountries.map((country) => (
               <option key={country.value} value={country.value}>
                 {country.label}
               </option>
@@ -127,14 +140,14 @@ export default function DoctorsPage() {
         return (
           <div className={styles.errorContainer}>
             <h2>Error Loading Doctors</h2>
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className={styles.retryButton}
             >
               Try Again
             </button>
           </div>
-        )
+        );
       case DataFetchStatus.Success:
         return (
           <>
@@ -143,10 +156,9 @@ export default function DoctorsPage() {
               <div className={styles.emptyState}>
                 <h2>No Doctors Found</h2>
                 <p>
-                  {doctors.length === 0 
-                    ? 'There are currently no doctors registered in the system.'
-                    : 'No doctors match your current filters. Try adjusting your search criteria.'
-                  }
+                  {doctors.length === 0
+                    ? "There are currently no doctors registered in the system."
+                    : "No doctors match your current filters. Try adjusting your search criteria."}
                 </p>
                 {doctors.length > 0 && (
                   <button onClick={clearFilters} className={styles.clearButton}>
@@ -162,11 +174,11 @@ export default function DoctorsPage() {
               </div>
             )}
           </>
-        )
+        );
       default:
         return null;
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
