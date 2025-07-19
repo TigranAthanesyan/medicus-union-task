@@ -39,8 +39,8 @@ export interface BaseMessage {
   conversationId: string;
   senderId: string;
   content: string;
-  type: MessageType;
-  attachments?: FileAttachment[];
+  type: MessageType; // Only text messages are supported for now
+  attachments?: FileAttachment[]; // Unused yet
 }
 
 export type CreateConversationInput = BaseConversation;

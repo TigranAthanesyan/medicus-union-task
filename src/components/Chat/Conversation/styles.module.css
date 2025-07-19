@@ -1,0 +1,79 @@
+.conversationContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #ffffff;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.centralizedContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  gap: 16px;
+}
+
+.loadingText {
+  font-size: 16px;
+  color: #6c757d;
+}
+
+.errorIcon {
+  font-size: 48px;
+}
+
+.errorTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #dc3545;
+  margin: 0;
+}
+
+.errorDescription {
+  font-size: 14px;
+  color: #6c757d;
+  line-height: 1.5;
+  max-width: 300px;
+  margin: 0;
+}
+
+.noMessagesIcon {
+  font-size: 40px;
+  opacity: 0.6;
+  margin-bottom: 8px;
+}
+
+.noMessagesText {
+  font-size: 14px;
+  color: #6c757d;
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .errorIcon {
+    font-size: 64px;
+  }
+
+  .errorTitle {
+    font-size: 20px;
+  }
+
+  .errorDescription {
+    font-size: 16px;
+  }
+
+  .noMessagesIcon {
+    font-size: 48px;
+  }
+
+  .noMessagesText {
+    font-size: 16px;
+  }
+}
+

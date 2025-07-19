@@ -25,7 +25,7 @@ export const userToUserDTO = (user: IUser, specializationsData?: ISpecialization
 });
 
 export const userToUserSummary = (user: IUser): UserSummary => ({
-  id: user._id?.toString() || "",
+  id: user._id?.toString() || user.id || "",
   name: user.name,
   image: user.image,
   role: user.role,

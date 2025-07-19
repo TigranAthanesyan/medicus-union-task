@@ -63,7 +63,10 @@ const UserSchema = new mongoose.Schema(
         return this.role === UserRole.Doctor;
       },
       validate: {
-        validator: function (v: string[]) {
+        validator: function (this: IUser, v: string[]) {
+          if (this.role !== UserRole.Doctor) {
+            return true;
+          }
           return v && v.length > 0;
         },
         message: "At least one specialization is required for doctors",
@@ -76,6 +79,15 @@ const UserSchema = new mongoose.Schema(
       },
       trim: true,
       maxlength: [500, "Description must be less than 500 characters"],
+      validate: {
+        validator: function (this: IUser, v: string) {
+          if (this.role !== UserRole.Doctor) {
+            return true;
+          }
+          return !!v && v.trim().length > 0;
+        },
+        message: "Description is required for doctors",
+      },
     },
     experience: {
       type: Number,

@@ -100,4 +100,4 @@ ConversationSchema.index({ "participants.patient": 1, updatedAt: -1 });
 ConversationSchema.index({ "participants.doctor": 1, updatedAt: -1 });
 ConversationSchema.index({ status: 1, updatedAt: -1 });
 
-export default mongoose.models.Conversation || mongoose.model<IConversation>("Conversation", ConversationSchema);
+export default mongoose.models?.Conversation || mongoose.model<IConversation>("Conversation", ConversationSchema);
