@@ -1,0 +1,151 @@
+.conversationItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  text-align: left;
+}
+
+.conversationItem:hover {
+  background-color: #f8f9fa;
+}
+
+.conversationItem:active {
+  background-color: #e9ecef;
+}
+
+.conversationItem.active {
+  background-color: #e3f2fd;
+  border-right: 3px solid #007bff;
+}
+
+.conversationItem.active:hover {
+  background-color: #bbdefb;
+}
+
+.avatar {
+  flex-shrink: 0;
+  position: relative;
+}
+
+.avatarImage {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatarPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #6c757d;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.lastMessage {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.messageText {
+  font-size: 14px;
+  color: #6c757d;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.youPrefix {
+  color: #007bff;
+  font-weight: 500;
+}
+
+.noMessages {
+  font-size: 14px;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.unreadBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  background-color: #007bff;
+  color: #ffffff;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0 6px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .conversationItem {
+    padding: 14px 20px;
+    gap: 14px;
+  }
+
+  .avatarImage,
+  .avatarPlaceholder {
+    width: 52px;
+    height: 52px;
+  }
+
+  .avatarPlaceholder {
+    font-size: 22px;
+  }
+
+  .name {
+    font-size: 17px;
+  }
+
+  .messageText {
+    font-size: 15px;
+  }
+}

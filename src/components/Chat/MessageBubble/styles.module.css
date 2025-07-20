@@ -1,0 +1,225 @@
+.messageWrapper {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+
+  &.currentUser {
+    flex-direction: row-reverse;
+  }
+}
+
+.avatar {
+  flex-shrink: 0;
+  align-self: flex-end;
+}
+
+.avatarImage {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatarPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  font-size: 12px;
+}
+
+.messageContainer {
+  max-width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.messageContainer.withoutAvatar {
+  margin-left: 40px;
+}
+
+.currentUser .messageContainer.withoutAvatar {
+  margin-left: 0;
+  margin-right: 40px;
+}
+
+.senderName {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6c757d;
+  margin-bottom: 2px;
+  padding-left: 12px;
+}
+
+.messageBubble {
+  position: relative;
+  padding: 8px 12px;
+  border-radius: 16px;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+.messageBubble.sent {
+  background-color: #007bff;
+  color: #ffffff;
+  border-bottom-right-radius: 6px;
+}
+
+.messageBubble.received {
+  background-color: #f1f3f4;
+  color: #333333;
+  border-bottom-left-radius: 6px;
+}
+
+.messageContent {
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+.messageInfo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  padding-left: 12px;
+}
+
+.messageInfo.sentInfo {
+  justify-content: flex-end;
+  padding-left: 0;
+  padding-right: 12px;
+}
+
+.timestamp {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.status {
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+.status.read {
+  color: #007bff;
+}
+
+@media (max-width: 768px) {
+  .messageContainer {
+    max-width: 85%;
+  }
+
+  .messageContainer.withoutAvatar {
+    margin-left: 32px;
+  }
+
+  .currentUser .messageContainer.withoutAvatar {
+    margin-left: 0;
+    margin-right: 32px;
+  }
+
+  .avatarImage,
+  .avatarPlaceholder {
+    width: 28px;
+    height: 28px;
+  }
+
+  .avatarPlaceholder {
+    font-size: 10px;
+  }
+
+  .messageBubble {
+    padding: 6px 10px;
+    border-radius: 14px;
+  }
+
+  .messageBubble.sent {
+    border-bottom-right-radius: 4px;
+  }
+
+  .messageBubble.received {
+    border-bottom-left-radius: 4px;
+  }
+
+  .messageContent {
+    font-size: 13px;
+  }
+
+  .senderName {
+    font-size: 11px;
+    padding-left: 10px;
+  }
+
+  .messageInfo {
+    padding-left: 10px;
+  }
+
+  .messageInfo.sentInfo {
+    padding-right: 10px;
+  }
+
+  .timestamp {
+    font-size: 10px;
+  }
+
+  .status {
+    font-size: 9px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .messageContainer {
+    max-width: 60%;
+  }
+
+  .messageContainer.withoutAvatar {
+    margin-left: 44px;
+  }
+
+  .currentUser .messageContainer.withoutAvatar {
+    margin-left: 0;
+    margin-right: 44px;
+  }
+
+  .avatarImage,
+  .avatarPlaceholder {
+    width: 36px;
+    height: 36px;
+  }
+
+  .avatarPlaceholder {
+    font-size: 14px;
+  }
+
+  .messageBubble {
+    padding: 10px 14px;
+    border-radius: 18px;
+  }
+
+  .messageBubble.sent {
+    border-bottom-right-radius: 8px;
+  }
+
+  .messageBubble.received {
+    border-bottom-left-radius: 8px;
+  }
+
+  .messageContent {
+    font-size: 15px;
+  }
+
+  .senderName {
+    font-size: 13px;
+    padding-left: 14px;
+  }
+
+  .messageInfo {
+    padding-left: 14px;
+  }
+
+  .messageInfo.sentInfo {
+    padding-right: 14px;
+  }
+}

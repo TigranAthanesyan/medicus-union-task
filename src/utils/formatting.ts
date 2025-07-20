@@ -1,0 +1,23 @@
+export const formatTimestamp = (timestamp: Date) => {
+  const now = new Date();
+  const messageDate = new Date(timestamp);
+  const diffMs = now.getTime() - messageDate.getTime();
+  const diffHours = diffMs / (1000 * 60 * 60);
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+  if (diffHours < 1) {
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    return diffMins < 1 ? "now" : `${diffMins}m`;
+  } else if (diffHours < 24) {
+    return `${Math.floor(diffHours)}h`;
+  } else if (diffDays < 7) {
+    return `${Math.floor(diffDays)}d`;
+  } else {
+    return messageDate.toLocaleDateString();
+  }
+};
+
+export const truncateMessage = (content: string, maxLength: number = 50) => {
+  if (content.length <= maxLength) return content;
+  return content.substring(0, maxLength) + "...";
+};
