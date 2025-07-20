@@ -21,6 +21,9 @@ export interface BaseUser {
   specializations?: string[];
   description?: string;
   experience?: number;
+  consultationDuration?: number;
+  consultationPrice?: number;
+  consultationCurrency?: string;
 }
 
 export type CreateUserInput = BaseUser;

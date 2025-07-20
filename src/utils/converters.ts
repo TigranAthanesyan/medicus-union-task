@@ -1,8 +1,9 @@
-import { ConversationDTO, UserDTO, UserSummary, MessageDTO, ConversationSummary, BriefSpecialization } from "../types";
+import { ConversationDTO, UserDTO, UserSummary, MessageDTO, ConversationSummary, BriefSpecialization, ConsultationDTO, PopulatedConsultation } from "../types";
 import { PopulatedConversation } from "../models/Conversation";
 import { IUser } from "../models/User";
 import { IMessage } from "../models/Message";
 import { ISpecialization } from "../models/Specialization";
+import { IConsultation } from "../models/Consultation";
 
 export const userToUserDTO = (user: IUser, specializationsData?: ISpecialization[]): UserDTO => ({
   id: user._id?.toString() || "",
@@ -22,6 +23,9 @@ export const userToUserDTO = (user: IUser, specializationsData?: ISpecialization
   specializationDisplay: specializationsData?.map(({ name }) => name).join(', '),
   description: user.description,
   experience: user.experience,
+  consultationDuration: user.consultationDuration,
+  consultationPrice: user.consultationPrice,
+  consultationCurrency: user.consultationCurrency,
 });
 
 export const userToUserSummary = (user: IUser): UserSummary => ({
@@ -98,3 +102,44 @@ export const conversationToConversationSummary = (
   const dto = conversationToConversationDTO(conversation);
   return conversationDTOToConversationSummary(dto, currentUserId);
 };
+
+export const consultationToConsultationDTO = (consultation: PopulatedConsultation): ConsultationDTO => ({
+  id: consultation._id.toString(),
+  doctorId: consultation.doctorId._id.toString(),
+  patientId: consultation.patientId._id.toString(),
+  doctor: userToUserSummary(consultation.doctorId),
+  patient: userToUserSummary(consultation.patientId),
+  dateTime: consultation.dateTime,
+  duration: consultation.duration,
+  status: consultation.status,
+  type: consultation.type,
+  price: consultation.price,
+  currency: consultation.currency,
+  notes: consultation.notes,
+  conversationId: consultation.conversationId?.toString(),
+  createdAt: consultation.createdAt,
+  updatedAt: consultation.updatedAt,
+});
+
+export const consultationToConsultationDTOWithUsers = (
+  consultation: IConsultation,
+  doctor: IUser,
+  patient: IUser,
+  showNotes: boolean = false
+): ConsultationDTO => ({
+  id: consultation._id.toString(),
+  doctorId: consultation.doctorId.toString(),
+  patientId: consultation.patientId.toString(),
+  doctor: userToUserSummary(doctor),
+  patient: userToUserSummary(patient),
+  dateTime: consultation.dateTime,
+  duration: consultation.duration,
+  status: consultation.status,
+  type: consultation.type,
+  price: consultation.price,
+  currency: consultation.currency,
+  notes: showNotes ? consultation.notes : undefined,
+  conversationId: consultation.conversationId?.toString(),
+  createdAt: consultation.createdAt,
+  updatedAt: consultation.updatedAt,
+});

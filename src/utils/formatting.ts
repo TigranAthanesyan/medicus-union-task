@@ -21,3 +21,13 @@ export const truncateMessage = (content: string, maxLength: number = 50) => {
   if (content.length <= maxLength) return content;
   return content.substring(0, maxLength) + "...";
 };
+
+// Format: YYYY-MM-DD
+export const getDateString = (date: Date) => {
+  return date.toISOString().split("T")[0];
+};
+
+// Format: HH:MM
+export const getTimeString = (hours: number, minutes: number) => {
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+};

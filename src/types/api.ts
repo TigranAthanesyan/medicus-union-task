@@ -10,6 +10,12 @@ import {
   ConversationSummary,
   ConversationStatus,
 } from "./chat";
+import {
+  ConsultationDTO,
+  ConsultationStatus,
+  ConsultationType,
+  DayAvailability,
+} from "./consultation";
 
 export type DoctorsApiResponse = BaseApiResponse<DoctorCardDTO[]>;
 
@@ -95,4 +101,23 @@ export interface ConversationUpdateData {
   updatedAt: Date;
   "unreadCount.doctor"?: number;
   "unreadCount.patient"?: number;
+}
+
+export type AvailabilityApiResponse = BaseApiResponse<DayAvailability[]>;
+
+export type ConsultationsApiResponse = BaseApiResponse<ConsultationDTO[]>;
+
+export type ConsultationApiResponse = BaseApiResponse<ConsultationDTO>;
+
+export type CreateConsultationApiResponse = BaseApiResponse<ConsultationDTO>;
+
+export interface CreateConsultationRequest {
+  doctorId: string;
+  dateTime: string; // ISO string
+  type: ConsultationType;
+}
+
+export interface UpdateConsultationRequest {
+  status?: ConsultationStatus;
+  notes?: string;
 }

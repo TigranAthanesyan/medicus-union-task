@@ -93,6 +93,47 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       min: [0, "Experience cannot be negative"],
     },
+    consultationDuration: {
+      type: Number,
+      min: [15, "Consultation duration must be at least 15 minutes"],
+      max: [180, "Consultation duration cannot exceed 3 hours"],
+      validate: {
+        validator: function (this: IUser, v: number) {
+          if (this.role !== UserRole.Doctor) {
+            return true;
+          }
+          return !v || v > 0;
+        },
+        message: "Consultation duration must be positive",
+      },
+    },
+    consultationPrice: {
+      type: Number,
+      min: [0, "Consultation price cannot be negative"],
+      validate: {
+        validator: function (this: IUser, v: number) {
+          if (this.role !== UserRole.Doctor) {
+            return true;
+          }
+          return !v || v >= 0;
+        },
+        message: "Consultation price must be non-negative",
+      },
+    },
+    consultationCurrency: {
+      type: String,
+      trim: true,
+      default: "USD",
+      validate: {
+        validator: function (this: IUser, v: string) {
+          if (this.role !== UserRole.Doctor) {
+            return true;
+          }
+          return !v || /^[A-Z]{3}$/.test(v);
+        },
+        message: "Currency must be a 3-letter code (e.g., USD, EUR)",
+      },
+    },
   },
   {
     timestamps: true,

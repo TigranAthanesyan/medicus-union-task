@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { Types } from "mongoose";
 import connectDB from "../../../../lib/mongodb";
+import { userToUserDTO } from "../../../../utils/converters";
 import User, { IUser } from "../../../../models/User";
-import { UserRole, DoctorByIdApiResponse, UserDTO } from "../../../../types";
+import { UserRole, DoctorByIdApiResponse } from "../../../../types";
 
 export async function GET(
   request: Request,
@@ -38,20 +39,7 @@ export async function GET(
       );
     }
 
-    const responseData: UserDTO = {
-      id: doctor._id.toString(),
-      email: doctor.email,
-      name: doctor.name,
-      role: doctor.role,
-      image: doctor.image,
-      dateOfBirth: doctor.dateOfBirth,
-      phoneNumber: doctor.phoneNumber,
-      country: doctor.country,
-      gender: doctor.gender,
-      specializations: doctor.specializations,
-      description: doctor.description,
-      experience: doctor.experience,
-    };
+    const responseData = userToUserDTO(doctor);
 
     return NextResponse.json<DoctorByIdApiResponse>({
       success: true,
