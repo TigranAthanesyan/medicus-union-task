@@ -1,0 +1,94 @@
+.doctorInfo {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.doctorAvatar {
+  flex-shrink: 0;
+}
+
+.avatarImage {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatarPlaceholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.doctorDetails {
+  flex: 1;
+}
+
+.doctorName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.specializations {
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.countryFlag {
+  border-radius: 0.125rem;
+}
+
+.consultationInfo {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
+  display: flex;
+  gap: 2rem;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.infoLabel {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.infoValue {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+@media (min-width: 768px) {
+  .doctorInfo {
+    align-items: center;
+  }
+
+  .consultationInfo {
+    gap: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .doctorSummary {
+    padding: 2rem;
+  }
+}

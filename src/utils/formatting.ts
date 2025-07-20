@@ -31,3 +31,14 @@ export const getDateString = (date: Date) => {
 export const getTimeString = (hours: number, minutes: number) => {
   return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 };
+
+export const getCurrencySymbol = (currency: string) => {
+  switch (currency) {
+    case "EUR":
+      return "€";
+    case "GBP":
+      return "£";
+    default:
+      return "$";
+  }
+};

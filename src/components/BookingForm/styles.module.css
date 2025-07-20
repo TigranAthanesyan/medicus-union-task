@@ -1,0 +1,228 @@
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 2rem;
+}
+
+.formLabel {
+  display: block;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+.typeOptions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.typeOption {
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background-color: white;
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.typeOption:hover {
+  border-color: #3b82f6;
+  background-color: #f8fafc;
+}
+
+.typeOptionSelected {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+  color: #1d4ed8;
+}
+
+.errorText {
+  color: #dc2626;
+  font-weight: 500;
+  padding: 1rem;
+  text-align: center;
+}
+
+.loadingText {
+  color: #6b7280;
+  text-align: center;
+  padding: 1rem;
+}
+
+.dateGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.dateOption {
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.dateOption:hover:not(:disabled) {
+  border-color: #3b82f6;
+  background-color: #f8fafc;
+}
+
+.dateOption:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f9fafb;
+}
+
+.dateOptionSelected {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+}
+
+.dayName {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+.dayDate {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.slotsCount {
+  font-size: 0.75rem;
+  color: #10b981;
+  font-weight: 500;
+}
+
+.timeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 0.5rem;
+}
+
+.timeSlot {
+  padding: 0.75rem 0.5rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background-color: white;
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.timeSlot:hover {
+  border-color: #3b82f6;
+  background-color: #f8fafc;
+}
+
+.timeSlotSelected {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+  color: #1d4ed8;
+}
+
+.bookingSummary {
+  background-color: #f8fafc;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.summaryTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.summaryItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.summaryItem:last-child {
+  border-bottom: none;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.summaryItem span:first-child {
+  color: #6b7280;
+}
+
+.summaryItem span:last-child {
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.errorMessage {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.bookButton {
+  width: 100%;
+  background-color: #3b82f6;
+  color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border: none;
+}
+
+.bookButton:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.bookButton:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+  .typeOptions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .dateGrid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
+  .timeGrid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  .bookButton {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}

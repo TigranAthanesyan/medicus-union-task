@@ -31,8 +31,7 @@ export default function DoctorProfilePage() {
       router.push(`/auth/signin?callbackUrl=/doctors/${doctorId}`);
       return;
     }
-    // TODO: Implement booking functionality
-    console.log("Book Dr.", doctor?.name);
+    router.push(`/doctors/${doctorId}/book`);
   };
 
   const handleStartChat = async () => {
@@ -41,13 +40,12 @@ export default function DoctorProfilePage() {
       return;
     }
 
-    // Only patients can start chats with doctors via the doctor profile page
     if (session.user.role !== UserRole.Patient) {
       console.warn("Only patients can start chats with doctors via this interface");
       return;
     }
 
-    if (isStartingChat) return; // Prevent double-clicks
+    if (isStartingChat) return;
 
     setIsStartingChat(true);
     try {
@@ -57,7 +55,6 @@ export default function DoctorProfilePage() {
       }
     } catch (error) {
       console.error("Failed to start chat:", error);
-      // TODO: Show user-friendly error message
     } finally {
       setIsStartingChat(false);
     }
@@ -136,6 +133,21 @@ export default function DoctorProfilePage() {
                     />
                     {getCountryName(doctor.country)}
                   </p>
+                )}
+
+                {(doctor.consultationPrice || doctor.consultationDuration) && (
+                  <div className={styles.consultationInfo}>
+                    {doctor.consultationDuration && (
+                      <span className={styles.consultationDetail}>
+                        ⏱️ {doctor.consultationDuration} min
+                      </span>
+                    )}
+                    {doctor.consultationPrice && (
+                      <span className={styles.consultationDetail}>
+                        💰 {doctor.consultationCurrency || 'USD'} {doctor.consultationPrice}
+                      </span>
+                    )}
+                  </div>
                 )}
 
                 <div className={styles.headerActions}>
