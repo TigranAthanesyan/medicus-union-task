@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import MainContainer from "@/components/MainContainer";
+import InputField from "@/components/InputField";
 import styles from "./styles.module.css";
-import InputField from "../../../components/InputField";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -38,7 +39,7 @@ export default function SignIn() {
   };
 
   return (
-    <div className={styles.container}>
+    <MainContainer>
       <div className={styles.card}>
         <h1 className={styles.title}>Sign In</h1>
 
@@ -83,6 +84,6 @@ export default function SignIn() {
           </a>
         </div>
       </div>
-    </div>
+    </MainContainer>
   );
 }

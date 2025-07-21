@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useSignUpForm } from "../../../hooks/useSignUpForm";
+import MainContainer from "../../../components/MainContainer";
 import ErrorMessage from "../../../components/ErrorMessage";
 import InputField from "../../../components/InputField";
 import RoleSelector from "../../../components/RoleSelector";
@@ -66,7 +67,7 @@ export default function SignUp(): React.ReactElement {
   const isFormDisabled = loading.form || loading.avatar;
 
   return (
-    <div className={styles.container}>
+    <MainContainer>
       <div className={styles.formContainer}>
         <h1 className={styles.title}>{SECTION_TITLES.SIGN_UP}</h1>
 
@@ -166,6 +167,6 @@ export default function SignUp(): React.ReactElement {
           </a>
         </div>
       </div>
-    </div>
+    </MainContainer>
   );
 }

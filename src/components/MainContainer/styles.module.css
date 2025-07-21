@@ -1,0 +1,35 @@
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 16px;
+  gap: 24px;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 25%, #f1f5f9 50%, #fafafa 75%, #ffffff 100%);
+  overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 24px 32px;
+    gap: 28px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 20%, #f1f5f9 40%, #fafafa 60%, #ffffff 80%, #f8fafc 100%);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 32px 48px;
+    gap: 32px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 15%, #f1f5f9 30%, #fafafa 45%, #ffffff 60%, #f8fafc 75%, #f0f9ff 100%);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    padding: 40px 64px;
+    gap: 36px;
+  }
+}

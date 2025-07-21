@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import MainContainer from "../../../components/MainContainer";
 import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import useDoctorDataById from "../../../hooks/useDoctorDataById";
 import { useConversations } from "../../../hooks/useConversations";
@@ -222,13 +223,8 @@ export default function DoctorProfilePage() {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.navigationBar}>
-        <Link href="/doctors" className={styles.backLink}>
-          ← Back to Doctors
-        </Link>
-      </div>
+    <MainContainer>
       {renderContent()}
-    </div>
+    </MainContainer>
   );
 }

@@ -24,8 +24,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, showSpecializati
       router.push("/auth/signin?callbackUrl=/doctors");
       return;
     }
-    // TODO: Implement booking functionality
-    console.log("Book Dr.", doctor.name);
+    router.push(`/doctors/${doctor.id}/book`);
   };
 
   const handleSpecializationClick = (specializationKey: string) => {

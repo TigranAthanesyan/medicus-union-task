@@ -1,15 +1,6 @@
-.container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #ffffff;
-  padding: 16px;
-}
-
 .formContainer {
   background-color: #ffffff;
-  padding: 32px;
+  padding: 16px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
   width: 100%;

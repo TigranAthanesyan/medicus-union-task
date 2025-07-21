@@ -4,6 +4,7 @@ import React from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import MainContainer from "@/components/MainContainer";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { DoctorSummary } from "@/components/DoctorSummary";
 import { BookingForm } from "@/components/BookingForm";
@@ -42,9 +43,9 @@ export default function BookConsultationPage() {
   }
 
   return (
-    <div className={styles.container}>
+    <MainContainer>
       <DoctorSummary doctor={doctor} />
       <BookingForm doctor={doctor} />
-    </div>
+    </MainContainer>
   );
 }

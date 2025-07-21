@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import MainContainer from "../../components/MainContainer";
 import { DoctorCard } from "../../components/DoctorCard";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import useDoctorsData from "../../hooks/useDoctorsData";
@@ -181,7 +182,7 @@ export default function DoctorsPage() {
   };
 
   return (
-    <div className={styles.container}>
+    <MainContainer>
       <header className={styles.header}>
         <h1 className={styles.title}>Find Your Doctor</h1>
         <p className={styles.subtitle}>
@@ -189,6 +190,6 @@ export default function DoctorsPage() {
         </p>
       </header>
       {renderContent()}
-    </div>
+    </MainContainer>
   );
 }

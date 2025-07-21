@@ -1,13 +1,3 @@
-.container {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  gap: 16px;
-  background-color: #f8fafc;
-}
-
 .loadingContainer, .errorContainer {
   display: flex;
   flex-direction: column;
