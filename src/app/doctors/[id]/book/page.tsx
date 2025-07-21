@@ -23,29 +23,37 @@ export default function BookConsultationPage() {
   
   const { doctor, status } = useDoctorDataById(doctorId);
 
-  if (status === DataFetchStatus.InProgress || status === DataFetchStatus.Initial || !session) {
-    return (
-      <div className={styles.loadingContainer}>
-        <LoadingSpinner />
-        <p>Loading...</p>
-      </div>
-    );
-  }
+  const renderContent = () => {
+    if (status === DataFetchStatus.InProgress || status === DataFetchStatus.Initial || !session) {
+      return (
+        <div className={styles.loadingContainer}>
+          <LoadingSpinner />
+          <p>Loading...</p>
+        </div>
+      );
+    }
+  
+    if (status === DataFetchStatus.Error || !doctor) {
+      return (
+        <div className={styles.errorContainer}>
+          <h2>Doctor Not Found</h2>
+          <p>The doctor you&apos;re trying to book with doesn&apos;t exist.</p>
+          <Link href="/doctors" className={styles.backButton}>Browse All Doctors</Link>
+        </div>
+      );
+    }
 
-  if (status === DataFetchStatus.Error || !doctor) {
     return (
-      <div className={styles.errorContainer}>
-        <h2>Doctor Not Found</h2>
-        <p>The doctor you&apos;re trying to book with doesn&apos;t exist.</p>
-        <Link href="/doctors" className={styles.backButton}>Browse All Doctors</Link>
-      </div>
+      <>
+        <DoctorSummary doctor={doctor} />
+        <BookingForm doctor={doctor} />
+      </>
     );
   }
 
   return (
     <MainContainer>
-      <DoctorSummary doctor={doctor} />
-      <BookingForm doctor={doctor} />
+      {renderContent()}
     </MainContainer>
   );
 }

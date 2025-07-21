@@ -209,7 +209,7 @@
   justify-content: center;
   min-height: 60vh;
   gap: 1rem;
-  color: white;
+  margin: auto;
 }
 
 .errorContainer {
@@ -218,9 +218,9 @@
   align-items: center;
   justify-content: center;
   min-height: 60vh;
-  gap: 1rem;
-  color: white;
+  gap: 8px;
   text-align: center;
+  margin: auto;
 }
 
 .backButton {
@@ -232,6 +232,7 @@
   font-weight: 600;
   transition: all 0.2s ease;
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+  border: 1px solid #3b82f6;
 }
 
 .backButton:hover {
