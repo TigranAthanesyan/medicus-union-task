@@ -32,6 +32,50 @@ export const getTimeString = (hours: number, minutes: number) => {
   return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 };
 
+export const getDateTimeShortTexts = (dateTime: string): { date: string; time: string } => {
+  const dt = new Date(dateTime);
+  const now = new Date();
+  const isToday = dt.toDateString() === now.toDateString();
+  const isTomorrow = dt.toDateString() === new Date(now.getTime() + 24 * 60 * 60 * 1000).toDateString();
+  
+  let dateStr = "";
+  if (isToday) {
+    dateStr = "Today";
+  } else if (isTomorrow) {
+    dateStr = "Tomorrow";
+  } else {
+    dateStr = dt.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric',
+      year: dt.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+    });
+  }
+
+  return {
+    date: dateStr,
+    time: dt.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    })
+  };
+};
+
+export const getDateTimeLongTexts = (dateTime: string): { date: string; time: string } => {
+  const dt = new Date(dateTime);
+  return {
+    date: dt.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    }),
+    time: dt.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    })
+  };
+};
+
 export const getCurrencySymbol = (currency: string) => {
   switch (currency) {
     case "EUR":

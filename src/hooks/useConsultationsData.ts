@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { ConsultationDTO, DataFetchStatus } from "@/types";
+import { ConsultationDTO, ConsultationsApiResponse, DataFetchStatus } from "@/types";
 
 const useConsultationsData = () => {
     const { data: session } = useSession();
@@ -13,10 +13,10 @@ const useConsultationsData = () => {
   
       try {
         const response = await fetch("/api/consultations");
-        const data = await response.json();
+        const data: ConsultationsApiResponse = await response.json();
   
         if (data.success) {
-          setConsultations(data.data);
+          setConsultations(data.data || []);
           setStatus(DataFetchStatus.Success);
         } else {
           setStatus(DataFetchStatus.Error);
@@ -33,7 +33,7 @@ const useConsultationsData = () => {
       }
     }, [fetchConsultations, session]);
 
-    return { consultations, status };
+    return { consultations, status, fetchConsultations };
 };
 
 export default useConsultationsData;

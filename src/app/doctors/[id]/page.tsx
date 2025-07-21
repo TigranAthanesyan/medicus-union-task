@@ -10,6 +10,7 @@ import { LoadingSpinner } from "../../../components/LoadingSpinner";
 import useDoctorDataById from "../../../hooks/useDoctorDataById";
 import { useConversations } from "../../../hooks/useConversations";
 import { getCountryName, getCountryFlagUrl } from "../../../utils/countries";
+import { getCurrencySymbol } from "../../../utils/formatting";
 import { DataFetchStatus, UserRole } from "../../../types";
 import styles from "./styles.module.css";
 
@@ -105,7 +106,7 @@ export default function DoctorProfilePage() {
           </div>
 
           <div className={styles.doctorBasicInfo}>
-            <h1 className={styles.doctorName}>Dr. {doctor.name}</h1>
+            <h1 className={styles.doctorName}>{doctor.name}</h1>
 
             {doctor.specializationsDisplayData && doctor.specializationsDisplayData.length > 0 && (
               <div className={styles.specializationsContainer}>
@@ -143,7 +144,7 @@ export default function DoctorProfilePage() {
                 )}
                 {doctor.consultationPrice && (
                   <span className={styles.consultationDetail}>
-                    💰 {doctor.consultationCurrency || 'USD'} {doctor.consultationPrice}
+                    💰 {getCurrencySymbol(doctor.consultationCurrency || 'USD')} {doctor.consultationPrice}
                   </span>
                 )}
               </div>

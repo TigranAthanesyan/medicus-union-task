@@ -1,4 +1,4 @@
-import { UserSummary } from "./user";
+import { UserDTO } from "./user";
 import { BaseApiResponse } from "./common";
 import { IUser } from "../models/User";
 import { IConsultation } from "../models/Consultation";
@@ -32,8 +32,8 @@ export type CreateConsultationInput = Omit<BaseConsultation, 'status'>;
 
 export interface ConsultationDTO extends BaseConsultation {
   id: string;
-  doctor: UserSummary;
-  patient: UserSummary;
+  doctor: UserDTO;
+  patient: UserDTO;
   price: number;
   currency: string;
   createdAt: Date;
