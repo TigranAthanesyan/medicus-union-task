@@ -55,11 +55,12 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({ conversation
             <span className={styles.noMessages}>No messages yet</span>
           )}
 
-          {conversation.unreadCount > 0 && (
+          {/* TODO: Add unread count */}
+          {/* {conversation.unreadCount > 0 && (
             <span className={styles.unreadBadge}>
               {conversation.unreadCount > 99 ? "99+" : conversation.unreadCount}
             </span>
-          )}
+          )} */}
         </div>
       </div>
     </button>

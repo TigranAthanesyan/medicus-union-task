@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
@@ -26,9 +25,7 @@ export default function Consultation() {
 
   const { consultation, status, updateStatus, updateConsultation, saveNotesEnabled, setNotes, notes } = useConsultationData(consultationId);
 
-  const { createConversation } = useConversations();
-
-  const [isStartingChat, setIsStartingChat] = useState(false);
+  const { createConversation, creatingConversation } = useConversations();
 
   const canApproveOrDecline = (): boolean => {
     return !!(
@@ -61,9 +58,8 @@ export default function Consultation() {
   };
 
   const handleStartChat = async () => {
-    if (isStartingChat || !consultation) return;
+    if (creatingConversation || !consultation) return;
 
-    setIsStartingChat(true);
     try {
       const conversationId = await createConversation(
         session?.user.role === UserRole.Doctor ? consultation.patient.id : consultation.doctor.id,
@@ -72,10 +68,8 @@ export default function Consultation() {
       if (conversationId) {
         router.push(`/chat/${conversationId}`);
       }
-    } catch (error) {
-      console.error("Failed to start chat:", error);
-    } finally {
-      setIsStartingChat(false);
+    } catch (error: unknown) {
+      console.error("Failed to start chat:", error instanceof Error ? error.message : error);
     }
   };
 
@@ -285,8 +279,8 @@ export default function Consultation() {
             </Link>
           )}
 
-          <button className={styles.chatButton} onClick={handleStartChat} disabled={isStartingChat}>
-            {TYPE_ICON_MAP[ConsultationType.Chat] }{isStartingChat ? " Starting Chat..." : " Start Chat"}
+          <button className={styles.chatButton} onClick={handleStartChat} disabled={creatingConversation}>
+            {TYPE_ICON_MAP[ConsultationType.Chat] }{creatingConversation ? " Starting Chat..." : " Start Chat"}
           </button>
         </SectionWrapper>
       </>

@@ -11,7 +11,7 @@ export const Conversation = () => {
   const params = useParams();
   const conversationId = params.conversationId as string;
 
-  const { conversation, messages, status } = useConversationById(conversationId);
+  const { conversation, messages, status } = useConversationById(conversationId, true);
 
   const { data: session } = useSession();
 

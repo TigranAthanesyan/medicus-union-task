@@ -28,7 +28,7 @@ export const DoctorSummary: React.FC<DoctorSummaryProps> = ({ doctor }) => {
         </div>
 
         <div className={styles.doctorDetails}>
-          <h1 className={styles.doctorName}>Dr. {doctor.name}</h1>
+          <h1 className={styles.doctorName}>{doctor.name}</h1>
           {doctor.specializationsDisplayData && doctor.specializationsDisplayData.length > 0 && (
             <p className={styles.specializations}>
               {doctor.specializationsDisplayData.map(spec => spec.name).join(", ")}

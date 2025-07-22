@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
-import { AVATAR_MAX_SIZE, AVATAR_MAX_SIZE_DISPLAY } from "../../constants/global";
-import { SUPPORTED_IMAGE_FORMATS, SUPPORTED_IMAGE_FORMATS_DISPLAY } from "../../constants/signup";
+import { AVATAR_MAX_SIZE, AVATAR_MAX_SIZE_DISPLAY, SUPPORTED_IMAGE_FORMATS, SUPPORTED_IMAGE_FORMATS_DISPLAY } from "../../constants/signup";
 import { validateFileSize, validateFileType } from "../../utils/validation";
 import InputLabel from "../InputLabel";
 import Loading from "../Loading";

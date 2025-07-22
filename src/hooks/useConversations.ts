@@ -4,37 +4,17 @@ import { useEffect, useCallback, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useStore } from "../store";
 import { conversationDTOToConversationSummary } from "../utils/converters";
-import { CreateConversationApiResponse, ConversationSummary } from "../types";
+import { ConversationsApiResponse, ConversationSummary, CreateConversationApiResponse, DataFetchStatus } from "../types";
 
-interface UseConversationsReturn {
-  conversations: ConversationSummary[];
-  loading: boolean;
-  creating: boolean; // TODO: unused
-  error: string | null; // TODO: unused
-  refetch: () => Promise<void>; // TODO: unused
-  createConversation: (targetUserId: string, consultationId?: string) => Promise<string | null>;
-  clearError: () => void; // TODO: unused
-}
-
-export const useConversations = (): UseConversationsReturn => {
+export const useConversations = () => {
   const { data: session } = useSession();
-  const [error, setError] = useState<string | null>(null);
-  const [creating, setCreating] = useState(false);
+
+  const { doctorMapById, doctors} = useStore();
+
+  const [conversations, setConversations] = useState<ConversationSummary[]>([]);
+  const [creatingConversation, setCreatingConversation] = useState(false);
+  const [status, setStatus] = useState<DataFetchStatus>(DataFetchStatus.Initial);
   const createConversationRef = useRef<Promise<string | null> | null>(null);
-
-  const {
-    doctorMapById,
-    doctors,
-    conversations,
-    conversationsLoading,
-    setConversations,
-    setConversationsLoading,
-    addConversation,
-  } = useStore();
-
-  const clearError = useCallback(() => {
-    setError(null);
-  }, []);
 
   const getTargetUser = useCallback(
     async (targetUserId: string) => {
@@ -44,7 +24,6 @@ export const useConversations = (): UseConversationsReturn => {
       try {
         const response = await fetch(`/api/users/${targetUserId}`);
         if (!response.ok) {
-          setError("Failed to fetch target user");
           return null;
         }
 
@@ -62,8 +41,7 @@ export const useConversations = (): UseConversationsReturn => {
     if (!session?.user?.id) return;
 
     try {
-      setConversationsLoading(true);
-      setError(null);
+      setStatus(DataFetchStatus.InProgress);
 
       const response = await fetch("/api/chat/conversations", {
         method: "GET",
@@ -82,44 +60,37 @@ export const useConversations = (): UseConversationsReturn => {
         throw new Error(`Failed to fetch conversations: ${response.status} ${response.statusText}`);
       }
 
-      const { data } = await response.json();
+      const { data }: ConversationsApiResponse = await response.json();
       setConversations(data || []);
+      setStatus(DataFetchStatus.Success);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to fetch conversations";
       console.error("Error fetching conversations:", error);
-      setError(errorMessage);
       setConversations([]);
-    } finally {
-      setConversationsLoading(false);
+      setStatus(DataFetchStatus.Error);
     }
-  }, [session?.user?.id, setConversations, setConversationsLoading]);
+  }, [session?.user?.id, setConversations]);
 
   const createConversation = useCallback(
     async (targetUserId: string, consultationId?: string): Promise<string | null> => {
       if (!session?.user?.id) {
-        setError("User not authenticated");
-        return null;
+        throw new Error("User not authenticated");
       }
 
       if (!session?.user?.role) {
-        setError("User role not found");
-        return null;
+        throw new Error("User role not found");
       }
 
       if (session.user.id === targetUserId) {
-        setError("Cannot create conversation with yourself");
-        return null;
+        throw new Error("Cannot create conversation with yourself");
       }
 
       const targetUser = await getTargetUser(targetUserId);
       if (!targetUser) {
-        setError("Target user not found");
-        return null;
+        throw new Error("Target user not found");
       }
 
       if (targetUser.role === session.user.role) {
-        setError(`You both are ${session.user.role}s`);
-        return null;
+        throw new Error(`You both are ${session.user.role}s`);
       }
 
       if (createConversationRef.current) {
@@ -137,8 +108,7 @@ export const useConversations = (): UseConversationsReturn => {
 
       const createPromise = (async (): Promise<string | null> => {
         try {
-          setCreating(true);
-          setError(null);
+          setCreatingConversation(true);
 
           const requestBody = {
             participants: {
@@ -164,16 +134,14 @@ export const useConversations = (): UseConversationsReturn => {
 
           const conversation = await data.data;
           if (conversation) {
-            addConversation(conversationDTOToConversationSummary(conversation, session.user.id));
+            setConversations([...conversations, conversationDTOToConversationSummary(conversation, session.user.id)]);
           }
           return conversation?.id || null;
         } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : "Failed to create conversation";
           console.error("Error creating conversation:", error);
-          setError(errorMessage);
           return null;
         } finally {
-          setCreating(false);
+          setCreatingConversation(false);
           createConversationRef.current = null;
         }
       })();
@@ -181,7 +149,7 @@ export const useConversations = (): UseConversationsReturn => {
       createConversationRef.current = createPromise;
       return createPromise;
     },
-    [session?.user, conversations, getTargetUser, addConversation]
+    [session?.user, conversations, getTargetUser, setConversations]
   );
 
   useEffect(() => {
@@ -190,17 +158,10 @@ export const useConversations = (): UseConversationsReturn => {
     }
   }, [session?.user?.id, fetchConversations]);
 
-  useEffect(() => {
-    setError(null);
-  }, [session?.user?.id]);
-
   return {
     conversations,
-    loading: conversationsLoading,
-    creating,
-    error,
-    refetch: fetchConversations,
+    status,
+    creatingConversation,
     createConversation,
-    clearError,
   };
 };

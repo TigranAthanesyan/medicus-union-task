@@ -38,6 +38,8 @@ export type ConversationByIdApiResponse = BaseApiResponse<{
 
 export type CreateConversationApiResponse = BaseApiResponse<ConversationDTO>;
 
+export type MessagesApiResponse = BaseApiResponse<PaginatedResponse<MessageDTO>>;
+
 export type SendMessageApiResponse = BaseApiResponse<MessageDTO>;
 
 export type CreateUserRequest = CreateUserInput;

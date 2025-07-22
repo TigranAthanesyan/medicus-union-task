@@ -1,32 +1,29 @@
 "use client";
 
-import { useEffect, useCallback, useMemo, useState } from "react";
+import { useEffect, useCallback, useMemo, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
-import { useStore } from "../store";
-import { ConversationByIdApiResponse, SendMessageApiResponse, DataFetchStatus } from "../types";
+import { ConversationByIdApiResponse, SendMessageApiResponse, DataFetchStatus, ConversationDTO, MessageDTO, MessagesApiResponse } from "../types";
+import { MESSAGES_POLLING_INTERVAL } from "@/constants/global";
 
-export const useConversationById = (conversationId: string | null) => {
+export const useConversationById = (conversationId: string | null, enablePolling: boolean = false) => {
   const { data: session } = useSession();
 
-  const {
-    activeConversation,
-    messages,
-    setActiveConversation,
-    setMessages,
-    addMessage,
-    setNewMessageContent,
-    updateConversationUnread,
-  } = useStore();
-
+  const [conversation, setConversation] = useState<ConversationDTO | null>(null);
+  const [messages, setMessages] = useState<MessageDTO[]>([]);
   const [status, setStatus] = useState<DataFetchStatus>(DataFetchStatus.Initial);
+  const [newMessageContent, setNewMessageContent] = useState<string>("");
+  const [isSendingMessage, setIsSendingMessage] = useState<boolean>(false);
+
+  const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isPollingRef = useRef<boolean>(false);
 
   const participant = useMemo(() => {
-    if (!activeConversation) return null;
+    if (!conversation) return null;
 
-    return session?.user?.id === activeConversation.participants.patient.id
-      ? activeConversation.participants.doctor
-      : activeConversation.participants.patient;
-  }, [activeConversation, session?.user?.id]);
+    return session?.user?.id === conversation.participants.patient.id
+      ? conversation.participants.doctor
+      : conversation.participants.patient;
+  }, [conversation, session?.user?.id]);
 
   const fetchConversationWithMessages = useCallback(async () => {
     if (!conversationId || !session?.user?.id) return;
@@ -50,73 +47,115 @@ export const useConversationById = (conversationId: string | null) => {
         throw new Error("Failed to fetch conversation");
       }
 
-      setActiveConversation(conversationId, data.conversation);
+      setConversation(data.conversation);
       setMessages(data.messages.items || []);
-      updateConversationUnread(conversationId, 0);
       setStatus(DataFetchStatus.Success);
     } catch (error) {
       console.error("Error fetching conversation:", error);
       setMessages([]);
       setStatus(DataFetchStatus.Error);
     }
-  }, [
-    conversationId,
-    session?.user?.id,
-    setActiveConversation,
-    setMessages,
-    updateConversationUnread,
-  ]);
+  }, [conversationId, session?.user?.id, setConversation, setMessages]);
 
-  const sendMessage = useCallback(
-    async (content: string): Promise<boolean> => {
-      if (!conversationId || !session?.user?.id || !content.trim()) return false;
+  const pollForNewMessages = useCallback(async () => {
+    if (!conversationId || !session?.user?.id || isPollingRef.current) return;
 
-      try {
-        const response = await fetch("/api/chat/messages", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            conversationId,
-            content: content.trim(),
-          }),
-        });
+    try {
+      isPollingRef.current = true;
 
-        if (!response.ok) {
-          throw new Error("Failed to send message");
-        }
+      const response = await fetch(`/api/chat/messages/${conversationId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-        const { data }: SendMessageApiResponse = await response.json();
-
-        if (data) {
-          addMessage(data);
-          setNewMessageContent("");
-        }
-
-        return true;
-      } catch (error) {
-        console.error("Error sending message:", error);
-        return false;
+      if (!response.ok) {
+        throw new Error("Failed to poll for messages");
       }
-    },
-    [conversationId, session?.user?.id, addMessage, setNewMessageContent]
-  );
+
+      const { data }: MessagesApiResponse = await response.json();
+      if (data?.items && data.items.length > messages.length) {
+        setMessages(data.items);
+      }
+    } catch (error) {
+      console.error("Error polling for new messages:", error);
+    } finally {
+      isPollingRef.current = false;
+    }
+  }, [conversationId, session?.user?.id, messages, setMessages]);
+
+  const sendMessage = useCallback(async (): Promise<boolean> => {
+    const content = newMessageContent.trim();
+    if (!conversationId || !session?.user?.id || !content) return false;
+
+    try {
+      setIsSendingMessage(true);
+      const response = await fetch("/api/chat/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          conversationId,
+          content: content,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      const { data }: SendMessageApiResponse = await response.json();
+
+      if (data) {
+        setMessages([...messages, data]);
+        setNewMessageContent("");
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error sending message:", error);
+      return false;
+    } finally {
+      setIsSendingMessage(false);
+    }
+  }, [conversationId, messages, newMessageContent, session?.user?.id]);
 
   useEffect(() => {
-    if (conversationId && session?.user?.id) {
+    if (conversationId && session?.user?.id && !conversation) {
       fetchConversationWithMessages();
-    } else {
-      setActiveConversation(null);
-      setMessages([]);
     }
-  }, [conversationId, session?.user?.id, fetchConversationWithMessages, setActiveConversation, setMessages]);
+  }, [conversationId, session?.user?.id, conversation, fetchConversationWithMessages]);
+
+  useEffect(() => {
+    if (enablePolling && conversationId && session?.user?.id && status === DataFetchStatus.Success) {
+      pollingIntervalRef.current = setInterval(() => {
+        pollForNewMessages();
+      }, MESSAGES_POLLING_INTERVAL);
+    } else {
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+        pollingIntervalRef.current = null;
+      }
+    }
+
+    return () => {
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+        pollingIntervalRef.current = null;
+      }
+    };
+  }, [enablePolling, conversationId, session?.user?.id, status, pollForNewMessages]);
 
   return {
-    conversation: activeConversation,
+    conversation,
+    status,
     messages,
     participant,
-    status,
+    isSendingMessage,
+    newMessageContent,
+    setNewMessageContent,
     sendMessage,
   };
 };

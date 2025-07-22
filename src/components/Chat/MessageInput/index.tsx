@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import clsx from "clsx";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useStore } from "@/store";
 import { useConversationById } from "@/hooks/useConversationById";
 import SendMessageIcon from "@/components/icons/sendMessageIcon";
 import styles from "./styles.module.css";
@@ -15,10 +14,7 @@ export const MessageInput = () => {
 
   const { data: session } = useSession();
 
-  const { newMessageContent, setNewMessageContent } = useStore();
-
-  const { conversation, sendMessage } = useConversationById(conversationId);
-  const [isSending, setIsSending] = useState(false);
+  const { conversation, sendMessage, newMessageContent, setNewMessageContent, isSendingMessage } = useConversationById(conversationId);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const currentUserId = session?.user?.id;
@@ -47,38 +43,14 @@ export const MessageInput = () => {
     setNewMessageContent(e.target.value);
   };
 
-  const handleSendMessage = async (content: string) => {
-    if (!content.trim()) return;
-
-    const success = await sendMessage(content);
-    if (success) {
-      setNewMessageContent("");
-    }
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      sendMessage();
     }
   };
 
-  const handleSend = async () => {
-    if (!newMessageContent.trim() || isSending) return;
-
-    setIsSending(true);
-
-    try {
-      await handleSendMessage(newMessageContent.trim());
-      setNewMessageContent("");
-    } catch (error) {
-      console.error("Failed to send message:", error);
-    } finally {
-      setIsSending(false);
-    }
-  };
-
-  const canSend = newMessageContent.trim().length > 0 && !isSending;
+  const canSend = newMessageContent.trim().length > 0 && !isSendingMessage;
 
   return (
     <div className={styles.inputWrapper}>
@@ -89,10 +61,10 @@ export const MessageInput = () => {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          disabled={isSending}
+          disabled={isSendingMessage}
           rows={1}
           maxLength={1000}
-          className={clsx(styles.textarea, { [styles.disabled]: isSending })}
+          className={clsx(styles.textarea, { [styles.disabled]: isSendingMessage })}
         />
       </div>
 
@@ -100,9 +72,9 @@ export const MessageInput = () => {
         <button
           className={clsx(styles.sendButton, {
             [styles.canSend]: canSend,
-            [styles.sending]: isSending,
+            [styles.sending]: isSendingMessage,
           })}
-          onClick={handleSend}
+          onClick={sendMessage}
           disabled={!canSend}
           aria-label="Send message"
         >

@@ -114,7 +114,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ doctor }) => {
           <h3 className={styles.summaryTitle}>Booking Summary</h3>
           <div className={styles.summaryItem}>
             <span>Doctor:</span>
-            <span>Dr. {doctor.name}</span>
+            <span>{doctor.name}</span>
           </div>
           <div className={styles.summaryItem}>
             <span>Date:</span>

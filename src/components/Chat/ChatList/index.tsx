@@ -5,12 +5,13 @@ import { useRouter } from "next/navigation";
 import { useConversations } from "@/hooks/useConversations";
 import Loading from "../../../components/Loading";
 import { ConversationItem } from "../ConversationItem";
+import { DataFetchStatus } from "../../../types";
 import styles from "./styles.module.css";
 
 export const ChatList = () => {
   const router = useRouter();
 
-  const { conversations, loading } = useConversations();
+  const { conversations, status } = useConversations();
 
   const onConversationSelect = (conversationId: string) => {
     router.push(`/chat/${conversationId}`);
@@ -20,7 +21,7 @@ export const ChatList = () => {
     router.push("/doctors");
   };
 
-  if (loading) {
+  if (status === DataFetchStatus.Initial || status === DataFetchStatus.InProgress) {
     return <Loading size="large" message="Loading conversations..." />;
   }
 

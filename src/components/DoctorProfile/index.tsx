@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -20,8 +20,7 @@ export default function DoctorProfile() {
 
   const doctorId = params.id as string;
   const { doctor, status } = useDoctorDataById(doctorId);
-  const { createConversation } = useConversations();
-  const [isStartingChat, setIsStartingChat] = useState(false);
+  const { createConversation, creatingConversation } = useConversations();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -46,9 +45,8 @@ export default function DoctorProfile() {
       return;
     }
 
-    if (isStartingChat) return;
+    if (creatingConversation) return;
 
-    setIsStartingChat(true);
     try {
       const conversationId = await createConversation(doctorId);
       if (conversationId) {
@@ -56,8 +54,6 @@ export default function DoctorProfile() {
       }
     } catch (error) {
       console.error("Failed to start chat:", error);
-    } finally {
-      setIsStartingChat(false);
     }
   };
 
@@ -149,8 +145,8 @@ export default function DoctorProfile() {
                 Book Consultation
               </button>
               {session?.user?.role === UserRole.Patient && (
-                <button className={styles.chatButton} onClick={handleStartChat} disabled={isStartingChat}>
-                  {isStartingChat ? "Starting Chat..." : "Start Chat"}
+                <button className={styles.chatButton} onClick={handleStartChat} disabled={creatingConversation}>
+                  {creatingConversation ? "Starting Chat..." : "Start Chat"}
                 </button>
               )}
             </div>
