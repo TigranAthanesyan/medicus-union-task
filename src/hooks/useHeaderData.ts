@@ -78,7 +78,7 @@ export const useHeaderData = (onToggleSidebar?: () => void): HeaderData => {
       baseItems.push({
         icon: LogoutIcon,
         label: 'Sign Out',
-        onClick: () => signOut().finally(() => router.push('/')),
+        onClick: () => signOut({ redirect: false }).then(() => router.push('/')),
       });
     } else {
       baseItems.push({
