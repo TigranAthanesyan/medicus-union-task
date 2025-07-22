@@ -2,16 +2,16 @@
 
 import React, { useRef, useEffect } from "react";
 import clsx from "clsx";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useConversationById } from "@/hooks/useConversationById";
 import SendMessageIcon from "@/components/icons/sendMessageIcon";
 import styles from "./styles.module.css";
 
-export const MessageInput = () => {
-  const params = useParams();
-  const conversationId = params.conversationId as string;
+type MessageInputProps = {
+  conversationId: string;
+}
 
+export const MessageInput = ({ conversationId }: MessageInputProps) => {
   const { data: session } = useSession();
 
   const { conversation, sendMessage, newMessageContent, setNewMessageContent, isSendingMessage } = useConversationById(conversationId);

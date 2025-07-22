@@ -21,26 +21,34 @@ export const ChatList = () => {
     router.push("/doctors");
   };
 
-  if (status === DataFetchStatus.Initial || status === DataFetchStatus.InProgress) {
-    return <Loading size="large" message="Loading conversations..." />;
+  const renderContent = () => {
+    if (status === DataFetchStatus.Initial || status === DataFetchStatus.InProgress) {
+      return <Loading size="large" message="Loading conversations..." />;
+    }
+  
+    if (conversations.length === 0) {
+      return (
+        <div className={styles.centralizedContainer}>
+          <div className={styles.emptyIcon}>💬</div>
+          <h3 className={styles.emptyTitle}>No conversations yet</h3>
+          <p className={styles.emptyDescription}>Start a conversation with a doctor to begin messaging</p>
+          <button className={styles.findDoctorsButton} onClick={onFindDoctorsClick}>Find your doctor</button>
+        </div>
+      );
+    }
+  
+    return conversations.map((conversation) => (
+      <ConversationItem
+        key={conversation.id}
+        conversation={conversation}
+        onClick={() => onConversationSelect(conversation.id)}
+      />
+    ))
   }
 
-  if (conversations.length === 0) {
-    return (
-      <div className={styles.centralizedContainer}>
-        <div className={styles.emptyIcon}>💬</div>
-        <h3 className={styles.emptyTitle}>No conversations yet</h3>
-        <p className={styles.emptyDescription}>Start a conversation with a doctor to begin messaging</p>
-        <button className={styles.findDoctorsButton} onClick={onFindDoctorsClick}>Find your doctor</button>
-      </div>
-    );
-  }
-
-  return conversations.map((conversation) => (
-    <ConversationItem
-      key={conversation.id}
-      conversation={conversation}
-      onClick={() => onConversationSelect(conversation.id)}
-    />
-  ))
+  return (
+    <div className={styles.container}>
+      {renderContent()}
+    </div>
+  );
 };

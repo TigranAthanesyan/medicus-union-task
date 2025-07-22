@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import useConsultationData from "@/hooks/useConsultationData";
@@ -12,16 +12,15 @@ import MainContainer from "../MainContainer";
 import SectionWrapper from "../SectionWrapper";
 import styles from "./styles.module.css";
 
-export default function Consultation() {
+type ConsultationProps = {
+  consultationId: string;
+  isJustBooked?: boolean;
+}
+
+export default function Consultation({ consultationId, isJustBooked }: ConsultationProps) {
   const router = useRouter();
-  const params = useParams();
-  const searchParams = useSearchParams();
-
-  const { data: session } = useSession();
-
-  const consultationId = params.id as string;
   
-  const isSuccessFlow = searchParams?.get("success") === "true";
+  const { data: session } = useSession();
 
   const { consultation, status, updateStatus, updateConsultation, saveNotesEnabled, setNotes, notes } = useConsultationData(consultationId);
 
@@ -130,7 +129,7 @@ export default function Consultation() {
 
     return (
       <>
-        {isSuccessFlow && (
+        {isJustBooked && (
           <div className={styles.successBanner}>
             <div className={styles.successIcon}>🎉</div>
             <div className={styles.successContent}>

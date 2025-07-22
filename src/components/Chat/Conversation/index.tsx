@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useConversationById } from "@/hooks/useConversationById";
 import { DataFetchStatus, MessageDTO } from "@/types";
@@ -7,10 +6,11 @@ import Loading from "../../Loading";
 import { MessageBubble } from "../MessageBubble";
 import styles from "./styles.module.css";
 
-export const Conversation = () => {
-  const params = useParams();
-  const conversationId = params.conversationId as string;
+type ConversationProps = {
+  conversationId: string;
+}
 
+export const Conversation = ({ conversationId }: ConversationProps) => {
   const { conversation, messages, status } = useConversationById(conversationId, true);
 
   const { data: session } = useSession();

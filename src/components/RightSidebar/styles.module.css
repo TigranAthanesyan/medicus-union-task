@@ -9,6 +9,8 @@
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
+  padding-top: 64px;
+  padding-right: 16px;
 }
 
 .sidebar {
@@ -17,7 +19,7 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   padding: 8px 0;
   animation: slideIn 0.2s ease-out;
-  min-width: 200px;
+  min-width: 240px;
 }
 
 @keyframes slideIn {

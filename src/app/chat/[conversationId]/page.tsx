@@ -15,8 +15,8 @@ export default function ConversationPage() {
 
   return (
     <div className={styles.container}>
-      <Conversation />
-      <MessageInput />
-    </div>
+      <Conversation conversationId={conversationId} />
+      <MessageInput conversationId={conversationId} />
+    </div>  
   );
 }

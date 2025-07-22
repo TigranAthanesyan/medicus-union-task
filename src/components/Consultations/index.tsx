@@ -17,6 +17,7 @@ type StatusFilter = 'all' | ConsultationStatus;
 
 export default function Consultations() {
   const router = useRouter();
+
   const { data: session } = useSession();
 
   const { consultations, status, fetchConsultations } = useConsultationsData();

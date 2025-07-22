@@ -1,6 +1,6 @@
 
-import React, { useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import React from "react";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,18 +13,18 @@ import { getCurrencySymbol } from "../../utils/formatting";
 import { DataFetchStatus, UserRole } from "../../types";
 import styles from "./styles.module.css";
 
-export default function DoctorProfile() {
+type DoctorProfileProps = {
+  doctorId: string;
+}
+
+export default function DoctorProfile({ doctorId }: DoctorProfileProps) {
   const router = useRouter();
-  const params = useParams();
+  
   const { data: session } = useSession();
-
-  const doctorId = params.id as string;
+  
   const { doctor, status } = useDoctorDataById(doctorId);
-  const { createConversation, creatingConversation } = useConversations();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  const { createConversation, creatingConversation } = useConversations();
 
   const handleBookNow = () => {
     if (!session) {

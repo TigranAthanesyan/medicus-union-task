@@ -2,53 +2,14 @@
 
 import React from "react";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import MainContainer from "@/components/MainContainer";
-import Loading from "@/components/Loading";
-import { DoctorSummary } from "@/components/DoctorSummary";
-import { BookingForm } from "@/components/BookingForm";
 import useLoggedIn from "@/hooks/useLoggedIn";
-import useDoctorDataById from "@/hooks/useDoctorDataById";
-import { DataFetchStatus } from "@/types";
-import styles from "./styles.module.css";
+import BookConsultation from "@/components/BookConsultation";
 
 export default function BookConsultationPage() {
-  const { data: session } = useSession();
-
   const params = useParams();
   const doctorId = params.id as string;
 
   useLoggedIn(`/doctors/${doctorId}/book`);
   
-  const { doctor, status } = useDoctorDataById(doctorId);
-
-  const renderContent = () => {
-    if (status === DataFetchStatus.InProgress || status === DataFetchStatus.Initial || !session) {
-      return <Loading />;
-    }
-  
-    if (status === DataFetchStatus.Error || !doctor) {
-      return (
-        <div className={styles.errorContainer}>
-          <h2>Doctor Not Found</h2>
-          <p>The doctor you&apos;re trying to book with doesn&apos;t exist.</p>
-          <Link href="/doctors" className={styles.backButton}>Browse All Doctors</Link>
-        </div>
-      );
-    }
-
-    return (
-      <>
-        <DoctorSummary doctor={doctor} />
-        <BookingForm doctor={doctor} />
-      </>
-    );
-  }
-
-  return (
-    <MainContainer>
-      {renderContent()}
-    </MainContainer>
-  );
+  return <BookConsultation doctorId={doctorId} />;
 }

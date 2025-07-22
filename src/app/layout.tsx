@@ -1,3 +1,4 @@
+import { PropsWithChildren } from "react";
 import type { Metadata } from "next";
 import Providers from "../components/Providers";
 import Layout from "../components/Layout";
@@ -8,11 +9,7 @@ export const metadata: Metadata = {
   description: "Consultation Booking & Chat",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <body cz-shortcut-listen="true">

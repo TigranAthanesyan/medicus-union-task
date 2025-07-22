@@ -42,14 +42,6 @@ export const useHeaderData = (onToggleSidebar?: () => void): HeaderData => {
       });
     }
 
-    if (path !== Path.Conversations && path !== Path.Conversation) {
-      baseItems.push({
-        icon: MessageIcon,
-        label: 'Messages',
-        onClick: () => router.push('/chat'),
-      });
-    }
-
     if (path !== Path.Doctors && path !== Path.Doctor) {
       baseItems.push({
         icon: DoctorIcon,
@@ -57,24 +49,32 @@ export const useHeaderData = (onToggleSidebar?: () => void): HeaderData => {
         onClick: () => router.push('/doctors'),
       });
     }
-
-    if (path !== Path.Consultations && path !== Path.Consultation) {
-      baseItems.push({
-        icon: ConsultationIcon,
-        label: 'Consultations',
-        onClick: () => router.push('/consultations'),
-      });
-    }
-
-    if (path !== Path.Profile) {
-      baseItems.push({
-        icon: ProfileIcon,
-        label: 'Profile',
-        onClick: () => router.push('/profile'),
-      });
-    }
-
+    
     if (session) {
+      if (path !== Path.Conversations && path !== Path.Conversation) {
+        baseItems.push({
+          icon: MessageIcon,
+          label: 'Messages',
+          onClick: () => router.push('/chat'),
+        });
+      }
+
+      if (path !== Path.Consultations && path !== Path.Consultation) {
+        baseItems.push({
+          icon: ConsultationIcon,
+          label: 'Consultations',
+          onClick: () => router.push('/consultations'),
+        });
+      }
+
+      if (path !== Path.Profile) {
+        baseItems.push({
+          icon: ProfileIcon,
+          label: 'Profile',
+          onClick: () => router.push('/profile'),
+        });
+      }
+
       baseItems.push({
         icon: LogoutIcon,
         label: 'Sign Out',
@@ -91,15 +91,22 @@ export const useHeaderData = (onToggleSidebar?: () => void): HeaderData => {
     return baseItems;
   }, [path, session, router]);
 
-  const goBackAction: ActionIconData = {
+  const goBackAction: ActionIconData = useMemo(() => ({
     icon: BackIcon,
     onClick: () => router.back(),
-  };
+  }), [router]);
 
-  const openRightSidebarAction: ActionIconData = {
+  const leftAction = useMemo(() => {
+    if (path === Path.Home) {
+      return null;
+    }
+    return goBackAction;
+  }, [goBackAction, path]);
+
+  const rightAction: ActionIconData = useMemo(() => ({
     icon: DotsActionIcon,
     onClick: onToggleSidebar || (() => {}),
-  };
+  }), [onToggleSidebar]);
 
   const mainContent: MainContent = useMemo(() => {
     switch (path) {
@@ -121,8 +128,8 @@ export const useHeaderData = (onToggleSidebar?: () => void): HeaderData => {
   }, [path]);
 
   return {
-    leftAction: goBackAction,
-    rightAction: openRightSidebarAction,
+    leftAction,
+    rightAction,
     actionItems,
     mainContent,
   };
