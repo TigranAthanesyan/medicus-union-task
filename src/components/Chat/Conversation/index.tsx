@@ -2,8 +2,8 @@ import { useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useConversationById } from "@/hooks/useConversationById";
-import { MessageDTO } from "@/types";
-import { LoadingSpinner } from "../../LoadingSpinner";
+import { DataFetchStatus, MessageDTO } from "@/types";
+import Loading from "../../Loading";
 import { MessageBubble } from "../MessageBubble";
 import styles from "./styles.module.css";
 
@@ -11,7 +11,7 @@ export const Conversation = () => {
   const params = useParams();
   const conversationId = params.conversationId as string;
 
-  const { conversation, messages, loading } = useConversationById(conversationId);
+  const { conversation, messages, status } = useConversationById(conversationId);
 
   const { data: session } = useSession();
 
@@ -42,13 +42,8 @@ export const Conversation = () => {
   }
 
   const renderConversation = () => {
-    if (loading) {
-      return (
-        <div className={styles.centralizedContainer}>
-          <LoadingSpinner size="large" />
-          <span className={styles.loadingText}>Loading conversation...</span>
-        </div>
-      );
+    if (status === DataFetchStatus.Initial || status === DataFetchStatus.InProgress) {
+      return <Loading size="large" message="Loading conversation..." />;
     }
 
     if (!conversation) {

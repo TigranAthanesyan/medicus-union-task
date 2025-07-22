@@ -41,9 +41,7 @@ export const messageToMessageDTO = (msg: IMessage, sender: IUser): MessageDTO =>
   senderId: msg.senderId.toString(),
   sender: userToUserSummary(sender),
   content: msg.content,
-  type: msg.type,
   status: msg.status,
-  attachments: msg.attachments,
   createdAt: msg.createdAt,
   updatedAt: msg.updatedAt,
 });

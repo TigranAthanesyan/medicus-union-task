@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import MainContainer from "../MainContainer";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import useConsultationsData from "@/hooks/useConsultationsData";
 import { getCurrencySymbol, getDateTimeShortTexts } from "@/utils/formatting";
+import MainContainer from "@/components/MainContainer";
+import Loading from "@/components/Loading";
 import { ConsultationDTO, ConsultationStatus, DataFetchStatus, UserRole } from "@/types";
 import { STATUS_COLOR_MAP, STATUS_ICON_MAP, TYPE_ICON_MAP } from "@/constants/consultation";
 import styles from "./styles.module.css";
@@ -82,12 +82,7 @@ export default function Consultations() {
 
   const renderContent = () => {
     if (status === DataFetchStatus.Initial || status === DataFetchStatus.InProgress || !session) {
-      return (
-        <div className={styles.loadingContainer}>
-          <LoadingSpinner />
-          <p>Loading consultations...</p>
-        </div>
-      );
+      return <Loading message="Loading consultations..." />;
     }
 
     if (status === DataFetchStatus.Error) {

@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import MainContainer from "@/components/MainContainer";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
+import Loading from "@/components/Loading";
 import { DoctorSummary } from "@/components/DoctorSummary";
 import { BookingForm } from "@/components/BookingForm";
 import useLoggedIn from "@/hooks/useLoggedIn";
@@ -25,12 +25,7 @@ export default function BookConsultationPage() {
 
   const renderContent = () => {
     if (status === DataFetchStatus.InProgress || status === DataFetchStatus.Initial || !session) {
-      return (
-        <div className={styles.loadingContainer}>
-          <LoadingSpinner />
-          <p>Loading...</p>
-        </div>
-      );
+      return <Loading />;
     }
   
     if (status === DataFetchStatus.Error || !doctor) {

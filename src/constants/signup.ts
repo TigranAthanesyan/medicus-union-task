@@ -5,6 +5,8 @@ export const FORM_VALIDATION = {
   MAX_NAME_LENGTH: 100,
   MAX_DESCRIPTION_LENGTH: 500,
   MAX_SPECIALIZATION_LENGTH: 100,
+  MIN_CONSULTATION_PRICE: 0,
+  MAX_CONSULTATION_PRICE: 10000,
 } as const;
 
 export const PLACEHOLDERS = {
@@ -15,6 +17,7 @@ export const PLACEHOLDERS = {
   SPECIALIZATION: "e.g., Cardiology, Pediatrics, General Medicine",
   DESCRIPTION: "Brief description about your practice and expertise",
   EXPERIENCE: "e.g., 5",
+  CONSULTATION_PRICE: "e.g., 150",
   PHONE: "e.g., +1 (555) 123-4567",
   DATE_OF_BIRTH: "Select your date of birth",
   COUNTRY: "Select your country",
@@ -29,6 +32,8 @@ export const FORM_LABELS = {
   SPECIALIZATION: "Specialization",
   DESCRIPTION: "Description",
   EXPERIENCE: "Years of Experience (optional)",
+  CONSULTATION_PRICE: "Consultation Price",
+  CONSULTATION_CURRENCY: "Currency",
   PHONE: "Phone Number",
   DATE_OF_BIRTH: "Date of Birth",
   COUNTRY: "Country",
@@ -46,20 +51,22 @@ export const VALIDATION_MESSAGES = {
   PASSWORDS_DONT_MATCH: "Passwords do not match",
   PHONE_INVALID: "Please enter a valid phone number",
   EXPERIENCE_INVALID: `Experience must be between 0 and ${FORM_VALIDATION.MAX_EXPERIENCE_YEARS} years`,
+  CONSULTATION_PRICE_INVALID: `Consultation price must be between ${FORM_VALIDATION.MIN_CONSULTATION_PRICE} and ${FORM_VALIDATION.MAX_CONSULTATION_PRICE}`,
   FILE_SIZE_TOO_LARGE: "File size is too large",
   FILE_TYPE_INVALID: "Please select a valid image file",
   SPECIALIZATION_REQUIRED: "Specialization is required for doctors",
   DESCRIPTION_REQUIRED: "Description is required for doctors",
+  CONSULTATION_PRICE_REQUIRED: "Consultation price is required for doctors",
 } as const;
 
 export const LOADING_MESSAGES = {
   UPLOADING_AVATAR: "Uploading avatar...",
-  CREATING_ACCOUNT: "Creating account...",
+  CREATING_ACCOUNT: "Creating account & signing in...",
   VALIDATING: "Validating...",
 } as const;
 
 export const SUCCESS_MESSAGES = {
-  REGISTRATION_SUCCESS: "Registration successful! Please sign in.",
+  REGISTRATION_SUCCESS: "Account created! Signing you in...",
   AVATAR_UPLOADED: "Avatar uploaded successfully",
 } as const;
 
@@ -81,3 +88,9 @@ export const SECTION_TITLES = {
   DOCTOR_INFORMATION: "Doctor Information",
   PERSONAL_INFORMATION: "Personal Information (Optional)",
 } as const;
+
+export const CURRENCIES = [
+  { value: "USD", label: "USD ($)" },
+  { value: "EUR", label: "EUR (€)" },
+  { value: "GBP", label: "GBP (£)" },
+] as const;

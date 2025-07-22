@@ -12,6 +12,8 @@ declare module "next-auth" {
       specializations?: string[];
       description?: string;
       experience?: number;
+      consultationPrice?: number;
+      consultationCurrency?: string;
     } & DefaultSession["user"];
   }
 
@@ -22,6 +24,8 @@ declare module "next-auth" {
     specializations?: string[];
     description?: string;
     experience?: number;
+    consultationPrice?: number;
+    consultationCurrency?: string;
   }
 }
 
@@ -34,5 +38,7 @@ declare module "next-auth/jwt" {
     specializations?: string[];
     description?: string;
     experience?: number;
+    consultationPrice?: number;
+    consultationCurrency?: string;
   }
 }

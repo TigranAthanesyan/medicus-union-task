@@ -20,6 +20,8 @@ export async function POST(request: Request) {
       specializations,
       description,
       experience,
+      consultationPrice,
+      consultationCurrency,
     } = body;
 
     if (!email || !password || !name) {
@@ -77,6 +79,12 @@ export async function POST(request: Request) {
       if (experience !== undefined && experience > 0) {
         userData.experience = experience;
       }
+      if (consultationPrice !== undefined && consultationPrice > 0) {
+        userData.consultationPrice = consultationPrice;
+      }
+      if (consultationCurrency) {
+        userData.consultationCurrency = consultationCurrency;
+      }
     }
 
     const user = new User(userData);
@@ -111,6 +119,12 @@ export async function POST(request: Request) {
       responseUser.description = user.description;
       if (user.experience) {
         responseUser.experience = user.experience;
+      }
+      if (user.consultationPrice) {
+        responseUser.consultationPrice = user.consultationPrice;
+      }
+      if (user.consultationCurrency) {
+        responseUser.consultationCurrency = user.consultationCurrency;
       }
     }
 

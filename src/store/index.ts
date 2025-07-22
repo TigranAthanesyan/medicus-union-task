@@ -12,9 +12,7 @@ export const useStore = create<State>((set, get) => ({
   activeConversationId: null,
   activeConversation: null,
   messages: [],
-  messagesLoading: false,
 
-  chatListOpen: false,
   newMessageContent: "",
   totalUnreadCount: 0,
 
@@ -64,8 +62,6 @@ export const useStore = create<State>((set, get) => ({
 
   setMessages: (messages) => set({ messages }),
 
-  setMessagesLoading: (loading) => set({ messagesLoading: loading }),
-
   addMessage: (message) => {
     const { messages } = get();
     set({ messages: [...messages, message] });
@@ -96,8 +92,6 @@ export const useStore = create<State>((set, get) => ({
     );
     set({ messages: updatedMessages });
   },
-
-  setChatListOpen: (open) => set({ chatListOpen: open }),
 
   setNewMessageContent: (content) => set({ newMessageContent: content }),
 

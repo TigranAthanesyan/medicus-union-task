@@ -5,9 +5,10 @@ export enum RoutePath {
   Home = 1,
   Doctors,
   Doctor,
-  Patient,
   Conversations,
   Conversation,
+  Consultations,
+  Consultation,
   Profile,
   Login,
   SignUp,
@@ -25,10 +26,11 @@ const useRouteData = (): RouteData => {
     if (pathname === "/chat") return RoutePath.Conversations;
     if (pathname.startsWith("/doctors/")) return RoutePath.Doctor;
     if (pathname === "/doctors") return RoutePath.Doctors;
-    if (pathname.startsWith("/patients/")) return RoutePath.Patient;
+    if (pathname.startsWith("/consultations/")) return RoutePath.Consultation;
+    if (pathname === "/consultations") return RoutePath.Consultations;
     if (pathname === "/profile") return RoutePath.Profile;
-    if (pathname === "/login") return RoutePath.Login;
-    if (pathname === "/signup") return RoutePath.SignUp;
+    if (pathname.startsWith("/auth/signin")) return RoutePath.Login;
+    if (pathname.startsWith("/auth/signup")) return RoutePath.SignUp;
     return RoutePath.Home;
   }, [pathname]);
 

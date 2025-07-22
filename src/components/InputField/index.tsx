@@ -1,3 +1,5 @@
+import React, { forwardRef } from "react";
+import clsx from "clsx";
 import InputLabel from "../InputLabel";
 import styles from "./styles.module.css";
 
@@ -13,49 +15,60 @@ interface InputFieldProps {
   required?: boolean;
   disabled?: boolean;
   rows?: number;
+  error?: string;
 }
 
-export default function InputField({
-  label,
-  type,
-  name,
-  value,
-  placeholder,
-  min,
-  max,
-  onChange,
-  required,
-  disabled,
-  rows,
-}: InputFieldProps) {
-  return (
-    <div className={styles.fieldContainer}>
-      <InputLabel required={required}>{label}</InputLabel>
-      {type === "textarea" ? (
-        <textarea
-          name={name}
-          value={value}
-          onChange={onChange}
-          required={required}
-          disabled={disabled}
-          placeholder={placeholder}
-          className={styles.textarea}
-          rows={rows}
-        />
-      ) : (
-        <input
-          type={type}
-          name={name}
-          value={value}
-          placeholder={placeholder}
-          onChange={onChange}
-          required={required}
-          disabled={disabled}
-          className={styles.input}
-          min={min}
-          max={max}
-        />
-      )}
-    </div>
-  );
-}
+const InputField = forwardRef<HTMLDivElement, InputFieldProps>(
+  ({
+    label,
+    type,
+    name,
+    value,
+    placeholder,
+    min,
+    max,
+    onChange,
+    required,
+    disabled,
+    rows,
+    error,
+  }, ref) => {
+    const hasError = Boolean(error);
+
+    return (
+      <div ref={ref} className={styles.fieldContainer}>
+        <InputLabel required={required}>{label}</InputLabel>
+        {type === "textarea" ? (
+          <textarea
+            name={name}
+            value={value}
+            onChange={onChange}
+            required={required}
+            disabled={disabled}
+            placeholder={placeholder}
+            className={clsx(styles.textarea, { [styles.error]: hasError })}
+            rows={rows}
+          />
+        ) : (
+          <input
+            type={type}
+            name={name}
+            value={value}
+            placeholder={placeholder}
+            onChange={onChange}
+            required={required}
+            disabled={disabled}
+            className={clsx(styles.input, { [styles.error]: hasError })}
+            min={min}
+            max={max}
+          />
+        )}
+        {error && <div className={styles.errorMessage}>{error}</div>}
+      </div>
+    );
+  }
+);
+
+InputField.displayName = "InputField";
+
+export default InputField;

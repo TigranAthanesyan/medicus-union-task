@@ -8,7 +8,7 @@ import { useConversations } from "@/hooks/useConversations";
 import { getCurrencySymbol, getDateTimeLongTexts } from "@/utils/formatting";
 import { DataFetchStatus, ConsultationStatus, UserRole, ConsultationType } from "@/types";
 import { STATUS_COLOR_MAP, STATUS_ICON_MAP, TYPE_ICON_MAP } from "@/constants/consultation";
-import LoadingSpinner from "../LoadingSpinner";
+import Loading from "../Loading";
 import MainContainer from "../MainContainer";
 import SectionWrapper from "../SectionWrapper";
 import styles from "./styles.module.css";
@@ -115,12 +115,7 @@ export default function Consultation() {
 
   const renderContent = () => {
     if (status === DataFetchStatus.Initial || status === DataFetchStatus.InProgress || !session) {
-      return (
-        <div className={styles.loadingContainer}>
-          <LoadingSpinner />
-          <p>Loading consultation details...</p>
-        </div>
-      );
+      return <Loading message="Loading consultation details..." />;
     }
 
     if (status === DataFetchStatus.Error || !consultation) {

@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useConversations } from "@/hooks/useConversations";
-import { LoadingSpinner } from "../../LoadingSpinner";
+import Loading from "../../../components/Loading";
 import { ConversationItem } from "../ConversationItem";
 import styles from "./styles.module.css";
 
@@ -21,12 +21,7 @@ export const ChatList = () => {
   };
 
   if (loading) {
-    return (
-      <div className={styles.centralizedContainer}>
-        <LoadingSpinner size="large" />
-        <span className={styles.loadingText}>Loading conversations...</span>
-      </div>
-    );
+    return <Loading size="large" message="Loading conversations..." />;
   }
 
   if (conversations.length === 0) {

@@ -41,3 +41,9 @@ export type ActionIconData = {
   onClick: () => void;
   isDisabled?: boolean;
 };
+
+export type ActionItemData = {
+  icon: () => JSX.Element;
+  label: string;
+  onClick: () => void;
+};

@@ -1,4 +1,5 @@
-import { UserRole, Gender } from "../../../types";
+import { Gender } from "./common";
+import { UserRole } from "./user";
 
 export interface SignUpFormData {
   name: string;
@@ -13,6 +14,12 @@ export interface SignUpFormData {
   specializations: string[];
   description: string;
   experience: number;
+  consultationPrice: number;
+  consultationCurrency: string;
+}
+
+export interface FieldErrors {
+  [fieldName: string]: string;
 }
 
 export interface AvatarUploadResponse {

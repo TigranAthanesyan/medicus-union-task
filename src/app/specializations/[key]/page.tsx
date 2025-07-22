@@ -3,8 +3,9 @@
 import React, { useMemo, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import MainContainer from "../../../components/MainContainer";
 import { DoctorCard } from "../../../components/DoctorCard";
-import { LoadingSpinner } from "../../../components/LoadingSpinner";
+import Loading from "../../../components/Loading";
 import useDoctorsData from "../../../hooks/useDoctorsData";
 import useSpecializationsData from "../../../hooks/useSpecializationsData";
 import { DataFetchStatus } from "../../../types";
@@ -36,10 +37,7 @@ export default function SpecializationPage() {
   const renderContent = () => {
     if (doctorsStatus === DataFetchStatus.InProgress || specializationsStatus === DataFetchStatus.InProgress) {
       return (
-        <div className={styles.loadingContainer}>
-          <LoadingSpinner />
-          <p>Loading specialization details...</p>
-        </div>
+        <Loading message="Loading specialization details..." />
       );
     }
 
@@ -97,14 +95,8 @@ export default function SpecializationPage() {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.breadcrumb}>
-        <Link href="/doctors" className={styles.breadcrumbLink}>
-          ← Back to All Doctors
-        </Link>
-      </div>
-
+    <MainContainer>
       {renderContent()}
-    </div>
+    </MainContainer>
   );
 }

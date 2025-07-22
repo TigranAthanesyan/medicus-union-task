@@ -1,12 +1,6 @@
 import { UserDTO, UserSummary } from "./user";
 
-export enum MessageType {
-  Text = "text",
-  Image = "image",
-  File = "file",
-  System = "system",
-}
-
+// This is not used yet
 export enum MessageStatus {
   Sent = "sent",
   Delivered = "delivered",
@@ -17,13 +11,6 @@ export enum ConversationStatus {
   Active = "active",
   Archived = "archived",
   Blocked = "blocked",
-}
-
-export interface FileAttachment {
-  url: string;
-  filename: string;
-  size: number;
-  mimeType: string;
 }
 
 export interface BaseConversation {
@@ -39,8 +26,6 @@ export interface BaseMessage {
   conversationId: string;
   senderId: string;
   content: string;
-  type: MessageType; // Only text messages are supported for now
-  attachments?: FileAttachment[]; // Unused yet
 }
 
 export type CreateConversationInput = BaseConversation;

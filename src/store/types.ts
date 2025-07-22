@@ -11,9 +11,7 @@ export interface State {
   activeConversationId: string | null;
   activeConversation: ConversationDTO | null;
   messages: MessageDTO[];
-  messagesLoading: boolean;
 
-  chatListOpen: boolean;
   newMessageContent: string;
   totalUnreadCount: number;
 
@@ -28,11 +26,9 @@ export interface State {
 
   setActiveConversation: (conversationId: string | null, conversation?: ConversationDTO | null) => void;
   setMessages: (messages: MessageDTO[]) => void;
-  setMessagesLoading: (loading: boolean) => void;
   addMessage: (message: MessageDTO) => void;
-  updateMessageStatus: (messageId: string, status: string) => void;
+  updateMessageStatus: (messageId: string, status: string) => void; // Unused yet
 
-  setChatListOpen: (open: boolean) => void;
   setNewMessageContent: (content: string) => void;
   updateTotalUnreadCount: () => void;
 }

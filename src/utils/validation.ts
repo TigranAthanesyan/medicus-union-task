@@ -1,39 +1,45 @@
 import { UserRole } from "../types";
-import { SignUpFormData } from "../app/auth/signup/types";
-import { FORM_VALIDATION } from "../constants/signup";
+import { SignUpFormData, FieldErrors } from "../types/signUp";
+import { FORM_VALIDATION, CURRENCIES } from "../constants/signup";
 
-export const validateSignUpForm = (formData: SignUpFormData): string | null => {
+export const validateSignUpForm = (formData: SignUpFormData): FieldErrors => {
+  const errors: FieldErrors = {};
+
   if (!formData.name.trim()) {
-    return "Name is required";
+    errors.name = "Name is required";
+  } else if (formData.name.trim().length < FORM_VALIDATION.MIN_NAME_LENGTH) {
+    errors.name = `Name must be at least ${FORM_VALIDATION.MIN_NAME_LENGTH} characters`;
+  } else if (formData.name.trim().length > FORM_VALIDATION.MAX_NAME_LENGTH) {
+    errors.name = `Name must be less than ${FORM_VALIDATION.MAX_NAME_LENGTH} characters`;
   }
 
   if (!formData.email.trim()) {
-    return "Email is required";
-  }
-
-  if (!isValidEmail(formData.email)) {
-    return "Please enter a valid email address";
+    errors.email = "Email is required";
+  } else if (!isValidEmail(formData.email)) {
+    errors.email = "Please enter a valid email address";
   }
 
   if (!formData.password) {
-    return "Password is required";
+    errors.password = "Password is required";
+  } else if (formData.password.length < FORM_VALIDATION.MIN_PASSWORD_LENGTH) {
+    errors.password = `Password must be at least ${FORM_VALIDATION.MIN_PASSWORD_LENGTH} characters`;
   }
 
-  if (formData.password.length < FORM_VALIDATION.MIN_PASSWORD_LENGTH) {
-    return `Password must be at least ${FORM_VALIDATION.MIN_PASSWORD_LENGTH} characters`;
-  }
-
-  if (formData.password !== formData.confirmPassword) {
-    return "Passwords do not match";
+  if (!formData.confirmPassword) {
+    errors.confirmPassword = "Please confirm your password";
+  } else if (formData.password !== formData.confirmPassword) {
+    errors.confirmPassword = "Passwords do not match";
   }
 
   if (formData.role === UserRole.Doctor) {
     if (!formData.specializations || formData.specializations.length === 0) {
-      return "At least one specialization is required for doctors";
+      errors.specializations = "At least one specialization is required for doctors";
     }
 
     if (!formData.description.trim()) {
-      return "Description is required for doctors";
+      errors.description = "Description is required for doctors";
+    } else if (formData.description.trim().length > FORM_VALIDATION.MAX_DESCRIPTION_LENGTH) {
+      errors.description = `Description must be less than ${FORM_VALIDATION.MAX_DESCRIPTION_LENGTH} characters`;
     }
 
     if (
@@ -42,15 +48,28 @@ export const validateSignUpForm = (formData: SignUpFormData): string | null => {
         formData.experience < 0 ||
         formData.experience > FORM_VALIDATION.MAX_EXPERIENCE_YEARS)
     ) {
-      return `Experience must be between 0 and ${FORM_VALIDATION.MAX_EXPERIENCE_YEARS} years`;
+      errors.experience = `Experience must be between 0 and ${FORM_VALIDATION.MAX_EXPERIENCE_YEARS} years`;
+    }
+
+    if (
+      formData.consultationPrice === undefined ||
+      isNaN(formData.consultationPrice) ||
+      formData.consultationPrice < FORM_VALIDATION.MIN_CONSULTATION_PRICE ||
+      formData.consultationPrice > FORM_VALIDATION.MAX_CONSULTATION_PRICE
+    ) {
+      errors.consultationPrice = `Consultation price must be between ${FORM_VALIDATION.MIN_CONSULTATION_PRICE} and ${FORM_VALIDATION.MAX_CONSULTATION_PRICE}`;
+    }
+
+    if (!formData.consultationCurrency || !CURRENCIES.some(c => c.value === formData.consultationCurrency)) {
+      errors.consultationCurrency = "Please select a valid currency";
     }
   }
 
   if (formData.phoneNumber && !isValidPhoneNumber(formData.phoneNumber)) {
-    return "Please enter a valid phone number";
+    errors.phoneNumber = "Please enter a valid phone number";
   }
 
-  return null;
+  return errors;
 };
 
 export const isValidEmail = (email: string): boolean => {

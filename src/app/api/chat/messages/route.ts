@@ -14,7 +14,6 @@ import User, { IUser } from "../../../../models/User";
 import {
   ConversationUpdateData,
   MessageStatus,
-  MessageType,
   SendMessageApiResponse,
   SendMessageRequest,
 } from "../../../../types";
@@ -27,12 +26,7 @@ export async function POST(request: Request): Promise<NextResponse<SendMessageAp
     }
 
     const body: SendMessageRequest = await request.json();
-    const {
-      conversationId,
-      content,
-      type = MessageType.Text,
-      attachments,
-    } = body;
+    const { conversationId, content } = body;
 
     await connectDB();
 
@@ -53,9 +47,7 @@ export async function POST(request: Request): Promise<NextResponse<SendMessageAp
       conversationId,
       senderId: userId,
       content,
-      type,
       status: MessageStatus.Sent,
-      attachments,
     });
 
     await message.save();

@@ -1,5 +1,4 @@
 import { UserDTO } from "./user";
-import { BaseApiResponse } from "./common";
 import { IUser } from "../models/User";
 import { IConsultation } from "../models/Consultation";
 
@@ -45,17 +44,6 @@ export type PopulatedConsultation = Omit<IConsultation, 'doctorId' | 'patientId'
   patientId: IUser;
 };
 
-export interface CreateConsultationRequest {
-  doctorId: string;
-  dateTime: string; // ISO string
-  type: ConsultationType;
-}
-
-export interface UpdateConsultationRequest {
-  status?: ConsultationStatus;
-  notes?: string;
-}
-
 export interface TimeSlot {
   time: string; // "09:00", "10:30"
   available: boolean;
@@ -67,8 +55,3 @@ export interface DayAvailability {
   dayName: string; // "Monday"
   slots: TimeSlot[];
 }
-
-export type ConsultationsApiResponse = BaseApiResponse<ConsultationDTO[]>;
-export type ConsultationApiResponse = BaseApiResponse<ConsultationDTO>;
-export type CreateConsultationApiResponse = BaseApiResponse<ConsultationDTO>;
-export type AvailabilityApiResponse = BaseApiResponse<DayAvailability[]>;

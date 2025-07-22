@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { validateSignUpForm } from "../utils/validation";
 import { registerUser, uploadAvatar } from "../services/auth";
-import { SignUpFormData, LoadingState, FormInputEvent, FormSubmitEvent } from "../app/auth/signup/types";
-import { UserRole, BaseUser } from "../types";
+import { UserRole, BaseUser, SignUpFormData, LoadingState, FormInputEvent, FormSubmitEvent, FieldErrors } from "../types";
 
 const initialFormData: SignUpFormData = {
   name: "",
@@ -18,6 +18,8 @@ const initialFormData: SignUpFormData = {
   specializations: [],
   description: "",
   experience: 0,
+  consultationPrice: 0,
+  consultationCurrency: "USD",
 };
 
 export const useSignUpForm = () => {
@@ -26,7 +28,8 @@ export const useSignUpForm = () => {
     form: false,
     avatar: false,
   });
-  const [error, setError] = useState<string>("");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [generalError, setGeneralError] = useState<string>("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string>("");
 
   const router = useRouter();
@@ -37,16 +40,47 @@ export const useSignUpForm = () => {
       ...prev,
       [name]: value,
     }));
+
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
-  const clearError = (): void => {
-    setError("");
+  const clearErrors = (): void => {
+    setFieldErrors({});
+    setGeneralError("");
+  };
+
+  const getFirstFieldWithError = (): string | null => {
+    const fieldOrder = [
+      "name",
+      "email", 
+      "password",
+      "confirmPassword",
+      "specializations",
+      "description",
+      "experience",
+      "consultationPrice",
+      "consultationCurrency",
+      "phoneNumber"
+    ];
+
+    for (const field of fieldOrder) {
+      if (fieldErrors[field]) {
+        return field;
+      }
+    }
+    return null;
   };
 
   const resetForm = (): void => {
     setFormData(initialFormData);
     setUploadedImageUrl("");
-    setError("");
+    clearErrors();
   };
 
   const handleAvatarUpload = async (file: File): Promise<string | null> => {
@@ -59,12 +93,12 @@ export const useSignUpForm = () => {
         setUploadedImageUrl(data.image);
         return data.image;
       } else {
-        setError(data.error || "Failed to upload avatar");
+        setGeneralError(data.error || "Failed to upload avatar");
         return null;
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Failed to upload avatar";
-      setError(errorMessage);
+      setGeneralError(errorMessage);
       return null;
     } finally {
       setLoading((prev) => ({ ...prev, avatar: false }));
@@ -73,12 +107,12 @@ export const useSignUpForm = () => {
 
   const handleSubmit = async (e: FormSubmitEvent, avatarUrl?: string): Promise<void> => {
     e.preventDefault();
-    setError("");
+    clearErrors();
     setLoading((prev) => ({ ...prev, form: true }));
 
-    const validationError = validateSignUpForm(formData);
-    if (validationError) {
-      setError(validationError);
+    const validationErrors = validateSignUpForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setFieldErrors(validationErrors);
       setLoading((prev) => ({ ...prev, form: false }));
       return;
     }
@@ -113,18 +147,36 @@ export const useSignUpForm = () => {
         if (formData.experience) {
           requestData.experience = formData.experience;
         }
+        if (formData.consultationPrice) {
+          requestData.consultationPrice = formData.consultationPrice;
+        }
+        if (formData.consultationCurrency) {
+          requestData.consultationCurrency = formData.consultationCurrency;
+        }
       }
 
+      // Register the user
       const data = await registerUser(requestData);
 
       if (data.error) {
-        setError(data.error);
+        setGeneralError(data.error);
       } else {
-        router.push("/auth/signin?message=Registration successful. Please sign in.");
+        const signInResult = await signIn("credentials", {
+          email: formData.email,
+          password: formData.password,
+          redirect: false,
+        });
+
+        if (signInResult?.error) {
+          setGeneralError("Account created successfully, but automatic login failed. Please sign in manually.");
+          router.push("/auth/signin?message=Registration successful. Please sign in.");
+        } else {
+          router.push("/");
+        }
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "An error occurred. Please try again.";
-      setError(errorMessage);
+      setGeneralError(errorMessage);
     } finally {
       setLoading((prev) => ({ ...prev, form: false }));
     }
@@ -133,12 +185,14 @@ export const useSignUpForm = () => {
   return {
     formData,
     loading,
-    error,
+    fieldErrors,
+    generalError,
     uploadedImageUrl,
     handleChange,
     handleSubmit,
     handleAvatarUpload,
-    clearError,
+    clearErrors,
     resetForm,
+    getFirstFieldWithError,
   };
 };

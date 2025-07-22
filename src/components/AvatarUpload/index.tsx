@@ -5,7 +5,7 @@ import { AVATAR_MAX_SIZE, AVATAR_MAX_SIZE_DISPLAY } from "../../constants/global
 import { SUPPORTED_IMAGE_FORMATS, SUPPORTED_IMAGE_FORMATS_DISPLAY } from "../../constants/signup";
 import { validateFileSize, validateFileType } from "../../utils/validation";
 import InputLabel from "../InputLabel";
-import LoadingSpinner from "../LoadingSpinner";
+import Loading from "../Loading";
 import styles from "./styles.module.css";
 
 interface AvatarUploadProps {
@@ -114,12 +114,7 @@ export const AvatarUpload: React.FC<AvatarUploadProps> = ({
         Max file size: {AVATAR_MAX_SIZE_DISPLAY}. Supported formats: {SUPPORTED_IMAGE_FORMATS_DISPLAY}
       </div>
 
-      {isLoading && (
-        <div className={styles.loadingContainer}>
-          <LoadingSpinner size="small" />
-          <span>Uploading avatar...</span>
-        </div>
-      )}
+      {isLoading && <Loading size="small" message="Uploading avatar..." />}
 
       {displayError && <div className={styles.errorMessage}>{displayError}</div>}
     </div>

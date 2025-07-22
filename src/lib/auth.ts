@@ -46,6 +46,8 @@ export const authOptions: NextAuthOptions = {
             specializations: user.specializations,
             description: user.description,
             experience: user.experience,
+            consultationPrice: user.consultationPrice,
+            consultationCurrency: user.consultationCurrency,
           };
 
           return returnUser;
@@ -67,6 +69,8 @@ export const authOptions: NextAuthOptions = {
         token.specializations = user.specializations;
         token.description = user.description;
         token.experience = user.experience;
+        token.consultationPrice = user.consultationPrice;
+        token.consultationCurrency = user.consultationCurrency;
       }
       return token;
     },
@@ -80,6 +84,8 @@ export const authOptions: NextAuthOptions = {
         session.user.specializations = token.specializations;
         session.user.description = token.description;
         session.user.experience = token.experience;
+        session.user.consultationPrice = token.consultationPrice;
+        session.user.consultationCurrency = token.consultationCurrency;
       }
       return session;
     },

@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import Loading from "../../components/Loading";
 import MainContainer from "../../components/MainContainer";
 import { DoctorCard } from "../../components/DoctorCard";
-import { LoadingSpinner } from "../../components/LoadingSpinner";
 import useDoctorsData from "../../hooks/useDoctorsData";
 import useSpecializationsData from "../../hooks/useSpecializationsData";
 import { getAvailableCountries } from "../../utils/countries";
@@ -132,10 +132,7 @@ export default function DoctorsPage() {
       case DataFetchStatus.Initial:
       case DataFetchStatus.InProgress:
         return (
-          <div className={styles.loadingContainer}>
-            <LoadingSpinner />
-            <p>Loading doctors...</p>
-          </div>
+        <Loading message="Loading doctors..." />
         );
       case DataFetchStatus.Error:
         return (

@@ -1,19 +1,12 @@
 import mongoose from "mongoose";
-import { MessageType, MessageStatus } from "../types";
+import { MessageStatus } from "../types";
 
 export interface IMessage extends mongoose.Document {
   _id: mongoose.Types.ObjectId;
   conversationId: mongoose.Types.ObjectId;
   senderId: mongoose.Types.ObjectId;
   content: string;
-  type: MessageType;
   status: MessageStatus;
-  attachments?: {
-    url: string;
-    filename: string;
-    size: number;
-    mimeType: string;
-  }[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,40 +29,11 @@ const MessageSchema = new mongoose.Schema(
       maxlength: [1000, "Message content must be less than 1000 characters"],
       trim: true,
     },
-    type: {
-      type: String,
-      enum: Object.values(MessageType),
-      default: MessageType.Text,
-    },
     status: {
       type: String,
       enum: Object.values(MessageStatus),
       default: MessageStatus.Sent,
     },
-    attachments: [
-      {
-        url: {
-          type: String,
-          required: true,
-          trim: true,
-        },
-        filename: {
-          type: String,
-          required: true,
-          trim: true,
-        },
-        size: {
-          type: Number,
-          required: true,
-          min: [0, "File size cannot be negative"],
-        },
-        mimeType: {
-          type: String,
-          required: true,
-          trim: true,
-        },
-      },
-    ],
   },
   {
     timestamps: true,

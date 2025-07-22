@@ -1,10 +1,17 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { useRouter } from "next/navigation";
-import useRouteData, { RoutePath as Path } from "./useRouteData";
+import { useSession, signOut } from "next-auth/react";
+import useRouteData, { RoutePath as Path } from "@/hooks/useRouteData";
 import BackIcon from "@/components/icons/BackIcon";
-import HomeIcon from "@/components/icons/HomeIcon";
 import DotsActionIcon from "@/components/icons/DotsActionIcon";
-import { ActionIconData } from "@/types";
+import HomeIcon from "@/components/icons/actionItemIcons/HomeIcon";
+import MessageIcon from "@/components/icons/actionItemIcons/MessageIcon";
+import ProfileIcon from "@/components/icons/actionItemIcons/ProfileIcon";
+import LogoutIcon from "@/components/icons/actionItemIcons/LogoutIcon";
+import LoginIcon from "@/components/icons/actionItemIcons/LoginIcon";
+import DoctorIcon from "@/components/icons/actionItemIcons/DoctorIcon";
+import ConsultationIcon from "@/components/icons/actionItemIcons/ConsultationIcon";
+import { ActionIconData, ActionItemData } from "@/types";
 import { APP_NAME } from "@/constants/global";
 
 type MainContent = {
@@ -16,59 +23,82 @@ type HeaderData = {
   leftAction: ActionIconData | null;
   mainContent: MainContent;
   rightAction: ActionIconData | null;
+  actionItems: ActionItemData[];
 };
 
-export const useHeaderData = (): HeaderData => {
+export const useHeaderData = (onToggleSidebar?: () => void): HeaderData => {
   const router = useRouter();
+  const { data: session } = useSession();
   const { path } = useRouteData();
+
+  const actionItems: ActionItemData[] = useMemo(() => {
+    const baseItems: ActionItemData[] = [];
+
+    if (path !== Path.Home) {
+      baseItems.push({
+        icon: HomeIcon,
+        label: 'Home',
+        onClick: () => router.push('/'),
+      });
+    }
+
+    if (path !== Path.Conversations && path !== Path.Conversation) {
+      baseItems.push({
+        icon: MessageIcon,
+        label: 'Messages',
+        onClick: () => router.push('/chat'),
+      });
+    }
+
+    if (path !== Path.Doctors && path !== Path.Doctor) {
+      baseItems.push({
+        icon: DoctorIcon,
+        label: 'Doctors',
+        onClick: () => router.push('/doctors'),
+      });
+    }
+
+    if (path !== Path.Consultations && path !== Path.Consultation) {
+      baseItems.push({
+        icon: ConsultationIcon,
+        label: 'Consultations',
+        onClick: () => router.push('/consultations'),
+      });
+    }
+
+    if (path !== Path.Profile) {
+      baseItems.push({
+        icon: ProfileIcon,
+        label: 'Profile',
+        onClick: () => router.push('/profile'),
+      });
+    }
+
+    if (session) {
+      baseItems.push({
+        icon: LogoutIcon,
+        label: 'Sign Out',
+        onClick: () => signOut().finally(() => router.push('/')),
+      });
+    } else {
+      baseItems.push({
+        icon: LoginIcon,
+        label: 'Sign In',
+        onClick: () => router.push('/auth/signin'),
+      });
+    }
+
+    return baseItems;
+  }, [path, session, router]);
 
   const goBackAction: ActionIconData = {
     icon: BackIcon,
     onClick: () => router.back(),
   };
 
-  const goHomeAction: ActionIconData = {
-    icon: HomeIcon,
-    onClick: () => router.push("/"),
-  };
-
-  const goBackToChatsAction: ActionIconData = {
-    icon: BackIcon,
-    onClick: () => router.push("/chat"),
-  };
-
-  const goBackToDoctorsAction: ActionIconData = {
-    icon: BackIcon,
-    onClick: () => router.push("/doctors"),
-  };
-
   const openRightSidebarAction: ActionIconData = {
     icon: DotsActionIcon,
-    onClick: () => {},
-  };
-
-  const leftActionIconsMap: Record<Path, ActionIconData | null> = {
-    [Path.Conversation]: goBackToChatsAction,
-    [Path.Conversations]: goHomeAction,
-    [Path.Home]: goHomeAction,
-    [Path.Doctors]: goHomeAction,
-    [Path.Doctor]: goBackToDoctorsAction,
-    [Path.Patient]: goBackAction,
-    [Path.Profile]: goHomeAction,
-    [Path.Login]: goHomeAction,
-    [Path.SignUp]: goHomeAction,
-  };
-
-  const rightActionIconsMap: Record<Path, ActionIconData | null> = {
-    [Path.Conversation]: openRightSidebarAction,
-    [Path.Conversations]: openRightSidebarAction,
-    [Path.Home]: openRightSidebarAction,
-    [Path.Doctors]: openRightSidebarAction,
-    [Path.Doctor]: openRightSidebarAction,
-    [Path.Patient]: openRightSidebarAction,
-    [Path.Profile]: openRightSidebarAction,
-    [Path.Login]: openRightSidebarAction,
-    [Path.SignUp]: openRightSidebarAction,
+    onClick: onToggleSidebar || (() => {}),
   };
 
   const mainContent: MainContent = useMemo(() => {
@@ -77,8 +107,6 @@ export const useHeaderData = (): HeaderData => {
         return { contentType: "participant" };
       case Path.Conversations:
         return { title: "Messages" };
-      case Path.Home:
-        return { title: APP_NAME };
       case Path.Doctors:
         return { title: "Doctors" };
       case Path.Doctor:
@@ -93,8 +121,9 @@ export const useHeaderData = (): HeaderData => {
   }, [path]);
 
   return {
-    leftAction: leftActionIconsMap[path],
-    rightAction: rightActionIconsMap[path],
+    leftAction: goBackAction,
+    rightAction: openRightSidebarAction,
+    actionItems,
     mainContent,
   };
 };

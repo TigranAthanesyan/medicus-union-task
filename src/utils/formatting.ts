@@ -86,3 +86,16 @@ export const getCurrencySymbol = (currency: string) => {
       return "$";
   }
 };
+
+export const getSpecializationDisplayName = (specialization: string) => {
+  return specialization
+    .split('-')
+    .map((word, index) => {
+      if (index === 0) {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      } else {
+        return word.toLowerCase();
+      }
+    })
+    .join(' ');
+}

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { forwardRef } from "react";
 import clsx from "clsx";
+import useSpecializationsData from "@/hooks/useSpecializationsData";
 import InputField from "../InputField";
-import { SignUpFormData, FormInputEvent } from "../../app/auth/signup/types";
-import { SpecializationDTO } from "../../types";
-import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES } from "../../constants/signup";
+import { SignUpFormData, FormInputEvent, DataFetchStatus, FieldErrors } from "../../types";
+import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES, CURRENCIES } from "../../constants/signup";
 import styles from "./styles.module.css";
 
 interface DoctorInfoSectionProps {
@@ -11,17 +11,17 @@ interface DoctorInfoSectionProps {
   onChange: (e: FormInputEvent) => void;
   disabled?: boolean;
   className?: string;
+  fieldErrors?: FieldErrors;
 }
 
-export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
+export const DoctorInfoSection = forwardRef<HTMLDivElement, DoctorInfoSectionProps>(({
   formData,
   onChange,
   disabled = false,
   className = "",
-}) => {
-  const [specializations, setSpecializations] = useState<SpecializationDTO[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string>("");
+  fieldErrors = {},
+}, ref) => {
+  const { specializations, status } = useSpecializationsData();
 
   const handleSpecializationsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValues = Array.from(e.target.selectedOptions, (option) => option.value);
@@ -33,31 +33,8 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
     });
   };
 
-  useEffect(() => {
-    const fetchSpecializations = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch("/api/specializations");
-        const data = await response.json();
-
-        if (data.success) {
-          setSpecializations(data.data);
-        } else {
-          setError(data.error || "Failed to fetch specializations");
-        }
-      } catch (err) {
-        setError("Failed to fetch specializations");
-        console.error("Error fetching specializations:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSpecializations();
-  }, []);
-
   return (
-    <div className={clsx(styles.section, className)}>
+    <div ref={ref} className={clsx(styles.section, className)}>
       <h3 className={styles.sectionTitle}>
         <span className={styles.sectionIcon}>👨‍⚕️</span>
         {SECTION_TITLES.DOCTOR_INFORMATION}
@@ -71,10 +48,10 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
         <label className={styles.inputLabel}>
           {FORM_LABELS.SPECIALIZATION} <span className={styles.required}>*</span>
         </label>
-        {loading ? (
+        {status === DataFetchStatus.InProgress ? (
           <div className={styles.loadingText}>Loading specializations...</div>
-        ) : error ? (
-          <div className={styles.errorText}>{error}</div>
+        ) : status === DataFetchStatus.Error ? (
+          <div className={styles.errorText}>Failed to fetch specializations</div>
         ) : (
           <>
             <select
@@ -82,7 +59,7 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
               value={formData.specializations}
               onChange={handleSpecializationsChange}
               disabled={disabled}
-              className={styles.multiSelect}
+              className={clsx(styles.multiSelect, { [styles.error]: fieldErrors.specializations })}
               multiple
               required
             >
@@ -93,6 +70,9 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
               ))}
             </select>
             <p className={styles.helperText}>Hold Ctrl/Cmd to select multiple specializations</p>
+            {fieldErrors.specializations && (
+              <div className={styles.fieldError}>{fieldErrors.specializations}</div>
+            )}
           </>
         )}
       </div>
@@ -107,6 +87,7 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
         required
         disabled={disabled}
         rows={4}
+        error={fieldErrors.description}
       />
 
       <InputField
@@ -119,9 +100,51 @@ export const DoctorInfoSection: React.FC<DoctorInfoSectionProps> = ({
         min={0}
         max={50}
         disabled={disabled}
+        error={fieldErrors.experience}
       />
+
+      <div className={styles.consultationPricing}>
+        <InputField
+          label={FORM_LABELS.CONSULTATION_PRICE}
+          type="number"
+          name="consultationPrice"
+          value={formData.consultationPrice}
+          onChange={onChange}
+          placeholder={PLACEHOLDERS.CONSULTATION_PRICE}
+          min={0}
+          max={10000}
+          required
+          disabled={disabled}
+          error={fieldErrors.consultationPrice}
+        />
+
+        <div className={styles.inputGroup}>
+          <label className={styles.inputLabel}>
+            {FORM_LABELS.CONSULTATION_CURRENCY} <span className={styles.required}>*</span>
+          </label>
+          <select
+            name="consultationCurrency"
+            value={formData.consultationCurrency}
+            onChange={onChange}
+            disabled={disabled}
+            className={clsx(styles.select, { [styles.error]: fieldErrors.consultationCurrency })}
+            required
+          >
+            {CURRENCIES.map((currency) => (
+              <option key={currency.value} value={currency.value}>
+                {currency.label}
+              </option>
+            ))}
+          </select>
+          {fieldErrors.consultationCurrency && (
+            <div className={styles.fieldError}>{fieldErrors.consultationCurrency}</div>
+          )}
+        </div>
+      </div>
     </div>
   );
-};
+});
+
+DoctorInfoSection.displayName = "DoctorInfoSection";
 
 export default DoctorInfoSection;

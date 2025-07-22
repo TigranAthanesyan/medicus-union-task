@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import InputField from "../InputField";
-import { SignUpFormData, FormInputEvent } from "../../app/auth/signup/types";
+import { SignUpFormData, FormInputEvent, FieldErrors } from "../../types";
 import { FORM_LABELS, PLACEHOLDERS, SECTION_TITLES } from "../../constants/signup";
 import { COUNTRIES } from "../../constants/countries";
 import { GENDER_OPTIONS } from "../../constants/gender";
@@ -12,6 +12,8 @@ interface PersonalInfoSectionProps {
   onChange: (e: FormInputEvent) => void;
   disabled?: boolean;
   className?: string;
+  fieldErrors?: FieldErrors;
+  phoneNumberRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
@@ -19,6 +21,8 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
   onChange,
   disabled = false,
   className = "",
+  fieldErrors = {},
+  phoneNumberRef,
 }) => {
   return (
     <div className={clsx(styles.section, className)}>
@@ -41,6 +45,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       />
 
       <InputField
+        ref={phoneNumberRef}
         label={FORM_LABELS.PHONE}
         type="tel"
         name="phoneNumber"
@@ -48,6 +53,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
         onChange={onChange}
         placeholder={PLACEHOLDERS.PHONE}
         disabled={disabled}
+        error={fieldErrors.phoneNumber}
       />
 
       <div className={styles.inputGroup}>
@@ -70,22 +76,20 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
 
       <div className={styles.inputGroup}>
         <label className={styles.inputLabel}>{FORM_LABELS.GENDER}</label>
-        <div className={styles.radioGroup}>
+        <select
+          name="gender"
+          value={formData.gender}
+          onChange={onChange}
+          disabled={disabled}
+          className={styles.select}
+        >
+          <option value="">Select gender (optional)</option>
           {GENDER_OPTIONS.map((option) => (
-            <label key={option.value} className={styles.radioLabel}>
-              <input
-                type="radio"
-                name="gender"
-                value={option.value}
-                checked={formData.gender === option.value}
-                onChange={onChange}
-                disabled={disabled}
-                className={styles.radioInput}
-              />
-              <span className={styles.radioText}>{option.label}</span>
-            </label>
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
           ))}
-        </div>
+        </select>
       </div>
     </div>
   );

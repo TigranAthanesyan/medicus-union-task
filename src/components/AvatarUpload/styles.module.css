@@ -90,16 +90,6 @@
   margin-top: 4px;
 }
 
-.loadingContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 8px;
-  color: #007bff;
-  font-size: 14px;
-}
-
 .errorMessage {
   color: #dc3545;
   font-size: 14px;
