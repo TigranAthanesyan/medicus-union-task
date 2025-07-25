@@ -129,12 +129,12 @@ export default function DoctorProfile({ doctorId }: DoctorProfileProps) {
               <div className={styles.consultationInfo}>
                 {doctor.consultationDuration && (
                   <span className={styles.consultationDetail}>
-                    ⏱️ {doctor.consultationDuration} min
+                    <b>⏱️ {doctor.consultationDuration} min</b>
                   </span>
                 )}
                 {doctor.consultationPrice && (
                   <span className={styles.consultationDetail}>
-                    💰 {getCurrencySymbol(doctor.consultationCurrency || 'USD')} {doctor.consultationPrice}
+                    <b> 💰 {getCurrencySymbol(doctor.consultationCurrency || 'USD')} {doctor.consultationPrice}</b>
                   </span>
                 )}
               </div>

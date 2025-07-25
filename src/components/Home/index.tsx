@@ -34,15 +34,15 @@ export default function Home() {
           <div className={styles.heroIllustration}>
             <div className={styles.illustrationCard}>
               <span className={styles.illustrationIcon}>👨‍⚕️</span>
-              <p>Professional Care</p>
+              <p><b>Professional Care</b></p>
             </div>
             <div className={styles.illustrationCard}>
               <span className={styles.illustrationIcon}>💬</span>
-              <p>Secure Chat</p>
+              <p><b>Secure Chat</b></p>
             </div>
             <div className={styles.illustrationCard}>
               <span className={styles.illustrationIcon}>📅</span>
-              <p>Easy Booking</p>
+              <p><b>Easy Booking</b></p>
             </div>
           </div>
         </section>
