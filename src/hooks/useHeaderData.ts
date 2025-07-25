@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import useRouteData, { RoutePath as Path } from "@/hooks/useRouteData";
+import LogoIcon from "@/components/icons/LogoIcon";
 import BackIcon from "@/components/icons/BackIcon";
 import DotsActionIcon from "@/components/icons/DotsActionIcon";
 import HomeIcon from "@/components/icons/actionItemIcons/HomeIcon";
@@ -98,7 +99,10 @@ export const useHeaderData = (onToggleSidebar?: () => void): HeaderData => {
 
   const leftAction = useMemo(() => {
     if (path === Path.Home) {
-      return null;
+      return {
+        icon: LogoIcon,
+        onClick: () => {},
+      };
     }
     return goBackAction;
   }, [goBackAction, path]);

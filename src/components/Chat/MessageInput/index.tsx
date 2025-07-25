@@ -4,7 +4,7 @@ import React, { useRef, useEffect } from "react";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import { useConversationById } from "@/hooks/useConversationById";
-import SendMessageIcon from "@/components/icons/sendMessageIcon";
+import SendMessageIcon from "@/components/icons/SendMessageIcon";
 import styles from "./styles.module.css";
 
 type MessageInputProps = {

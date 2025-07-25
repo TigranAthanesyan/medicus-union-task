@@ -30,29 +30,20 @@
 .actionIconContainer {
   height: 100%;
   width: 72px;
-  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 @media (min-width: 769px) and (max-width: 1023px) {
   .actionIconContainer {
     width: 80px;
   }
-  .mainContainer {
-    padding: 20px 32px;
-  }
-  .actionIconContainer {
-    padding: 20px 32px;
-  }
 }
 
 @media (min-width: 1024px) {
-  .actionContainer {
-    width: 88px;
-  }
-  .mainContainer {
-    padding: 24px 40px;
-  }
   .actionIconContainer {
-    padding: 24px 40px;
+    width: 88px;
   }
 }
