@@ -4,7 +4,7 @@ import React, { useRef, useEffect } from "react";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import { useConversationById } from "@/hooks/useConversationById";
-import SendMessageIcon from "@/components/icons/SendMessageIcon";
+import SendIcon from "@/components/icons/SendIcon";
 import styles from "./styles.module.css";
 
 type MessageInputProps = {
@@ -78,7 +78,7 @@ export const MessageInput = ({ conversationId }: MessageInputProps) => {
           disabled={!canSend}
           aria-label="Send message"
         >
-          <SendMessageIcon />
+          <SendIcon />
         </button>
       </div>
     </div>

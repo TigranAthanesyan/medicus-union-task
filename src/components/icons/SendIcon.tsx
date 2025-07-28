@@ -1,4 +1,4 @@
-export default function SendMessageIcon() {
+export default function SendIcon() {
   return (
     <svg
       style={{
